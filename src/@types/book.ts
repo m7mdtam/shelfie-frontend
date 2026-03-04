@@ -3,16 +3,19 @@ export type BookStatus = 'want-to-read' | 'reading' | 'finished'
 export type BookGenre =
   | 'fiction'
   | 'non-fiction'
-  | 'sci-fi'
   | 'fantasy'
+  | 'science-fiction'
+  | 'mystery'
+  | 'thriller'
+  | 'romance'
+  | 'historical-fiction'
   | 'biography'
-  | 'history'
-  | 'technology'
   | 'self-help'
   | 'other'
 
 export interface BookMedia {
   id: string
+  url: string
   filename: string
   mimeType: string
   filesize: number
@@ -20,6 +23,7 @@ export interface BookMedia {
   height: number
   sizes?: Array<{
     size?: string
+    url?: string
     filename: string
     width: number
     height: number
@@ -32,7 +36,7 @@ export interface Book {
   id: string
   title: string
   author: string
-  cover?: BookMedia
+  coverImage?: BookMedia
   genre: BookGenre
   status: BookStatus
   rating?: number
@@ -60,7 +64,7 @@ export interface GetBooksParams {
 export interface CreateBookRequest {
   title: string
   author: string
-  cover?: string
+  coverImage?: string
   genre: BookGenre
   status: BookStatus
   rating?: number
@@ -71,7 +75,7 @@ export interface CreateBookRequest {
 export interface UpdateBookRequest {
   title?: string
   author?: string
-  cover?: string
+  coverImage?: string
   genre?: BookGenre
   status?: BookStatus
   rating?: number
