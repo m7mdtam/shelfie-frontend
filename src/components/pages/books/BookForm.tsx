@@ -1,5 +1,6 @@
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useRef, useState } from 'react'
 import { Book } from '@/@types/book'
 import { bookSchema } from '@/schemas/book.ts'
 import { Button } from '@/components/ui/button'
@@ -20,6 +21,11 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form'
+import { uploadMedia } from '@/api/media/requests'
+import { BookOpen, Upload, X } from 'lucide-react'
+
+const formatLabel = (value: string) =>
+  value.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')
 
 interface BookFormProps {
   mode: 'create' | 'edit'
@@ -38,6 +44,11 @@ export function BookForm({
   genres,
   statuses,
 }: BookFormProps) {
+  const fileInputRef = useRef<HTMLInputElement>(null)
+  const [coverFile, setCoverFile] = useState<File | null>(null)
+  const [coverPreview, setCoverPreview] = useState<string>(initialData?.coverImage?.url || '')
+  const [isUploading, setIsUploading] = useState(false)
+
   const form = useForm({
     resolver: zodResolver(bookSchema),
     defaultValues: {
@@ -51,9 +62,83 @@ export function BookForm({
     },
   })
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+    setCoverFile(file)
+    setCoverPreview(URL.createObjectURL(file))
+  }
+
+  const removeCover = () => {
+    setCoverFile(null)
+    setCoverPreview('')
+    if (fileInputRef.current) fileInputRef.current.value = ''
+  }
+
+  const handleSubmit = async (data: any) => {
+    let coverImageId: string | undefined = initialData?.coverImage?.id
+
+    if (coverFile) {
+      setIsUploading(true)
+      try {
+        const media = await uploadMedia(coverFile, data.title || coverFile.name)
+        coverImageId = media.id
+      } finally {
+        setIsUploading(false)
+      }
+    }
+
+    onSubmit({ ...data, ...(coverImageId !== undefined && { coverImage: coverImageId }) })
+  }
+
+  const busy = isLoading || isUploading
+
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
+        <div>
+          <label className="text-sm font-medium">Cover Image</label>
+          <div className="mt-2">
+            {coverPreview ? (
+              <div className="relative w-full h-40 rounded-lg overflow-hidden group">
+                <img src={coverPreview} alt="Cover preview" className="w-full h-full object-cover" />
+                <button
+                  type="button"
+                  onClick={removeCover}
+                  className="absolute top-2 right-2 bg-black/60 rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                >
+                  <X className="w-4 h-4 text-white" />
+                </button>
+              </div>
+            ) : (
+              <button
+                type="button"
+                onClick={() => fileInputRef.current?.click()}
+                className="w-full h-40 border-2 border-dashed border-input rounded-lg flex flex-col items-center justify-center gap-2 text-text-secondary hover:border-accent-primary hover:text-accent-primary transition-colors"
+              >
+                <Upload className="w-6 h-6" />
+                <span className="text-sm">Click to upload cover</span>
+              </button>
+            )}
+            {coverPreview && (
+              <button
+                type="button"
+                onClick={() => fileInputRef.current?.click()}
+                className="mt-2 text-xs text-accent-primary hover:underline flex items-center gap-1"
+              >
+                <BookOpen className="w-3 h-3" /> Change image
+              </button>
+            )}
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={handleFileChange}
+            />
+          </div>
+        </div>
+
         <FormField
           control={form.control}
           name="title"
@@ -98,7 +183,7 @@ export function BookForm({
                   <SelectContent>
                     {genres.map(g => (
                       <SelectItem key={g} value={g}>
-                        {g}
+                        {formatLabel(g)}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -123,7 +208,7 @@ export function BookForm({
                   <SelectContent>
                     {statuses.map(s => (
                       <SelectItem key={s} value={s}>
-                        {s}
+                        {formatLabel(s)}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -175,8 +260,8 @@ export function BookForm({
           )}
         />
 
-        <Button type="submit" className="w-full" disabled={isLoading}>
-          {isLoading ? 'Saving...' : mode === 'create' ? 'Add Book' : 'Update Book'}
+        <Button type="submit" className="w-full" disabled={busy}>
+          {isUploading ? 'Uploading cover...' : busy ? 'Saving...' : mode === 'create' ? 'Add Book' : 'Update Book'}
         </Button>
       </form>
     </Form>

@@ -6,6 +6,7 @@ import { signInSchema, SignInFormData } from '@/schemas'
 import { auth } from '@/api/auth/hooks'
 import { getErrorMessage } from '@/utils'
 import { ROUTES } from '@/utils/api/routes'
+import { setToken } from '@/lib/cookies'
 
 export const useSignInForm = () => {
   const navigate = useNavigate()
@@ -26,7 +27,8 @@ export const useSignInForm = () => {
         password: data.password,
       },
       {
-        onSuccess: () => {
+        onSuccess: data => {
+          setToken(data.token)
           navigate({ to: ROUTES.BOOKS })
         },
         onError: (error: Error) => {

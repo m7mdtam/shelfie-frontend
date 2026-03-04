@@ -17,19 +17,9 @@ import {
 import { Button } from '@/components/ui/button'
 import { Plus } from 'lucide-react'
 
-const GENRES = [
-  'Fiction',
-  'Non-Fiction',
-  'Science',
-  'History',
-  'Fantasy',
-  'Thriller',
-  'Romance',
-  'Mystery',
-  'Biography',
-]
+const GENRES = ['fiction', 'non-fiction', 'fantasy', 'science-fiction', 'mystery', 'thriller', 'romance', 'historical-fiction', 'biography', 'self-help', 'other']
 
-const STATUSES = ['Want to Read', 'Reading', 'Completed']
+const STATUSES = ['want-to-read', 'reading', 'finished']
 
 export function ShelfPage() {
   const auth = useAuthContext()

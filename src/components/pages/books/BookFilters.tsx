@@ -8,6 +8,9 @@ import {
 } from '@/components/ui/select'
 import { Search } from 'lucide-react'
 
+const formatLabel = (value: string) =>
+  value.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')
+
 interface BookFiltersProps {
   search: string
   onSearchChange: (value: string) => void
@@ -46,15 +49,15 @@ export function BookFilters({
 
       <div className="w-full md:w-48">
         <label className="text-sm text-text-secondary block mb-2">Genre</label>
-        <Select value={genre || ''} onValueChange={onGenreChange}>
+        <Select value={genre || 'all'} onValueChange={v => onGenreChange(v === 'all' ? '' : v)}>
           <SelectTrigger>
             <SelectValue placeholder="All genres" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="">All genres</SelectItem>
+            <SelectItem value="all">All genres</SelectItem>
             {genres.map(g => (
               <SelectItem key={g} value={g}>
-                {g}
+                {formatLabel(g)}
               </SelectItem>
             ))}
           </SelectContent>
@@ -63,15 +66,15 @@ export function BookFilters({
 
       <div className="w-full md:w-48">
         <label className="text-sm text-text-secondary block mb-2">Status</label>
-        <Select value={status || ''} onValueChange={onStatusChange}>
+        <Select value={status || 'all'} onValueChange={v => onStatusChange(v === 'all' ? '' : v)}>
           <SelectTrigger>
             <SelectValue placeholder="All statuses" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="">All statuses</SelectItem>
+            <SelectItem value="all">All statuses</SelectItem>
             {statuses.map(s => (
               <SelectItem key={s} value={s}>
-                {s}
+                {formatLabel(s)}
               </SelectItem>
             ))}
           </SelectContent>

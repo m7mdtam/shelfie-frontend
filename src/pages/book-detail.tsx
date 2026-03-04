@@ -1,16 +1,21 @@
 import { useGetBook, useDeleteBook } from '@/api/books'
-import { useParams, useNavigate } from '@tanstack/react-router'
+import { useParams, useNavigate, Outlet } from '@tanstack/react-router'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { BookOpen, Edit2, Trash2, ArrowLeft } from 'lucide-react'
 import { useState } from 'react'
+import { useAuthContext } from '@/contexts/auth'
+
+const formatLabel = (value: string) =>
+  value.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')
 
 export function BookDetailPage() {
   const params = useParams({ from: '/books/$bookId' })
   const navigate = useNavigate()
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
 
+  const auth = useAuthContext()
   const { data: book, isLoading, error } = useGetBook(params.bookId)
   const deleteBook = useDeleteBook()
 
@@ -67,6 +72,7 @@ export function BookDetailPage() {
   }
 
   return (
+    <>
     <div className="min-h-screen bg-background-base p-4 md:p-6">
       <div className="max-w-4xl mx-auto">
         <Button onClick={() => navigate({ to: '/books' })} variant="outline" className="mb-6">
@@ -76,8 +82,12 @@ export function BookDetailPage() {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
           <div className="col-span-1 md:col-span-1">
-            <div className="w-full bg-gradient-to-br from-accent-primary-hover to-accent-primary rounded-lg h-80 flex items-center justify-center sticky top-4">
-              <BookOpen className="w-24 h-24 text-white opacity-50" />
+            <div className="w-full bg-gradient-to-br from-accent-primary-hover to-accent-primary rounded-lg h-80 flex items-center justify-center sticky top-4 overflow-hidden">
+              {book.coverImage?.url ? (
+                <img src={book.coverImage.url} alt={book.title} className="w-full h-full object-cover" />
+              ) : (
+                <BookOpen className="w-24 h-24 text-white opacity-50" />
+              )}
             </div>
           </div>
 
@@ -104,14 +114,14 @@ export function BookDetailPage() {
                   {book.genre && (
                     <div>
                       <span className="text-xs text-text-secondary">Genre</span>
-                      <p className="text-sm font-medium text-text-primary mt-1">{book.genre}</p>
+                      <p className="text-sm font-medium text-text-primary mt-1">{formatLabel(book.genre)}</p>
                     </div>
                   )}
 
                   {book.status && (
                     <div>
                       <span className="text-xs text-text-secondary">Status</span>
-                      <Badge className="mt-2">{book.status}</Badge>
+                      <Badge className="mt-2">{formatLabel(book.status)}</Badge>
                     </div>
                   )}
 
@@ -145,7 +155,7 @@ export function BookDetailPage() {
               </CardContent>
             </Card>
 
-            <div className="flex gap-2">
+            {String(auth.decodedToken?.id) === String(book.owner.id) && <div className="flex gap-2">
               <Button
                 onClick={() => navigate({ to: `/books/${params.bookId}/edit` })}
                 variant="default"
@@ -178,10 +188,12 @@ export function BookDetailPage() {
                   </Button>
                 </div>
               )}
-            </div>
+            </div>}
           </div>
         </div>
       </div>
     </div>
+    <Outlet />
+    </>
   )
 }
