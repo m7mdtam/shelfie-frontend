@@ -9,7 +9,10 @@ export function SignUpSuccessPage() {
   const navigate = useNavigate()
 
   return (
-    <div className="min-h-screen bg-background-base flex flex-col items-center justify-center px-4 py-8" data-mobile={isMobile}>
+    <div
+      className="min-h-screen bg-background-base flex flex-col items-center justify-center px-4 py-8"
+      data-mobile={isMobile}
+    >
       <div className="w-full max-w-md">
         <Card variant="elevated" className="w-full">
           <CardHeader className="text-center pt-8">
