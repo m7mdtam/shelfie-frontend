@@ -6,6 +6,7 @@ import type { InfiniteData } from '@tanstack/react-query'
 interface UseBookListProps {
   limit?: number
   scope?: 'all' | 'mine'
+  ownerId?: string
 }
 
 export function useBookList(props: UseBookListProps = {}) {
@@ -18,11 +19,12 @@ export function useBookList(props: UseBookListProps = {}) {
   const params = useMemo(
     () => ({
       limit,
-      ...(search && { search }),
-      ...(genre && { genre }),
-      ...(status && { status }),
+      ...(search && { 'where[title][like]': search }),
+      ...(genre && { 'where[genre][equals]': genre }),
+      ...(status && { 'where[status][equals]': status }),
+      ...(props.ownerId && { 'where[owner][equals]': props.ownerId }),
     }),
-    [limit, search, genre, status]
+    [limit, search, genre, status, props.ownerId]
   )
 
   const query = useInfiniteListBooks(params)
@@ -50,6 +52,9 @@ export function useBookList(props: UseBookListProps = {}) {
       setGenre('')
       setStatus('')
     },
-    totalCount: query.hasNextPage ? allBooks.length + 1 : allBooks.length,
+    totalCount: (() => {
+      const data = query.data as InfiniteData<BooksListResponse, unknown> | undefined
+      return data?.pages?.[0]?.totalDocs ?? 0
+    })(),
   }
 }
