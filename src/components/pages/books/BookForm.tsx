@@ -88,7 +88,10 @@ export function BookForm({
       }
     }
 
-    onSubmit({ ...data, ...(coverImageId !== undefined && { coverImage: coverImageId }) })
+    const payload = { ...data }
+    if (!payload.rating) delete payload.rating
+    if (coverImageId !== undefined) payload.coverImage = coverImageId
+    onSubmit(payload)
   }
 
   const busy = isLoading || isUploading

@@ -1,12 +1,8 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, redirect } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/books/$bookId/edit')({
-  component: () => (
-    <div className="min-h-screen bg-background-base flex items-center justify-center p-4">
-      <div className="text-center">
-        <h1 className="text-2xl font-bold text-text-primary">Edit Book</h1>
-        <p className="text-text-secondary mt-2">Coming soon...</p>
-      </div>
-    </div>
-  ),
+  beforeLoad: ({ params }) => {
+    throw redirect({ to: '/books/$bookId', params: { bookId: params.bookId } })
+  },
+  component: () => null,
 })

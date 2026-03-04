@@ -53,13 +53,11 @@ export const useCreateBook = (
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: booksRequests.create,
-    onSuccess: data => {
-      queryClient.invalidateQueries({
-        queryKey: booksQueryKeys.lists(),
-      })
-      return data
-    },
     ...options,
+    onSuccess: (data, variables, context, mutation) => {
+      queryClient.invalidateQueries({ queryKey: booksQueryKeys.lists() })
+      options?.onSuccess?.(data, variables, context, mutation)
+    },
   })
 }
 
@@ -70,16 +68,12 @@ export const useUpdateBook = (
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: payload => booksRequests.update(id, payload),
-    onSuccess: data => {
-      queryClient.invalidateQueries({
-        queryKey: booksQueryKeys.detail(id),
-      })
-      queryClient.invalidateQueries({
-        queryKey: booksQueryKeys.lists(),
-      })
-      return data
-    },
     ...options,
+    onSuccess: (data, variables, context, mutation) => {
+      queryClient.invalidateQueries({ queryKey: booksQueryKeys.detail(id) })
+      queryClient.invalidateQueries({ queryKey: booksQueryKeys.lists() })
+      options?.onSuccess?.(data, variables, context, mutation)
+    },
   })
 }
 
@@ -87,11 +81,10 @@ export const useDeleteBook = (options?: UseMutationOptions<void, ApiError, strin
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: booksRequests.delete,
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: booksQueryKeys.lists(),
-      })
-    },
     ...options,
+    onSuccess: (data, variables, context, mutation) => {
+      queryClient.invalidateQueries({ queryKey: booksQueryKeys.lists() })
+      options?.onSuccess?.(data, variables, context, mutation)
+    },
   })
 }
