@@ -23,7 +23,9 @@ export function VirtualizedBooksList({
   const { data, hasNextPage, fetchNextPage, isFetchingNextPage, isLoading, error } =
     useInfiniteListBooks({ limit })
 
-  const allBooks = ((data as InfiniteData<BooksListResponse, unknown> | undefined)?.pages?.flatMap((page) => page.docs) ?? []) as Book[]
+  const allBooks = ((data as InfiniteData<BooksListResponse, unknown> | undefined)?.pages?.flatMap(
+    page => page.docs
+  ) ?? []) as Book[]
 
   const parentRef = useRef<HTMLDivElement>(null)
 
@@ -37,7 +39,7 @@ export function VirtualizedBooksList({
   const virtualItems = virtualizer.getVirtualItems()
   const totalSize = virtualizer.getTotalSize()
 
-  const paddingStart = virtualItems.length > 0 ? virtualItems?.[0]?.start ?? 0 : 0
+  const paddingStart = virtualItems.length > 0 ? (virtualItems?.[0]?.start ?? 0) : 0
   const paddingEnd =
     virtualItems.length > 0 ? totalSize - (virtualItems?.[virtualItems.length - 1]?.end ?? 0) : 0
 
@@ -118,12 +120,7 @@ export function VirtualizedBooksList({
                   {isFetchingNextPage && <div className="animate-spin">⟳</div>}
                 </div>
               ) : (
-                <BookCard
-                  book={book}
-                  isOwner={isOwner}
-                  onEdit={onEdit}
-                  onDelete={onDelete}
-                />
+                <BookCard book={book} isOwner={isOwner} onEdit={onEdit} onDelete={onDelete} />
               )}
             </div>
           )

@@ -20,11 +20,7 @@ const GENRES = [
   'Biography',
 ]
 
-const STATUSES = [
-  'Want to Read',
-  'Reading',
-  'Completed',
-]
+const STATUSES = ['Want to Read', 'Reading', 'Completed']
 
 export function BooksListPage() {
   const { data: user } = auth.useGetMe()

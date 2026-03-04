@@ -30,7 +30,7 @@ export const useInfiniteListBooks = (
   return useInfiniteQuery({
     queryKey: booksQueryKeys.list(params),
     queryFn: ({ pageParam = 1 }) => booksRequests.list({ ...params, page: pageParam as number }),
-    getNextPageParam: (lastPage) => {
+    getNextPageParam: lastPage => {
       return lastPage.hasNextPage ? lastPage.nextPage : undefined
     },
     initialPageParam: 1,
