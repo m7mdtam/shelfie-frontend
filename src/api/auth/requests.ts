@@ -1,5 +1,13 @@
 import axiosInstance from '../axios-instance'
-import { LoginRequest, LoginResponse, RegisterRequest, RegisterResponse, RefreshTokenResponse, GetMeResponse, LogoutResponse } from './types'
+import {
+  LoginRequest,
+  LoginResponse,
+  RegisterRequest,
+  RegisterResponse,
+  RefreshTokenResponse,
+  GetMeResponse,
+  LogoutResponse,
+} from './types'
 
 export const loginFn = async (data: LoginRequest): Promise<LoginResponse> => {
   const response = await axiosInstance.post('/api/users/login', data)

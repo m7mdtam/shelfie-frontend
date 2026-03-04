@@ -10,7 +10,7 @@ let failedQueue: Array<{
 }> = []
 
 const processQueue = (error: unknown, token: string | null = null) => {
-  failedQueue.forEach((prom) => {
+  failedQueue.forEach(prom => {
     if (error) prom.reject(error)
     else prom.resolve(token!)
   })
@@ -24,7 +24,7 @@ const axiosInstance = axios.create({
   },
 }) as AxiosInstance
 
-axiosInstance.interceptors.request.use(async (config) => {
+axiosInstance.interceptors.request.use(async config => {
   const token = getToken()
 
   if (token) {
@@ -64,8 +64,8 @@ axiosInstance.interceptors.request.use(async (config) => {
 })
 
 axiosInstance.interceptors.response.use(
-  (response) => response,
-  (error) => {
+  response => response,
+  error => {
     if (error.response?.status === 401) {
       clearToken()
       window.location.href = '/sign-in'
