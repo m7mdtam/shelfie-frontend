@@ -16,12 +16,19 @@ const buttonVariants = cva(
         secondary: 'bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80',
         ghost: 'hover:bg-accent hover:text-accent-foreground',
         link: 'text-primary underline-offset-4 hover:underline',
+        success: 'bg-[var(--state-success)] text-white shadow hover:opacity-90',
+        error: 'bg-[var(--state-error)] text-white shadow hover:opacity-90',
+        warning: 'bg-[var(--state-warning)] text-white shadow hover:opacity-90',
+        'primary-soft':
+          'bg-[var(--accent-background)] text-[var(--accent-primary)] hover:bg-opacity-80',
+        'secondary-soft':
+          'bg-[var(--selection-background)] text-[var(--selection-foreground)] hover:bg-opacity-80',
       },
       size: {
-        default: 'h-9 px-4 py-2',
-        sm: 'h-8 rounded-md px-3 text-xs',
-        lg: 'h-10 rounded-md px-8',
-        icon: 'h-9 w-9',
+        default: 'h-9 px-4 py-2 text-sm md:text-base',
+        sm: 'h-8 rounded-md px-3 text-xs md:text-sm',
+        lg: 'h-10 rounded-md px-8 text-base md:text-lg',
+        icon: 'h-9 w-9 md:h-10 md:w-10',
       },
     },
     defaultVariants: {
@@ -34,13 +41,22 @@ const buttonVariants = cva(
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>, VariantProps<typeof buttonVariants> {
   asChild?: boolean
+  prefixIcon?: React.ReactNode
+  suffixIcon?: React.ReactNode
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, asChild = false, ...props }, ref) => {
+  (
+    { className, variant, size, asChild = false, prefixIcon, suffixIcon, children, ...props },
+    ref
+  ) => {
     const Comp = asChild ? Slot : 'button'
     return (
-      <Comp className={cn(buttonVariants({ variant, size, className }))} ref={ref} {...props} />
+      <Comp className={cn(buttonVariants({ variant, size, className }))} ref={ref} {...props}>
+        {prefixIcon}
+        {children}
+        {suffixIcon}
+      </Comp>
     )
   }
 )
