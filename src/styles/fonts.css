@@ -65,7 +65,7 @@
   }
 
   .text-code {
-    font-family: 'Monaco', 'Courier New', monospace;
+    font-family: var(--font-mono);
     font-size: clamp(0.75rem, 1vw, 0.875rem);
   }
 }

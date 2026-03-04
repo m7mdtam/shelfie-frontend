@@ -5,7 +5,9 @@ function RootLayout() {
   return (
     <>
       <Navbar />
-      <Outlet />
+      <main className="pt-10">
+        <Outlet />
+      </main>
     </>
   )
 }
