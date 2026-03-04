@@ -1,14 +1,23 @@
 ﻿import { createFileRoute } from '@tanstack/react-router'
+import { useAuthContext } from '@/contexts/auth'
+import { useEffect } from 'react'
+import { useNavigate } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/books')({
   component: BooksPage,
 })
 
 function BooksPage() {
-  return (
-    <div className="min-h-screen bg-background-base p-4">
-      <h1 className="text-2xl font-bold text-text-primary">Books</h1>
-      <p className="text-text-secondary mt-2">Coming soon...</p>
-    </div>
-  )
+  const auth = useAuthContext()
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    if (auth.isAuthenticated) {
+      navigate({ to: '/books/shelf' })
+    } else {
+      navigate({ to: '/books/explore' })
+    }
+  }, [auth.isAuthenticated, navigate])
+
+  return null
 }

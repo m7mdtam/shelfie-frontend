@@ -12,6 +12,8 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as BooksRouteImport } from './routes/books'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as BooksIndexRouteImport } from './routes/books/index'
+import { Route as BooksShelfRouteImport } from './routes/books/shelf'
+import { Route as BooksExploreRouteImport } from './routes/books/explore'
 import { Route as BooksAddRouteImport } from './routes/books/add'
 import { Route as BooksBookIdRouteImport } from './routes/books/$bookId'
 import { Route as authSignUpSuccessRouteImport } from './routes/(auth)/sign-up-success'
@@ -32,6 +34,16 @@ const IndexRoute = IndexRouteImport.update({
 const BooksIndexRoute = BooksIndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => BooksRoute,
+} as any)
+const BooksShelfRoute = BooksShelfRouteImport.update({
+  id: '/shelf',
+  path: '/shelf',
+  getParentRoute: () => BooksRoute,
+} as any)
+const BooksExploreRoute = BooksExploreRouteImport.update({
+  id: '/explore',
+  path: '/explore',
   getParentRoute: () => BooksRoute,
 } as any)
 const BooksAddRoute = BooksAddRouteImport.update({
@@ -73,6 +85,8 @@ export interface FileRoutesByFullPath {
   '/sign-up-success': typeof authSignUpSuccessRoute
   '/books/$bookId': typeof BooksBookIdRouteWithChildren
   '/books/add': typeof BooksAddRoute
+  '/books/explore': typeof BooksExploreRoute
+  '/books/shelf': typeof BooksShelfRoute
   '/books/': typeof BooksIndexRoute
   '/books/$bookId/edit': typeof BooksBookIdEditRoute
 }
@@ -83,6 +97,8 @@ export interface FileRoutesByTo {
   '/sign-up-success': typeof authSignUpSuccessRoute
   '/books/$bookId': typeof BooksBookIdRouteWithChildren
   '/books/add': typeof BooksAddRoute
+  '/books/explore': typeof BooksExploreRoute
+  '/books/shelf': typeof BooksShelfRoute
   '/books': typeof BooksIndexRoute
   '/books/$bookId/edit': typeof BooksBookIdEditRoute
 }
@@ -95,6 +111,8 @@ export interface FileRoutesById {
   '/(auth)/sign-up-success': typeof authSignUpSuccessRoute
   '/books/$bookId': typeof BooksBookIdRouteWithChildren
   '/books/add': typeof BooksAddRoute
+  '/books/explore': typeof BooksExploreRoute
+  '/books/shelf': typeof BooksShelfRoute
   '/books/': typeof BooksIndexRoute
   '/books/$bookId/edit': typeof BooksBookIdEditRoute
 }
@@ -108,6 +126,8 @@ export interface FileRouteTypes {
     | '/sign-up-success'
     | '/books/$bookId'
     | '/books/add'
+    | '/books/explore'
+    | '/books/shelf'
     | '/books/'
     | '/books/$bookId/edit'
   fileRoutesByTo: FileRoutesByTo
@@ -118,6 +138,8 @@ export interface FileRouteTypes {
     | '/sign-up-success'
     | '/books/$bookId'
     | '/books/add'
+    | '/books/explore'
+    | '/books/shelf'
     | '/books'
     | '/books/$bookId/edit'
   id:
@@ -129,6 +151,8 @@ export interface FileRouteTypes {
     | '/(auth)/sign-up-success'
     | '/books/$bookId'
     | '/books/add'
+    | '/books/explore'
+    | '/books/shelf'
     | '/books/'
     | '/books/$bookId/edit'
   fileRoutesById: FileRoutesById
@@ -162,6 +186,20 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/books/'
       preLoaderRoute: typeof BooksIndexRouteImport
+      parentRoute: typeof BooksRoute
+    }
+    '/books/shelf': {
+      id: '/books/shelf'
+      path: '/shelf'
+      fullPath: '/books/shelf'
+      preLoaderRoute: typeof BooksShelfRouteImport
+      parentRoute: typeof BooksRoute
+    }
+    '/books/explore': {
+      id: '/books/explore'
+      path: '/explore'
+      fullPath: '/books/explore'
+      preLoaderRoute: typeof BooksExploreRouteImport
       parentRoute: typeof BooksRoute
     }
     '/books/add': {
@@ -224,12 +262,16 @@ const BooksBookIdRouteWithChildren = BooksBookIdRoute._addFileChildren(
 interface BooksRouteChildren {
   BooksBookIdRoute: typeof BooksBookIdRouteWithChildren
   BooksAddRoute: typeof BooksAddRoute
+  BooksExploreRoute: typeof BooksExploreRoute
+  BooksShelfRoute: typeof BooksShelfRoute
   BooksIndexRoute: typeof BooksIndexRoute
 }
 
 const BooksRouteChildren: BooksRouteChildren = {
   BooksBookIdRoute: BooksBookIdRouteWithChildren,
   BooksAddRoute: BooksAddRoute,
+  BooksExploreRoute: BooksExploreRoute,
+  BooksShelfRoute: BooksShelfRoute,
   BooksIndexRoute: BooksIndexRoute,
 }
 

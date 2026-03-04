@@ -8,7 +8,7 @@ interface BookCardProps {
   book: Book
   isOwner?: boolean
   onEdit?: (book: Book) => void
-  onDelete?: (bookId: string) => void
+  onDelete?: (book: Book) => void
 }
 
 export function BookCard({ book, isOwner, onEdit, onDelete }: BookCardProps) {
@@ -74,7 +74,7 @@ export function BookCard({ book, isOwner, onEdit, onDelete }: BookCardProps) {
             )}
             {onDelete && (
               <Button
-                onClick={() => onDelete(book.id)}
+                onClick={() => onDelete(book)}
                 size="sm"
                 variant="destructive"
                 className="flex-1 gap-1"

@@ -43,8 +43,7 @@ export function BooksListPage() {
     }
   }
 
-  const handleCardDelete = (bookId: string) => {
-    const book = { id: bookId } as Book
+  const handleCardDelete = (book: Book) => {
     setSelectedBook(book)
     setDeleteDialogOpen(true)
   }

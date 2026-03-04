@@ -9,7 +9,7 @@ import type { InfiniteData } from '@tanstack/react-query'
 
 interface VirtualizedBooksListProps {
   onEdit?: (book: Book) => void
-  onDelete?: (bookId: string) => void
+  onDelete?: (book: Book) => void
   isOwner?: boolean
   limit?: number
 }
