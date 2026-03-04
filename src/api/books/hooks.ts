@@ -1,9 +1,11 @@
 import {
   useQuery,
   useMutation,
+  useInfiniteQuery,
   useQueryClient,
   UseQueryOptions,
   UseMutationOptions,
+  UseInfiniteQueryOptions,
 } from '@tanstack/react-query'
 import { Book, BooksListResponse } from '@/@types/book'
 import { PaginationParams, ApiError } from '@/@types/api'
@@ -17,6 +19,21 @@ export const useListBooks = (
   return useQuery({
     queryKey: booksQueryKeys.list(params),
     queryFn: () => booksRequests.list(params),
+    ...options,
+  })
+}
+
+export const useInfiniteListBooks = (
+  params?: Omit<PaginationParams & Record<string, unknown>, 'page'>,
+  options?: UseInfiniteQueryOptions<BooksListResponse, ApiError>
+) => {
+  return useInfiniteQuery({
+    queryKey: booksQueryKeys.list(params),
+    queryFn: ({ pageParam = 1 }) => booksRequests.list({ ...params, page: pageParam as number }),
+    getNextPageParam: (lastPage) => {
+      return lastPage.hasNextPage ? lastPage.nextPage : undefined
+    },
+    initialPageParam: 1,
     ...options,
   })
 }
