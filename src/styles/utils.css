@@ -1,3 +1,19 @@
+/* Navbar utilities */
+.navbar-blur {
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+/* Full-width top state — slightly more opaque */
+.navbar-bg-full {
+  background-color: color-mix(in oklch, var(--background-base) 90%, transparent);
+}
+
+/* Scrolled pill state — more translucent */
+.navbar-bg-scrolled {
+  background-color: color-mix(in oklch, var(--background-surface) 82%, transparent);
+}
+
 @layer utilities {
   .full-center {
     display: flex;
