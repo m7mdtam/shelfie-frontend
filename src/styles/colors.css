@@ -1,0 +1,56 @@
+:root {
+  --primary-500: oklch(65% 0.16 250);
+  --primary-600: oklch(58% 0.16 250);
+  --primary-100: oklch(93% 0.04 250);
+
+  --secondary-500: oklch(68% 0.19 280);
+  --secondary-100: oklch(94% 0.05 280);
+
+  --background-light: oklch(98% 0 0);
+  --surface-light: oklch(100% 0 0);
+  --text-light: oklch(13% 0 0);
+  --muted-light: oklch(54% 0 0);
+  --border-light: oklch(92% 0 0);
+
+  --background-dark: oklch(7% 0 0);
+  --surface-dark: oklch(12% 0 0);
+  --text-dark: oklch(98% 0 0);
+  --muted-dark: oklch(65% 0 0);
+  --border-dark: oklch(18% 0 0);
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --background: var(--background-light);
+    --surface: var(--surface-light);
+    --text: var(--text-light);
+    --muted: var(--muted-light);
+    --border: var(--border-light);
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: var(--background-dark);
+    --surface: var(--surface-dark);
+    --text: var(--text-dark);
+    --muted: var(--muted-dark);
+    --border: var(--border-dark);
+  }
+}
+
+.dark {
+  --background: var(--background-dark);
+  --surface: var(--surface-dark);
+  --text: var(--text-dark);
+  --muted: var(--muted-dark);
+  --border: var(--border-dark);
+}
+
+.light {
+  --background: var(--background-light);
+  --surface: var(--surface-light);
+  --text: var(--text-light);
+  --muted: var(--muted-light);
+  --border: var(--border-light);
+}
