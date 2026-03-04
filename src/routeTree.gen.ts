@@ -11,9 +11,15 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as BooksRouteImport } from './routes/books'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as BooksIndexRouteImport } from './routes/books/index'
+import { Route as BooksShelfRouteImport } from './routes/books/shelf'
+import { Route as BooksExploreRouteImport } from './routes/books/explore'
+import { Route as BooksAddRouteImport } from './routes/books/add'
+import { Route as BooksBookIdRouteImport } from './routes/books/$bookId'
 import { Route as authSignUpSuccessRouteImport } from './routes/(auth)/sign-up-success'
 import { Route as authSignUpRouteImport } from './routes/(auth)/sign-up'
 import { Route as authSignInRouteImport } from './routes/(auth)/sign-in'
+import { Route as BooksBookIdEditRouteImport } from './routes/books/$bookId/edit'
 
 const BooksRoute = BooksRouteImport.update({
   id: '/books',
@@ -24,6 +30,31 @@ const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const BooksIndexRoute = BooksIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => BooksRoute,
+} as any)
+const BooksShelfRoute = BooksShelfRouteImport.update({
+  id: '/shelf',
+  path: '/shelf',
+  getParentRoute: () => BooksRoute,
+} as any)
+const BooksExploreRoute = BooksExploreRouteImport.update({
+  id: '/explore',
+  path: '/explore',
+  getParentRoute: () => BooksRoute,
+} as any)
+const BooksAddRoute = BooksAddRouteImport.update({
+  id: '/add',
+  path: '/add',
+  getParentRoute: () => BooksRoute,
+} as any)
+const BooksBookIdRoute = BooksBookIdRouteImport.update({
+  id: '/$bookId',
+  path: '/$bookId',
+  getParentRoute: () => BooksRoute,
 } as any)
 const authSignUpSuccessRoute = authSignUpSuccessRouteImport.update({
   id: '/(auth)/sign-up-success',
@@ -40,34 +71,77 @@ const authSignInRoute = authSignInRouteImport.update({
   path: '/sign-in',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BooksBookIdEditRoute = BooksBookIdEditRouteImport.update({
+  id: '/edit',
+  path: '/edit',
+  getParentRoute: () => BooksBookIdRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/books': typeof BooksRoute
+  '/books': typeof BooksRouteWithChildren
   '/sign-in': typeof authSignInRoute
   '/sign-up': typeof authSignUpRoute
   '/sign-up-success': typeof authSignUpSuccessRoute
+  '/books/$bookId': typeof BooksBookIdRouteWithChildren
+  '/books/add': typeof BooksAddRoute
+  '/books/explore': typeof BooksExploreRoute
+  '/books/shelf': typeof BooksShelfRoute
+  '/books/': typeof BooksIndexRoute
+  '/books/$bookId/edit': typeof BooksBookIdEditRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/books': typeof BooksRoute
   '/sign-in': typeof authSignInRoute
   '/sign-up': typeof authSignUpRoute
   '/sign-up-success': typeof authSignUpSuccessRoute
+  '/books/$bookId': typeof BooksBookIdRouteWithChildren
+  '/books/add': typeof BooksAddRoute
+  '/books/explore': typeof BooksExploreRoute
+  '/books/shelf': typeof BooksShelfRoute
+  '/books': typeof BooksIndexRoute
+  '/books/$bookId/edit': typeof BooksBookIdEditRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/books': typeof BooksRoute
+  '/books': typeof BooksRouteWithChildren
   '/(auth)/sign-in': typeof authSignInRoute
   '/(auth)/sign-up': typeof authSignUpRoute
   '/(auth)/sign-up-success': typeof authSignUpSuccessRoute
+  '/books/$bookId': typeof BooksBookIdRouteWithChildren
+  '/books/add': typeof BooksAddRoute
+  '/books/explore': typeof BooksExploreRoute
+  '/books/shelf': typeof BooksShelfRoute
+  '/books/': typeof BooksIndexRoute
+  '/books/$bookId/edit': typeof BooksBookIdEditRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/books' | '/sign-in' | '/sign-up' | '/sign-up-success'
+  fullPaths:
+    | '/'
+    | '/books'
+    | '/sign-in'
+    | '/sign-up'
+    | '/sign-up-success'
+    | '/books/$bookId'
+    | '/books/add'
+    | '/books/explore'
+    | '/books/shelf'
+    | '/books/'
+    | '/books/$bookId/edit'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/books' | '/sign-in' | '/sign-up' | '/sign-up-success'
+  to:
+    | '/'
+    | '/sign-in'
+    | '/sign-up'
+    | '/sign-up-success'
+    | '/books/$bookId'
+    | '/books/add'
+    | '/books/explore'
+    | '/books/shelf'
+    | '/books'
+    | '/books/$bookId/edit'
   id:
     | '__root__'
     | '/'
@@ -75,11 +149,17 @@ export interface FileRouteTypes {
     | '/(auth)/sign-in'
     | '/(auth)/sign-up'
     | '/(auth)/sign-up-success'
+    | '/books/$bookId'
+    | '/books/add'
+    | '/books/explore'
+    | '/books/shelf'
+    | '/books/'
+    | '/books/$bookId/edit'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  BooksRoute: typeof BooksRoute
+  BooksRoute: typeof BooksRouteWithChildren
   authSignInRoute: typeof authSignInRoute
   authSignUpRoute: typeof authSignUpRoute
   authSignUpSuccessRoute: typeof authSignUpSuccessRoute
@@ -100,6 +180,41 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/books/': {
+      id: '/books/'
+      path: '/'
+      fullPath: '/books/'
+      preLoaderRoute: typeof BooksIndexRouteImport
+      parentRoute: typeof BooksRoute
+    }
+    '/books/shelf': {
+      id: '/books/shelf'
+      path: '/shelf'
+      fullPath: '/books/shelf'
+      preLoaderRoute: typeof BooksShelfRouteImport
+      parentRoute: typeof BooksRoute
+    }
+    '/books/explore': {
+      id: '/books/explore'
+      path: '/explore'
+      fullPath: '/books/explore'
+      preLoaderRoute: typeof BooksExploreRouteImport
+      parentRoute: typeof BooksRoute
+    }
+    '/books/add': {
+      id: '/books/add'
+      path: '/add'
+      fullPath: '/books/add'
+      preLoaderRoute: typeof BooksAddRouteImport
+      parentRoute: typeof BooksRoute
+    }
+    '/books/$bookId': {
+      id: '/books/$bookId'
+      path: '/$bookId'
+      fullPath: '/books/$bookId'
+      preLoaderRoute: typeof BooksBookIdRouteImport
+      parentRoute: typeof BooksRoute
     }
     '/(auth)/sign-up-success': {
       id: '/(auth)/sign-up-success'
@@ -122,12 +237,49 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof authSignInRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/books/$bookId/edit': {
+      id: '/books/$bookId/edit'
+      path: '/edit'
+      fullPath: '/books/$bookId/edit'
+      preLoaderRoute: typeof BooksBookIdEditRouteImport
+      parentRoute: typeof BooksBookIdRoute
+    }
   }
 }
 
+interface BooksBookIdRouteChildren {
+  BooksBookIdEditRoute: typeof BooksBookIdEditRoute
+}
+
+const BooksBookIdRouteChildren: BooksBookIdRouteChildren = {
+  BooksBookIdEditRoute: BooksBookIdEditRoute,
+}
+
+const BooksBookIdRouteWithChildren = BooksBookIdRoute._addFileChildren(
+  BooksBookIdRouteChildren,
+)
+
+interface BooksRouteChildren {
+  BooksBookIdRoute: typeof BooksBookIdRouteWithChildren
+  BooksAddRoute: typeof BooksAddRoute
+  BooksExploreRoute: typeof BooksExploreRoute
+  BooksShelfRoute: typeof BooksShelfRoute
+  BooksIndexRoute: typeof BooksIndexRoute
+}
+
+const BooksRouteChildren: BooksRouteChildren = {
+  BooksBookIdRoute: BooksBookIdRouteWithChildren,
+  BooksAddRoute: BooksAddRoute,
+  BooksExploreRoute: BooksExploreRoute,
+  BooksShelfRoute: BooksShelfRoute,
+  BooksIndexRoute: BooksIndexRoute,
+}
+
+const BooksRouteWithChildren = BooksRoute._addFileChildren(BooksRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  BooksRoute: BooksRoute,
+  BooksRoute: BooksRouteWithChildren,
   authSignInRoute: authSignInRoute,
   authSignUpRoute: authSignUpRoute,
   authSignUpSuccessRoute: authSignUpSuccessRoute,
