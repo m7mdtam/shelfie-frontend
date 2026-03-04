@@ -63,7 +63,7 @@ export function ExplorePage() {
             <p className="text-text-secondary">Discover books from the community</p>
           </div>
           {auth.isAuthenticated && (
-            <Link to="/books/add">
+            <Link to="/books/shelf">
               <Button variant="default" className="flex gap-2 w-full sm:w-auto">
                 <Plus className="w-4 h-4" />
                 Add Book
