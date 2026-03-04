@@ -6,7 +6,7 @@ export const Route = createFileRoute('/')({
 
 function HomePage() {
   return (
-    <div className="min-h-screen bg-background-base flex flex-col items-center justify-center px-4 py-8">
+    <div className="flex-1 bg-background-base flex flex-col items-center justify-center px-4 py-8">
       <div className="w-full max-w-2xl text-center">
         <h1 className="text-4xl md:text-5xl font-bold text-text-primary mb-4">
           Shelfie

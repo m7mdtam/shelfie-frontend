@@ -5,7 +5,7 @@ function RootLayout() {
   return (
     <>
       <Navbar />
-      <main className="pt-10">
+      <main className="pt-10 flex flex-col min-h-screen">
         <Outlet />
       </main>
     </>

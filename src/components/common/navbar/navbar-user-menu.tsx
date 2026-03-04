@@ -37,7 +37,7 @@ export function NavbarUserMenu({ user, onLogout }: NavbarUserMenuProps) {
   const initials = getInitials(displayName)
 
   return (
-    <DropdownMenu>
+    <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild>
         <Button
           variant="ghost"
