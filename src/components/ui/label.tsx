@@ -38,15 +38,11 @@ const Label = React.forwardRef<React.ElementRef<typeof LabelPrimitive.Root>, Lab
   ({ className, size, weight, required, error, children, ...props }, ref) => (
     <LabelPrimitive.Root
       ref={ref}
-      className={cn(
-        labelVariants({ size, weight }),
-        error && 'text-[var(--state-error)]',
-        className
-      )}
+      className={cn(labelVariants({ size, weight }), error && 'text-state-error', className)}
       {...props}
     >
       {children}
-      {required && <span className="text-[var(--state-error)] ml-1">*</span>}
+      {required && <span className="text-state-error ml-1">*</span>}
     </LabelPrimitive.Root>
   )
 )

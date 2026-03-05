@@ -1,0 +1,107 @@
+import { BookCard } from './book-card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import { Plus } from 'lucide-react'
+import { Book } from '@/@types/book'
+
+interface BookListDisplayProps {
+  isLoading: boolean
+  error: Error | null
+  books: Book[]
+  totalCount: number
+  isFetchingNextPage?: boolean
+  isOwner?: boolean
+  onAddBook?: () => void
+  onEditBook?: (book: Book) => void
+  onDeleteBook?: (book: Book) => void
+  emptyTitle?: string
+  emptyDescription?: string
+}
+
+export function BookListDisplay({
+  isLoading,
+  error,
+  books,
+  totalCount,
+  isFetchingNextPage = false,
+  isOwner = false,
+  onAddBook,
+  onEditBook,
+  onDeleteBook,
+  emptyTitle = 'No Books Found',
+  emptyDescription = 'Try adjusting your filters',
+}: BookListDisplayProps) {
+  if (isLoading && books.length === 0) {
+    return (
+      <div className="space-y-4">
+        {Array.from({ length: 6 }).map((_, i) => (
+          <div key={i} className="h-32 bg-background-surface rounded-lg animate-pulse" />
+        ))}
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <Card variant="default" className="border-0">
+        <CardHeader>
+          <CardTitle className="text-state-error">Error Loading Books</CardTitle>
+          <CardDescription>{error?.message || 'Failed to load books'}</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Button onClick={() => window.location.reload()} className="w-full" variant="default">
+            Try Again
+          </Button>
+        </CardContent>
+      </Card>
+    )
+  }
+
+  if (books.length === 0) {
+    return (
+      <Card variant="default" className="text-center border-0">
+        <CardHeader>
+          <CardTitle>{emptyTitle}</CardTitle>
+          <CardDescription>{emptyDescription}</CardDescription>
+        </CardHeader>
+        {isOwner && onAddBook && (
+          <CardContent>
+            <Button onClick={onAddBook} className="w-full" variant="default">
+              <Plus className="w-4 h-4 mr-2" />
+              Add Your First Book
+            </Button>
+          </CardContent>
+        )}
+      </Card>
+    )
+  }
+
+  return (
+    <div className="mt-6 rounded-lg p-4">
+      <p className="text-sm text-text-secondary mb-4">
+        Showing {books.length} of {totalCount} books
+      </p>
+      <div
+        className="grid gap-4"
+        style={{
+          gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))',
+        }}
+      >
+        {books.map(book => (
+          <BookCard
+            key={book.id}
+            book={book}
+            isOwner={isOwner}
+            onEdit={isOwner && onEditBook ? onEditBook : undefined}
+            onDelete={isOwner && onDeleteBook ? onDeleteBook : undefined}
+          />
+        ))}
+      </div>
+      {isFetchingNextPage && (
+        <div className="flex items-center justify-center p-4">
+          <div className="animate-spin">⟳</div>
+        </div>
+      )}
+    </div>
+  )
+}

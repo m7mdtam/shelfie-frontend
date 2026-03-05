@@ -1,23 +1,31 @@
 :root {
-  /* Background — warm aged paper */
-  --background-base: oklch(98% 0.012 52);
-  --background-surface: oklch(93% 0.033 46);
-  --background-tertiary: oklch(89% 0.04 42);
-  --background-muted: oklch(91% 0.02 50);
-  --background-disabled: oklch(85% 0.008 50);
+  /* Background — light silver base */
+  --background-base: oklch(98% 0.01 200);
+  --background-surface: oklch(94% 0.015 220);
+  --background-tertiary: oklch(90% 0.02 210);
+  --background-muted: oklch(92% 0.008 200);
+  --background-disabled: oklch(86% 0.005 200);
 
-  /* Text — deep coffee */
-  --text-primary: oklch(19% 0.038 35);
-  --text-secondary: oklch(50% 0.058 34);
-  --text-border: oklch(83% 0.03 46);
-  --text-disabled: oklch(68% 0.015 40);
+  /* Text — dark slate */
+  --text-primary: oklch(20% 0.03 240);
+  --text-title: oklch(15% 0.04 250);
+  --text-secondary: oklch(48% 0.05 240);
+  --text-muted: oklch(68% 0.02 240);
+  --text-border: oklch(82% 0.02 220);
+  --text-disabled: oklch(70% 0.01 240);
+  --border-color: oklch(88% 0.015 220);
+  --border-light: oklch(92% 0.01 220);
 
-  /* Accent — Warm Brown #6D4C41 */
-  --accent-primary: oklch(38% 0.11 32);
-  --accent-hover: oklch(28% 0.095 32);
+  /* Accent — Teal Primary */
+  --accent-primary: oklch(45% 0.14 187);
+  --accent-hover: oklch(38% 0.12 187);
   --accent-primary-hover: var(--accent-hover);
-  --accent-background: oklch(94% 0.026 42);
-  --primary-foreground: oklch(97% 0.01 50);
+  --accent-background: oklch(94% 0.03 190);
+  --primary-foreground: oklch(97% 0.01 220);
+
+  /* Secondary — Coral */
+  --secondary-primary: oklch(58% 0.16 25);
+  --secondary-background: oklch(95% 0.03 28);
 
   /* States */
   --state-success: oklch(48% 0.14 147);
@@ -27,41 +35,49 @@
   --state-warning: oklch(79% 0.17 70);
   --state-warning-bg: oklch(97% 0.03 75);
 
-  /* Selection — Rust Orange #E64A19 */
-  --selection-foreground: oklch(57% 0.185 35);
-  --selection-background: oklch(95% 0.028 38);
-  --selection-light-background: #fff0eb;
-  --selection-border: oklch(84% 0.055 40);
-  --selection-hover: oklch(44% 0.17 32);
+  /* Selection — Coral secondary */
+  --selection-foreground: oklch(58% 0.16 25);
+  --selection-background: oklch(95% 0.03 28);
+  --selection-light-background: #ffe8e8;
+  --selection-border: oklch(84% 0.055 28);
+  --selection-hover: oklch(50% 0.19 25);
 
   /* Charts */
-  --chart-1: oklch(0.405 0.065 32);
-  --chart-2: oklch(0.57 0.185 35);
+  --chart-1: oklch(0.45 0.14 187);
+  --chart-2: oklch(0.58 0.16 25);
   --chart-3: oklch(0.79 0.17 70);
   --chart-4: oklch(0.48 0.1 147);
   --chart-5: oklch(0.65 0.12 15);
 }
 
 .dark {
-  /* Background — deep coffee & mahogany */
-  --background-base: oklch(14% 0.028 38);
-  --background-surface: oklch(19% 0.036 40);
-  --background-tertiary: oklch(11% 0.022 38);
-  --background-muted: oklch(23% 0.03 40);
-  --background-disabled: oklch(26% 0.01 42);
+  /* Background — deep blue-grey */
+  --background-base: oklch(16% 0.02 240);
+  --background-surface: oklch(22% 0.03 240);
+  --background-tertiary: oklch(14% 0.015 240);
+  --background-muted: oklch(26% 0.02 240);
+  --background-disabled: oklch(28% 0.01 240);
 
-  /* Text — warm cream */
-  --text-primary: oklch(92% 0.022 52);
-  --text-secondary: oklch(64% 0.045 36);
-  --text-border: oklch(30% 0.04 40);
-  --text-disabled: oklch(48% 0.018 38);
+  /* Text — light silver */
+  --text-primary: oklch(95% 0.015 240);
+  --text-title: oklch(98% 0.02 240);
+  --text-secondary: oklch(72% 0.04 240);
+  --text-muted: oklch(62% 0.02 240);
+  --text-border: oklch(35% 0.03 240);
+  --text-disabled: oklch(52% 0.01 240);
+  --border-color: oklch(30% 0.025 240);
+  --border-light: oklch(24% 0.015 240);
 
-  /* Accent — warmer brown with more chroma for visibility */
-  --accent-primary: oklch(68% 0.11 32);
-  --accent-hover: oklch(76% 0.095 32);
+  /* Accent — Teal brighter for dark mode */
+  --accent-primary: oklch(65% 0.15 190);
+  --accent-hover: oklch(72% 0.14 190);
   --accent-primary-hover: var(--accent-hover);
-  --accent-background: oklch(22% 0.048 38);
-  --primary-foreground: oklch(14% 0.028 38);
+  --accent-background: oklch(20% 0.04 190);
+  --primary-foreground: oklch(13% 0.02 240);
+
+  /* Secondary — Coral brighter */
+  --secondary-primary: oklch(68% 0.16 25);
+  --secondary-background: oklch(21% 0.05 25);
 
   /* States */
   --state-success: oklch(68% 0.17 147);
@@ -71,16 +87,16 @@
   --state-warning: oklch(85% 0.16 80);
   --state-warning-bg: oklch(22% 0.045 75);
 
-  /* Selection — brighter rust for visibility */
-  --selection-foreground: oklch(65% 0.185 35);
-  --selection-background: oklch(24% 0.05 35);
-  --selection-light-background: #2d1a14;
-  --selection-border: oklch(40% 0.13 35);
-  --selection-hover: oklch(72% 0.19 35);
+  /* Selection — brighter coral */
+  --selection-foreground: oklch(68% 0.16 25);
+  --selection-background: oklch(21% 0.05 25);
+  --selection-light-background: #3d1a18;
+  --selection-border: oklch(40% 0.12 25);
+  --selection-hover: oklch(74% 0.18 25);
 
   /* Charts */
-  --chart-1: oklch(0.66 0.072 32);
-  --chart-2: oklch(0.67 0.19 35);
+  --chart-1: oklch(0.65 0.15 190);
+  --chart-2: oklch(0.68 0.16 25);
   --chart-3: oklch(0.85 0.16 80);
   --chart-4: oklch(0.68 0.17 147);
   --chart-5: oklch(0.72 0.15 15);
