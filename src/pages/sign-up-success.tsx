@@ -15,7 +15,7 @@ export function SignUpSuccessPage() {
     if (isAuthenticated) {
       const timer = setTimeout(() => {
         navigate({ to: '/books/shelf' })
-      }, 2500)
+      }, 3500)
       return () => clearTimeout(timer)
     }
   }, [isAuthenticated, navigate])
