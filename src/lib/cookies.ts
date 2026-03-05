@@ -1,4 +1,5 @@
 import Cookies from 'js-cookie'
+import { env } from '@/env'
 
 const TOKEN_KEY = 'bookshelf_token'
 
@@ -9,8 +10,8 @@ export const getToken = (): string | null => {
 export const setToken = (token: string): void => {
   Cookies.set(TOKEN_KEY, token, {
     expires: 7,
-    secure: true,
-    sameSite: 'strict',
+    secure: !env.IS_DEV,
+    sameSite: env.IS_DEV ? 'lax' : 'strict',
   })
 }
 
