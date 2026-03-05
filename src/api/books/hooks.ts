@@ -25,11 +25,27 @@ export const useListBooks = (
 
 export const useInfiniteListBooks = (
   params?: Omit<PaginationParams & Record<string, unknown>, 'page'>,
-  options?: UseInfiniteQueryOptions<BooksListResponse, ApiError>
+  options?: Partial<UseInfiniteQueryOptions<BooksListResponse, ApiError>>
 ) => {
   return useInfiniteQuery({
     queryKey: booksQueryKeys.list(params),
     queryFn: ({ pageParam = 1 }) => booksRequests.list({ ...params, page: pageParam as number }),
+    getNextPageParam: lastPage => {
+      return lastPage.hasNextPage ? lastPage.nextPage : undefined
+    },
+    initialPageParam: 1,
+    ...options,
+  })
+}
+
+export const useInfiniteListMyBooks = (
+  params?: Omit<PaginationParams & Record<string, unknown>, 'page'>,
+  options?: Partial<UseInfiniteQueryOptions<BooksListResponse, ApiError>>
+) => {
+  return useInfiniteQuery({
+    queryKey: booksQueryKeys.myBooksList(params),
+    queryFn: ({ pageParam = 1 }) =>
+      booksRequests.listMine({ ...params, page: pageParam as number }),
     getNextPageParam: lastPage => {
       return lastPage.hasNextPage ? lastPage.nextPage : undefined
     },

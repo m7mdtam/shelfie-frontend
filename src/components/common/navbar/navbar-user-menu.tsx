@@ -45,7 +45,12 @@ export function NavbarUserMenu({ user, onLogout }: NavbarUserMenuProps) {
   return (
     <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon-rounded" aria-label="User menu" className="p-0 overflow-hidden">
+        <Button
+          variant="ghost"
+          size="icon-rounded"
+          aria-label="User menu"
+          className="p-0 overflow-hidden"
+        >
           <Avatar className="h-7 w-7 ring-2 ring-transparent hover:ring-accent-primary transition-all duration-200">
             <AvatarImage src={undefined} alt={user.email} />
             <AvatarFallback className="bg-background-tertiary dark:bg-accent-background text-accent-primary text-xs font-semibold">
@@ -55,7 +60,7 @@ export function NavbarUserMenu({ user, onLogout }: NavbarUserMenuProps) {
         </Button>
       </DropdownMenuTrigger>
 
-      <DropdownMenuContent align="end" className="w-56">
+      <DropdownMenuContent align="end" side="left" className="w-56 sm:side-auto">
         <DropdownMenuLabel className="flex items-center gap-3 py-3">
           <Avatar className="h-9 w-9 shrink-0">
             <AvatarImage src={undefined} alt={user.email} />
@@ -83,7 +88,11 @@ export function NavbarUserMenu({ user, onLogout }: NavbarUserMenuProps) {
           disabled={isLoggingOut}
           className="gap-2 cursor-pointer text-state-error focus:text-state-error"
         >
-          {isLoggingOut ? <Loader2 className="h-4 w-4 animate-spin" /> : <LogOut className="h-4 w-4" />}
+          {isLoggingOut ? (
+            <Loader2 className="h-4 w-4 animate-spin" />
+          ) : (
+            <LogOut className="h-4 w-4" />
+          )}
           {isLoggingOut ? 'Logging out...' : 'Log out'}
         </DropdownMenuItem>
       </DropdownMenuContent>

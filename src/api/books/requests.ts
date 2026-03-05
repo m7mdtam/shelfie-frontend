@@ -10,18 +10,25 @@ export const booksRequests = {
     return data
   },
 
+  listMine: async (params?: PaginationParams & Record<string, unknown>) => {
+    const { data } = await axiosInstance.get<BooksListResponse>('/api/books/me', {
+      params,
+    })
+    return data
+  },
+
   get: async (id: string) => {
     const { data } = await axiosInstance.get<Book>(`/api/books/${id}`)
     return data
   },
 
   create: async (payload: Omit<Book, 'id' | 'createdAt' | 'updatedAt'>) => {
-    const { data } = await axiosInstance.post<Book>('/api/books', payload)
+    const { data } = await axiosInstance.post<Book>('/api/books/me', payload)
     return data
   },
 
   update: async (id: string, payload: Partial<Book>) => {
-    const { data } = await axiosInstance.patch<Book>(`/api/books/${id}`, payload)
+    const { data } = await axiosInstance.put<Book>(`/api/books/${id}`, payload)
     return data
   },
 

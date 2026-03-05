@@ -25,7 +25,10 @@ import { uploadMedia } from '@/api/media/requests'
 import { BookOpen, Upload, X } from 'lucide-react'
 
 const formatLabel = (value: string) =>
-  value.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')
+  value
+    .split('-')
+    .map(w => w.charAt(0).toUpperCase() + w.slice(1))
+    .join(' ')
 
 interface BookFormProps {
   mode: 'create' | 'edit'
@@ -58,7 +61,7 @@ export function BookForm({
       status: initialData?.status || 'want-to-read',
       rating: initialData?.rating || 0,
       notes: initialData?.notes || '',
-      isPublic: initialData?.isPublic || false,
+      isPublic: initialData?.isPublic ?? false,
     },
   })
 
@@ -104,7 +107,11 @@ export function BookForm({
           <div className="mt-2">
             {coverPreview ? (
               <div className="relative w-full h-40 rounded-lg overflow-hidden group">
-                <img src={coverPreview} alt="Cover preview" className="w-full h-full object-cover" />
+                <img
+                  src={coverPreview}
+                  alt="Cover preview"
+                  className="w-full h-full object-cover"
+                />
                 <button
                   type="button"
                   onClick={removeCover}
@@ -243,7 +250,30 @@ export function BookForm({
             </FormItem>
           )}
         />
-
+        <FormField
+          control={form.control}
+          name="isPublic"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Visibility</FormLabel>
+              <Select
+                value={field.value ? 'public' : 'private'}
+                onValueChange={e => field.onChange(e === 'public')}
+              >
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select visibility" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  <SelectItem value="public">Public (visible to all users)</SelectItem>
+                  <SelectItem value="private">Private (only in your shelf)</SelectItem>
+                </SelectContent>
+              </Select>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         <FormField
           control={form.control}
           name="notes"
@@ -264,7 +294,13 @@ export function BookForm({
         />
 
         <Button type="submit" className="w-full" disabled={busy}>
-          {isUploading ? 'Uploading cover...' : busy ? 'Saving...' : mode === 'create' ? 'Add Book' : 'Update Book'}
+          {isUploading
+            ? 'Uploading cover...'
+            : busy
+              ? 'Saving...'
+              : mode === 'create'
+                ? 'Add Book'
+                : 'Update Book'}
         </Button>
       </form>
     </Form>
