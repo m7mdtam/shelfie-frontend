@@ -78,7 +78,7 @@ export function ShelfPage() {
 
   if (!auth.isAuthenticated || !auth.decodedToken?.id) {
     return (
-      <div className="min-h-screen bg-background-base p-4 md:p-6">
+      <div className="flex-1 bg-background-base p-4 md:p-6">
         <div className="max-w-7xl mx-auto">
           <Card variant="default" className="text-center">
             <CardHeader>
@@ -92,7 +92,7 @@ export function ShelfPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background-base p-4 md:p-6">
+    <div className="flex-1 bg-background-base p-4 md:p-6">
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
           <div>

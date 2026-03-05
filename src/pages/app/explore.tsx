@@ -68,7 +68,7 @@ export function ExplorePage() {
   ])
 
   return (
-    <div className="min-h-screen bg-background-base p-4 md:p-6">
+    <div className="flex-1 bg-background-base p-4 md:p-6">
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
           <div>
