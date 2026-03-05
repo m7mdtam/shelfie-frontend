@@ -22,6 +22,9 @@ function RootLayout() {
     document.title = title
   }, [location.pathname])
 
+  const hideNavbarPaths = ['/sign-in', '/sign-up', '/sign-up-success']
+  const shouldHideNavbar = hideNavbarPaths.includes(location.pathname)
+
   return (
     <div className="relative min-h-screen bg-background-base">
       <div className="absolute inset-0 z-0 pointer-events-none">
@@ -41,8 +44,12 @@ function RootLayout() {
         />
       </div>
       <div className="relative z-10">
-        <Navbar />
-        <main className="pt-10 flex flex-col min-h-screen">
+        {!shouldHideNavbar && <Navbar />}
+        <main
+          className={
+            shouldHideNavbar ? 'flex flex-col min-h-screen' : 'pt-10 flex flex-col min-h-screen'
+          }
+        >
           <Outlet />
         </main>
       </div>
