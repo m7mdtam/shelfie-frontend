@@ -127,7 +127,7 @@ export const SignUpForm = () => {
               <FormLabel className="text-text-primary">Password</FormLabel>
               <FormControl>
                 <Input
-                  placeholder=""
+                  placeholder="Enter your password"
                   type="password"
                   autoComplete="new-password"
                   disabled={isPending}
@@ -157,7 +157,7 @@ export const SignUpForm = () => {
               <FormLabel className="text-text-primary">Confirm Password</FormLabel>
               <FormControl>
                 <Input
-                  placeholder=""
+                  placeholder="Confirm your password"
                   type="password"
                   autoComplete="new-password"
                   disabled={isPending}

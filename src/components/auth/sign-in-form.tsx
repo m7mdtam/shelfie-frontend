@@ -10,12 +10,9 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { useSignInForm } from '@/hooks/auth'
 import { Loader } from 'lucide-react'
-import { useState } from 'react'
 
 export const SignInForm = () => {
   const { form, onSubmit, isPending } = useSignInForm()
-  const [emailFocused, setEmailFocused] = useState(false)
-  const [passwordFocused, setPasswordFocused] = useState(false)
 
   return (
     <Form {...form}>
@@ -30,7 +27,7 @@ export const SignInForm = () => {
           control={form.control}
           name="email"
           render={({ field }) => (
-            <FormItem className="flex flex-col ">
+            <FormItem className="flex flex-col">
               <FormLabel className="text-text-primary">Email</FormLabel>
               <FormControl>
                 <Input
@@ -38,17 +35,7 @@ export const SignInForm = () => {
                   type="email"
                   autoComplete="email"
                   disabled={isPending}
-                  className={`bg-background-base text-text-primary placeholder:text-text-secondary rounded-md transition-all duration-200 ${
-                    emailFocused
-                      ? 'border border-accent-primary ring-2 ring-accent-background'
-                      : 'border-0'
-                  }`}
                   {...field}
-                  onFocus={() => setEmailFocused(true)}
-                  onBlur={() => {
-                    field.onBlur()
-                    setEmailFocused(false)
-                  }}
                 />
               </FormControl>
               <FormMessage className="text-state-error" />
@@ -60,7 +47,7 @@ export const SignInForm = () => {
           control={form.control}
           name="password"
           render={({ field }) => (
-            <FormItem className="flex flex-col ">
+            <FormItem className="flex flex-col">
               <FormLabel className="text-text-primary">Password</FormLabel>
               <FormControl>
                 <Input
@@ -68,17 +55,7 @@ export const SignInForm = () => {
                   type="password"
                   autoComplete="current-password"
                   disabled={isPending}
-                  className={`bg-background-base text-text-primary placeholder:text-text-secondary rounded-md transition-all duration-200 ${
-                    passwordFocused
-                      ? 'border border-accent-primary ring-2 ring-accent-background'
-                      : 'border-0'
-                  }`}
                   {...field}
-                  onFocus={() => setPasswordFocused(true)}
-                  onBlur={() => {
-                    field.onBlur()
-                    setPasswordFocused(false)
-                  }}
                 />
               </FormControl>
               <FormMessage className="text-state-error" />

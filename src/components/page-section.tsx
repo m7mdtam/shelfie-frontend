@@ -10,9 +10,9 @@ const PageSection = React.forwardRef<
   <div
     ref={ref}
     className={cn(
-      'rounded-lg bg-background-surface text-card-foreground md:rounded-xl shadow-sm md:shadow',
+      'rounded-md bg-background-surface text-text-primary md:rounded-lg',
       variant === 'default' && 'p-4 md:p-6',
-      variant === 'compact' && 'p-4 md:p-6',
+      variant === 'compact' && 'p-3 md:p-4',
       className
     )}
     {...props}
