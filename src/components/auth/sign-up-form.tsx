@@ -22,7 +22,7 @@ export const SignUpForm = () => {
 
   return (
     <Form {...form}>
-      <form onSubmit={onSubmit} className="flex flex-col gap-4">
+      <form onSubmit={onSubmit} className="flex flex-col gap-3">
         {form.formState.errors.root && (
           <div className="rounded-md p-4 border border-state-error bg-state-error-bg text-state-error">
             <p className="text-sm font-medium">{form.formState.errors.root.message}</p>
@@ -34,7 +34,7 @@ export const SignUpForm = () => {
             control={form.control}
             name="firstName"
             render={({ field }) => (
-              <FormItem className="flex flex-col gap-2">
+              <FormItem className="flex flex-col ">
                 <FormLabel className="text-text-primary">First Name</FormLabel>
                 <FormControl>
                   <Input
@@ -63,7 +63,7 @@ export const SignUpForm = () => {
             control={form.control}
             name="lastName"
             render={({ field }) => (
-              <FormItem className="flex flex-col gap-2">
+              <FormItem className="flex flex-col ">
                 <FormLabel className="text-text-primary">Last Name</FormLabel>
                 <FormControl>
                   <Input
@@ -93,7 +93,7 @@ export const SignUpForm = () => {
           control={form.control}
           name="email"
           render={({ field }) => (
-            <FormItem className="flex flex-col gap-2">
+            <FormItem className="flex flex-col ">
               <FormLabel className="text-text-primary">Email</FormLabel>
               <FormControl>
                 <Input
@@ -123,7 +123,7 @@ export const SignUpForm = () => {
           control={form.control}
           name="password"
           render={({ field }) => (
-            <FormItem className="flex flex-col gap-2">
+            <FormItem className="flex flex-col ">
               <FormLabel className="text-text-primary">Password</FormLabel>
               <FormControl>
                 <Input
@@ -153,7 +153,7 @@ export const SignUpForm = () => {
           control={form.control}
           name="confirmPassword"
           render={({ field }) => (
-            <FormItem className="flex flex-col gap-2">
+            <FormItem className="flex flex-col ">
               <FormLabel className="text-text-primary">Confirm Password</FormLabel>
               <FormControl>
                 <Input
@@ -179,7 +179,7 @@ export const SignUpForm = () => {
           )}
         />
 
-        <Button type="submit" className="w-full" disabled={isPending}>
+        <Button type="submit" className="w-full mt-4 " disabled={isPending}>
           {isPending ? (
             <div className="flex items-center gap-2">
               <Loader className="h-4 w-4 animate-spin" />

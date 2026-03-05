@@ -66,7 +66,7 @@ axiosInstance.interceptors.request.use(async config => {
 axiosInstance.interceptors.response.use(
   response => response,
   error => {
-    if (error.response?.status === 401) {
+    if (error.response?.status === 401 && getToken()) {
       clearToken()
       window.location.href = '/sign-in'
     }
