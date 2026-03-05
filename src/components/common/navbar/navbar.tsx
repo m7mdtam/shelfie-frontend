@@ -92,10 +92,13 @@ export function Navbar() {
           {isAuthenticated ? (
             <NavbarUserMenu user={decodedToken} onLogout={handleLogout} />
           ) : (
-            <Button variant="default" size="sm" onClick={() => navigate({ to: '/sign-in' })}>
-              Sign In
-            </Button>
+            !isMobile && (
+              <Button variant="default" size="sm" onClick={() => navigate({ to: '/sign-in' })}>
+                Sign In
+              </Button>
+            )
           )}
+
 
           {isMobile && (
             <Button
@@ -105,9 +108,10 @@ export function Navbar() {
               aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
               className="text-text-secondary hover:text-accent-primary"
             >
-              {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+              {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </Button>
           )}
+
         </div>
       </div>
 
