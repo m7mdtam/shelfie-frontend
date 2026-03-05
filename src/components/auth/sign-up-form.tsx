@@ -10,9 +10,15 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { useSignUpForm } from '@/hooks/auth'
 import { Loader } from 'lucide-react'
+import { useState } from 'react'
 
 export const SignUpForm = () => {
   const { form, onSubmit, isPending } = useSignUpForm()
+  const [firstNameFocused, setFirstNameFocused] = useState(false)
+  const [lastNameFocused, setLastNameFocused] = useState(false)
+  const [emailFocused, setEmailFocused] = useState(false)
+  const [passwordFocused, setPasswordFocused] = useState(false)
+  const [confirmPasswordFocused, setConfirmPasswordFocused] = useState(false)
 
   return (
     <Form {...form}>
@@ -28,14 +34,24 @@ export const SignUpForm = () => {
             control={form.control}
             name="firstName"
             render={({ field }) => (
-              <FormItem className="flex flex-col">
+              <FormItem className="flex flex-col ">
                 <FormLabel className="text-text-primary">First Name</FormLabel>
                 <FormControl>
                   <Input
                     placeholder="Enter your first name"
                     autoComplete="given-name"
                     disabled={isPending}
+                    className={`bg-background-base text-text-primary placeholder:text-text-secondary rounded-md transition-all duration-200 ${
+                      firstNameFocused
+                        ? 'border border-accent-primary ring-2 ring-accent-background'
+                        : 'border-0'
+                    }`}
                     {...field}
+                    onFocus={() => setFirstNameFocused(true)}
+                    onBlur={() => {
+                      field.onBlur()
+                      setFirstNameFocused(false)
+                    }}
                   />
                 </FormControl>
                 <FormMessage className="text-state-error" />
@@ -47,14 +63,24 @@ export const SignUpForm = () => {
             control={form.control}
             name="lastName"
             render={({ field }) => (
-              <FormItem className="flex flex-col">
+              <FormItem className="flex flex-col ">
                 <FormLabel className="text-text-primary">Last Name</FormLabel>
                 <FormControl>
                   <Input
                     placeholder="Enter your last name"
                     autoComplete="family-name"
                     disabled={isPending}
+                    className={`bg-background-base text-text-primary placeholder:text-text-secondary rounded-md transition-all duration-200 ${
+                      lastNameFocused
+                        ? 'border border-accent-primary ring-2 ring-accent-background'
+                        : 'border-0'
+                    }`}
                     {...field}
+                    onFocus={() => setLastNameFocused(true)}
+                    onBlur={() => {
+                      field.onBlur()
+                      setLastNameFocused(false)
+                    }}
                   />
                 </FormControl>
                 <FormMessage className="text-state-error" />
@@ -67,7 +93,7 @@ export const SignUpForm = () => {
           control={form.control}
           name="email"
           render={({ field }) => (
-            <FormItem className="flex flex-col">
+            <FormItem className="flex flex-col ">
               <FormLabel className="text-text-primary">Email</FormLabel>
               <FormControl>
                 <Input
@@ -75,7 +101,17 @@ export const SignUpForm = () => {
                   type="email"
                   autoComplete="email"
                   disabled={isPending}
+                  className={`bg-background-base text-text-primary placeholder:text-text-secondary rounded-md transition-all duration-200 ${
+                    emailFocused
+                      ? 'border border-accent-primary ring-2 ring-accent-background'
+                      : 'border-0'
+                  }`}
                   {...field}
+                  onFocus={() => setEmailFocused(true)}
+                  onBlur={() => {
+                    field.onBlur()
+                    setEmailFocused(false)
+                  }}
                 />
               </FormControl>
               <FormMessage className="text-state-error" />
@@ -87,15 +123,25 @@ export const SignUpForm = () => {
           control={form.control}
           name="password"
           render={({ field }) => (
-            <FormItem className="flex flex-col">
+            <FormItem className="flex flex-col ">
               <FormLabel className="text-text-primary">Password</FormLabel>
               <FormControl>
                 <Input
-                  placeholder=""
+                  placeholder="Enter your password"
                   type="password"
                   autoComplete="new-password"
                   disabled={isPending}
+                  className={`bg-background-base text-text-primary placeholder:text-text-secondary rounded-md transition-all duration-200 ${
+                    passwordFocused
+                      ? 'border border-accent-primary ring-2 ring-accent-background'
+                      : 'border-0'
+                  }`}
                   {...field}
+                  onFocus={() => setPasswordFocused(true)}
+                  onBlur={() => {
+                    field.onBlur()
+                    setPasswordFocused(false)
+                  }}
                 />
               </FormControl>
               <FormMessage className="text-state-error" />
@@ -107,15 +153,25 @@ export const SignUpForm = () => {
           control={form.control}
           name="confirmPassword"
           render={({ field }) => (
-            <FormItem className="flex flex-col">
+            <FormItem className="flex flex-col ">
               <FormLabel className="text-text-primary">Confirm Password</FormLabel>
               <FormControl>
                 <Input
-                  placeholder=""
+                  placeholder="Confirm your password"
                   type="password"
                   autoComplete="new-password"
                   disabled={isPending}
+                  className={`bg-background-base text-text-primary placeholder:text-text-secondary rounded-md transition-all duration-200 ${
+                    confirmPasswordFocused
+                      ? 'border border-accent-primary ring-2 ring-accent-background'
+                      : 'border-0'
+                  }`}
                   {...field}
+                  onFocus={() => setConfirmPasswordFocused(true)}
+                  onBlur={() => {
+                    field.onBlur()
+                    setConfirmPasswordFocused(false)
+                  }}
                 />
               </FormControl>
               <FormMessage className="text-state-error" />
