@@ -86,7 +86,6 @@
     cursor: pointer;
   }
 
-  /* Only reset decoration — components set their own colors */
   a {
     text-decoration: none;
   }

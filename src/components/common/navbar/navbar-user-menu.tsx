@@ -18,9 +18,7 @@ interface NavbarUserMenuProps {
 
 function getDisplayName(email: string): string {
   const local = email.split('@')[0]
-  return local
-    .replace(/[._-]+/g, ' ')
-    .replace(/\b\w/g, (c) => c.toUpperCase())
+  return local.replace(/[._-]+/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
 }
 
 function getInitials(name: string): string {
@@ -39,15 +37,10 @@ export function NavbarUserMenu({ user, onLogout }: NavbarUserMenuProps) {
   return (
     <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild>
-        <Button
-          variant="ghost"
-          size="icon-rounded"
-          aria-label="User menu"
-          className="p-0.5 hover:bg-accent-background"
-        >
+        <Button variant="ghost" size="icon-rounded" aria-label="User menu" className="p-0 overflow-hidden">
           <Avatar className="h-7 w-7 ring-2 ring-transparent hover:ring-accent-primary transition-all duration-200">
             <AvatarImage src={undefined} alt={user.email} />
-            <AvatarFallback className="bg-accent-background text-accent-primary text-xs font-semibold">
+            <AvatarFallback className="bg-background-tertiary dark:bg-accent-background text-accent-primary text-xs font-semibold">
               {initials}
             </AvatarFallback>
           </Avatar>
@@ -58,7 +51,7 @@ export function NavbarUserMenu({ user, onLogout }: NavbarUserMenuProps) {
         <DropdownMenuLabel className="flex items-center gap-3 py-3">
           <Avatar className="h-9 w-9 shrink-0">
             <AvatarImage src={undefined} alt={user.email} />
-            <AvatarFallback className="bg-accent-background text-accent-primary text-xs font-semibold">
+            <AvatarFallback className="bg-background-tertiary dark:bg-accent-background text-accent-primary text-xs font-semibold">
               {initials}
             </AvatarFallback>
           </Avatar>

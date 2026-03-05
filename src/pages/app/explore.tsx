@@ -9,7 +9,19 @@ import { Link } from '@tanstack/react-router'
 import { Button } from '@/components/ui/button'
 import { Plus } from 'lucide-react'
 
-const GENRES = ['fiction', 'non-fiction', 'fantasy', 'science-fiction', 'mystery', 'thriller', 'romance', 'historical-fiction', 'biography', 'self-help', 'other']
+const GENRES = [
+  'fiction',
+  'non-fiction',
+  'fantasy',
+  'science-fiction',
+  'mystery',
+  'thriller',
+  'romance',
+  'historical-fiction',
+  'biography',
+  'self-help',
+  'other',
+]
 
 const STATUSES = ['want-to-read', 'reading', 'finished']
 
@@ -46,6 +58,7 @@ export function ExplorePage() {
     ) {
       bookList.fetchNextPage()
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     virtualItems,
     bookList.allBooks.length,
@@ -115,7 +128,7 @@ export function ExplorePage() {
             </p>
             <div
               ref={parentRef}
-              className="h-[800px] overflow-y-auto"
+              className="h-200 overflow-y-auto"
               style={{
                 contain: 'strict',
               }}
