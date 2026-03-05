@@ -1,8 +1,27 @@
-import { createRootRoute, Outlet } from '@tanstack/react-router'
+import { createRootRoute, Outlet, useLocation } from '@tanstack/react-router'
+import { useEffect } from 'react'
 import { Navbar } from '@/components/common/navbar'
 import DotGrid from '@/components/DotGrid'
 
+const routeTitles: Record<string, string> = {
+  '/': 'Shelfie - Organize Your Books',
+  '/sign-in': 'Sign In - Shelfie',
+  '/sign-up': 'Sign Up - Shelfie',
+  '/sign-up-success': 'Welcome - Shelfie',
+  '/books/explore': 'Explore Books - Shelfie',
+  '/books/shelf': 'My Shelf - Shelfie',
+  '/books/add': 'Add Book - Shelfie',
+}
+
 function RootLayout() {
+  const location = useLocation()
+
+  useEffect(() => {
+    const pathname = location.pathname
+    const title = routeTitles[pathname] || 'Shelfie'
+    document.title = title
+  }, [location.pathname])
+
   return (
     <div className="relative min-h-screen bg-background-base">
       <div className="absolute inset-0 z-0 pointer-events-none">
