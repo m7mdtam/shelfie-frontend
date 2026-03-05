@@ -12,9 +12,9 @@ const buttonVariants = cva(
         default: 'bg-primary text-primary-foreground shadow hover:bg-primary/90',
         destructive: 'bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90',
         outline:
-          'border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground',
+          'border border-[var(--text-border)] bg-[var(--background-surface)] shadow-sm hover:bg-[var(--accent-background)] hover:text-[var(--text-primary)]',
         secondary: 'bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80',
-        ghost: 'hover:bg-accent hover:text-accent-foreground',
+        ghost: 'hover:bg-background-tertiary dark:hover:bg-accent-background hover:text-text-primary data-[state=open]:bg-background-tertiary dark:data-[state=open]:bg-accent-background',
         link: 'text-primary underline-offset-4 hover:underline',
         success: 'bg-[var(--state-success)] text-white shadow hover:opacity-90',
         error: 'bg-[var(--state-error)] text-white shadow hover:opacity-90',
@@ -25,10 +25,11 @@ const buttonVariants = cva(
           'bg-[var(--selection-background)] text-[var(--selection-foreground)] hover:bg-opacity-80',
       },
       size: {
-        default: 'h-9 px-4 py-2 text-sm md:text-base',
+        default: 'h-9 px-3 py-1.5 text-sm md:text-base',
         sm: 'h-8 rounded-md px-3 text-xs md:text-sm',
         lg: 'h-10 rounded-md px-8 text-base md:text-lg',
         icon: 'h-9 w-9 md:h-10 md:w-10',
+        'icon-rounded': 'h-8 w-8 rounded-full',
       },
     },
     defaultVariants: {

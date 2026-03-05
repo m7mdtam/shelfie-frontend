@@ -1,19 +1,31 @@
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { useSignUpForm } from '@/hooks/auth'
+import { Loader } from 'lucide-react'
+import { useState } from 'react'
 
 export const SignUpForm = () => {
   const { form, onSubmit, isPending } = useSignUpForm()
+  const [firstNameFocused, setFirstNameFocused] = useState(false)
+  const [lastNameFocused, setLastNameFocused] = useState(false)
+  const [emailFocused, setEmailFocused] = useState(false)
+  const [passwordFocused, setPasswordFocused] = useState(false)
+  const [confirmPasswordFocused, setConfirmPasswordFocused] = useState(false)
 
   return (
     <Form {...form}>
-      <form onSubmit={onSubmit} className="flex flex-col gap-6">
+      <form onSubmit={onSubmit} className="flex flex-col gap-4">
         {form.formState.errors.root && (
-          <div className="rounded-md bg-red-50 p-4" style={{ backgroundColor: 'var(--state-error-bg)', color: 'var(--state-error)' }}>
-            <p className="text-sm font-medium">
-              {form.formState.errors.root.message}
-            </p>
+          <div className="rounded-md p-4 border border-state-error bg-state-error-bg text-state-error">
+            <p className="text-sm font-medium">{form.formState.errors.root.message}</p>
           </div>
         )}
 
@@ -23,16 +35,26 @@ export const SignUpForm = () => {
             name="firstName"
             render={({ field }) => (
               <FormItem className="flex flex-col gap-2">
-                <FormLabel>First Name</FormLabel>
+                <FormLabel className="text-text-primary">First Name</FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="John"
+                    placeholder="Enter your first name"
                     autoComplete="given-name"
                     disabled={isPending}
+                    className={`bg-background-base text-text-primary placeholder:text-text-secondary rounded-md transition-all duration-200 ${
+                      firstNameFocused
+                        ? 'border border-accent-primary ring-2 ring-accent-background'
+                        : 'border-0'
+                    }`}
                     {...field}
+                    onFocus={() => setFirstNameFocused(true)}
+                    onBlur={() => {
+                      field.onBlur()
+                      setFirstNameFocused(false)
+                    }}
                   />
                 </FormControl>
-                <FormMessage />
+                <FormMessage className="text-state-error" />
               </FormItem>
             )}
           />
@@ -42,16 +64,26 @@ export const SignUpForm = () => {
             name="lastName"
             render={({ field }) => (
               <FormItem className="flex flex-col gap-2">
-                <FormLabel>Last Name</FormLabel>
+                <FormLabel className="text-text-primary">Last Name</FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="Doe"
+                    placeholder="Enter your last name"
                     autoComplete="family-name"
                     disabled={isPending}
+                    className={`bg-background-base text-text-primary placeholder:text-text-secondary rounded-md transition-all duration-200 ${
+                      lastNameFocused
+                        ? 'border border-accent-primary ring-2 ring-accent-background'
+                        : 'border-0'
+                    }`}
                     {...field}
+                    onFocus={() => setLastNameFocused(true)}
+                    onBlur={() => {
+                      field.onBlur()
+                      setLastNameFocused(false)
+                    }}
                   />
                 </FormControl>
-                <FormMessage />
+                <FormMessage className="text-state-error" />
               </FormItem>
             )}
           />
@@ -62,17 +94,27 @@ export const SignUpForm = () => {
           name="email"
           render={({ field }) => (
             <FormItem className="flex flex-col gap-2">
-              <FormLabel>Email</FormLabel>
+              <FormLabel className="text-text-primary">Email</FormLabel>
               <FormControl>
                 <Input
-                  placeholder="you@example.com"
+                  placeholder="Enter your email"
                   type="email"
                   autoComplete="email"
                   disabled={isPending}
+                  className={`bg-background-base text-text-primary placeholder:text-text-secondary rounded-md transition-all duration-200 ${
+                    emailFocused
+                      ? 'border border-accent-primary ring-2 ring-accent-background'
+                      : 'border-0'
+                  }`}
                   {...field}
+                  onFocus={() => setEmailFocused(true)}
+                  onBlur={() => {
+                    field.onBlur()
+                    setEmailFocused(false)
+                  }}
                 />
               </FormControl>
-              <FormMessage />
+              <FormMessage className="text-state-error" />
             </FormItem>
           )}
         />
@@ -82,17 +124,27 @@ export const SignUpForm = () => {
           name="password"
           render={({ field }) => (
             <FormItem className="flex flex-col gap-2">
-              <FormLabel>Password</FormLabel>
+              <FormLabel className="text-text-primary">Password</FormLabel>
               <FormControl>
                 <Input
-                  placeholder="••••••••"
+                  placeholder=""
                   type="password"
                   autoComplete="new-password"
                   disabled={isPending}
+                  className={`bg-background-base text-text-primary placeholder:text-text-secondary rounded-md transition-all duration-200 ${
+                    passwordFocused
+                      ? 'border border-accent-primary ring-2 ring-accent-background'
+                      : 'border-0'
+                  }`}
                   {...field}
+                  onFocus={() => setPasswordFocused(true)}
+                  onBlur={() => {
+                    field.onBlur()
+                    setPasswordFocused(false)
+                  }}
                 />
               </FormControl>
-              <FormMessage />
+              <FormMessage className="text-state-error" />
             </FormItem>
           )}
         />
@@ -102,23 +154,40 @@ export const SignUpForm = () => {
           name="confirmPassword"
           render={({ field }) => (
             <FormItem className="flex flex-col gap-2">
-              <FormLabel>Confirm Password</FormLabel>
+              <FormLabel className="text-text-primary">Confirm Password</FormLabel>
               <FormControl>
                 <Input
-                  placeholder="••••••••"
+                  placeholder=""
                   type="password"
                   autoComplete="new-password"
                   disabled={isPending}
+                  className={`bg-background-base text-text-primary placeholder:text-text-secondary rounded-md transition-all duration-200 ${
+                    confirmPasswordFocused
+                      ? 'border border-accent-primary ring-2 ring-accent-background'
+                      : 'border-0'
+                  }`}
                   {...field}
+                  onFocus={() => setConfirmPasswordFocused(true)}
+                  onBlur={() => {
+                    field.onBlur()
+                    setConfirmPasswordFocused(false)
+                  }}
                 />
               </FormControl>
-              <FormMessage />
+              <FormMessage className="text-state-error" />
             </FormItem>
           )}
         />
 
         <Button type="submit" className="w-full" disabled={isPending}>
-          {isPending ? 'Creating account...' : 'Create account'}
+          {isPending ? (
+            <div className="flex items-center gap-2">
+              <Loader className="h-4 w-4 animate-spin" />
+              Creating account...
+            </div>
+          ) : (
+            'Create account'
+          )}
         </Button>
       </form>
     </Form>

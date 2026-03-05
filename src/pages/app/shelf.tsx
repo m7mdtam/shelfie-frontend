@@ -17,7 +17,19 @@ import {
 import { Button } from '@/components/ui/button'
 import { Plus } from 'lucide-react'
 
-const GENRES = ['fiction', 'non-fiction', 'fantasy', 'science-fiction', 'mystery', 'thriller', 'romance', 'historical-fiction', 'biography', 'self-help', 'other']
+const GENRES = [
+  'fiction',
+  'non-fiction',
+  'fantasy',
+  'science-fiction',
+  'mystery',
+  'thriller',
+  'romance',
+  'historical-fiction',
+  'biography',
+  'self-help',
+  'other',
+]
 
 const STATUSES = ['want-to-read', 'reading', 'finished']
 
@@ -55,6 +67,7 @@ export function ShelfPage() {
     ) {
       bookList.fetchNextPage()
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     virtualItems,
     bookList.allBooks.length,
@@ -65,7 +78,7 @@ export function ShelfPage() {
 
   if (!auth.isAuthenticated || !auth.decodedToken?.id) {
     return (
-      <div className="min-h-screen bg-background-base p-4 md:p-6">
+      <div className="flex-1 bg-background-base p-4 md:p-6">
         <div className="max-w-7xl mx-auto">
           <Card variant="default" className="text-center">
             <CardHeader>
@@ -79,7 +92,7 @@ export function ShelfPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background-base p-4 md:p-6">
+    <div className="flex-1 bg-background-base p-4 md:p-6">
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
           <div>
@@ -147,7 +160,7 @@ export function ShelfPage() {
             </p>
             <div
               ref={parentRef}
-              className="h-[800px] overflow-y-auto"
+              className="h-200 overflow-y-auto"
               style={{
                 contain: 'strict',
               }}

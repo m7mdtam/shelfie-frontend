@@ -1,6 +1,12 @@
 import { Link } from '@tanstack/react-router'
 import { useIsMobile } from '@/hooks'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import {
+  PageSection,
+  PageSectionContent,
+  PageSectionDescription,
+  PageSectionHeader,
+  PageSectionTitle,
+} from '@/components/page-section'
 import { SignUpForm } from '@/components/auth'
 
 export function SignUpPage() {
@@ -8,29 +14,30 @@ export function SignUpPage() {
 
   return (
     <div
-      className="min-h-screen bg-background-base flex flex-col items-center justify-center px-4 py-8"
+      className="flex-1 bg-background-base flex flex-col items-center justify-center px-4 py-8"
       data-mobile={isMobile}
     >
-      <div className="w-full max-w-md">
-        <Card variant="default" className="w-full">
-          <CardHeader className="text-center">
-            <CardTitle>Create Account</CardTitle>
-            <CardDescription>Join us and start managing your bookshelf</CardDescription>
-          </CardHeader>
-          <CardContent>
+      <div className="w-full max-w-sm">
+        <PageSection variant="default" className="w-full flex flex-col">
+          <PageSectionHeader className="text-center">
+            <PageSectionTitle>Create Account</PageSectionTitle>
+            <PageSectionDescription>
+              Join us and start managing your bookshelf
+            </PageSectionDescription>
+          </PageSectionHeader>
+          <PageSectionContent>
             <SignUpForm />
-          </CardContent>
-        </Card>
-
-        <div className="mt-6 text-center text-sm">
-          <span className="text-text-secondary">Already have an account? </span>
-          <Link
-            to="/sign-in"
-            className="text-accent-primary font-medium hover:text-[var(--accent-primary-hover)] transition-colors"
-          >
-            Sign in
-          </Link>
-        </div>
+          </PageSectionContent>
+          <div className="mt-4 border-t border-text-border pt-4 flex gap-1.5 justify-center items-center">
+            <span className="text-text-secondary text-sm">Already have an account? </span>
+            <Link
+              to="/sign-in"
+              className="text-accent-primary font-medium hover:text-accent-primary-hover transition-colors text-sm"
+            >
+              Sign in
+            </Link>
+          </div>
+        </PageSection>
       </div>
     </div>
   )

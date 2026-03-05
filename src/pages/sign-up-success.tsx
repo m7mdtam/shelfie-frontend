@@ -10,7 +10,7 @@ export function SignUpSuccessPage() {
 
   return (
     <div
-      className="min-h-screen bg-background-base flex flex-col items-center justify-center px-4 py-8"
+      className="flex-1 bg-background-base flex flex-col items-center justify-center px-4 py-8"
       data-mobile={isMobile}
     >
       <div className="w-full max-w-md">
