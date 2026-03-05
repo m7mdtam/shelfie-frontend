@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
+import { Compass } from 'lucide-react'
 import DotGrid from '@/components/DotGrid'
 
 export const Route = createFileRoute('/')({
@@ -40,6 +41,7 @@ function HomePage() {
             to="/books/explore"
             className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border border-text-border bg-background-surface shadow-sm hover:bg-accent-background hover:text-text-primary h-9 px-3 py-1.5 md:text-base"
           >
+            <Compass className="size-4" />
             Explore
           </Link>
         </div>

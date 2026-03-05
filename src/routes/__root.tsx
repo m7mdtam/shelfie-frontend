@@ -1,6 +1,7 @@
 import { createRootRoute, Outlet, useLocation } from '@tanstack/react-router'
 import { useEffect } from 'react'
 import { Navbar } from '@/components/common/navbar'
+import { Toaster } from '@/components/ui/sonner'
 
 const routeTitles: Record<string, string> = {
   '/': 'Shelfie - Organize Your Books',
@@ -34,6 +35,7 @@ function RootLayout() {
       >
         <Outlet />
       </main>
+      <Toaster />
     </div>
   )
 }
