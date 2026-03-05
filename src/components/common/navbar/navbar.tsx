@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Menu, X } from 'lucide-react'
 import { motion } from 'motion/react'
+import { useLocation, useNavigate } from '@tanstack/react-router'
 import { cn } from '@/lib/utils'
 import { useIsMobile } from '@/hooks/use-is-mobile'
 import { useAuthContext } from '@/contexts/auth'
@@ -10,6 +11,8 @@ import { NavbarLogo } from './navbar-logo'
 import { NavbarLinks } from './navbar-links'
 import { NavbarUserMenu } from './navbar-user-menu'
 import { NavbarMobileMenu } from './navbar-mobile-menu'
+
+const PROTECTED_PATHS = ['/books/shelf']
 
 const SCROLL_THRESHOLD = 60
 
@@ -25,6 +28,17 @@ export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const isMobile = useIsMobile()
   const { isAuthenticated, decodedToken, logout } = useAuthContext()
+  const navigate = useNavigate()
+  const location = useLocation()
+
+  const handleLogout = async () => {
+    await logout()
+    if (PROTECTED_PATHS.includes(location.pathname)) {
+      navigate({ to: '/books/explore' })
+    } else {
+      window.location.reload()
+    }
+  }
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > SCROLL_THRESHOLD)
@@ -75,7 +89,13 @@ export function Navbar() {
         <div className="flex items-center gap-2">
           <ModeToggle />
 
-          {isAuthenticated && <NavbarUserMenu user={decodedToken} onLogout={logout} />}
+          {isAuthenticated ? (
+            <NavbarUserMenu user={decodedToken} onLogout={handleLogout} />
+          ) : (
+            <Button variant="default" size="sm" onClick={() => navigate({ to: '/sign-in' })}>
+              Sign In
+            </Button>
+          )}
 
           {isMobile && (
             <Button

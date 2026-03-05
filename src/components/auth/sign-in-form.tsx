@@ -19,7 +19,7 @@ export const SignInForm = () => {
 
   return (
     <Form {...form}>
-      <form onSubmit={onSubmit} className="flex flex-col gap-4">
+      <form onSubmit={onSubmit} className="flex flex-col gap-3">
         {form.formState.errors.root && (
           <div className="rounded-md p-4 border border-state-error bg-state-error-bg text-state-error">
             <p className="text-sm font-medium">{form.formState.errors.root.message}</p>
@@ -30,7 +30,7 @@ export const SignInForm = () => {
           control={form.control}
           name="email"
           render={({ field }) => (
-            <FormItem className="flex flex-col gap-1">
+            <FormItem className="flex flex-col ">
               <FormLabel className="text-text-primary">Email</FormLabel>
               <FormControl>
                 <Input
@@ -60,7 +60,7 @@ export const SignInForm = () => {
           control={form.control}
           name="password"
           render={({ field }) => (
-            <FormItem className="flex flex-col gap-2">
+            <FormItem className="flex flex-col ">
               <FormLabel className="text-text-primary">Password</FormLabel>
               <FormControl>
                 <Input
@@ -86,7 +86,7 @@ export const SignInForm = () => {
           )}
         />
 
-        <Button type="submit" className="w-full" disabled={isPending}>
+        <Button type="submit" className="w-full mt-4" disabled={isPending}>
           {isPending ? (
             <div className="flex items-center gap-2">
               <Loader className="h-4 w-4 animate-spin" />

@@ -1,4 +1,5 @@
-import { User, LogOut } from 'lucide-react'
+import { useState } from 'react'
+import { User, LogOut, Loader2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import {
@@ -13,7 +14,7 @@ import type { DecodedTokenPayload } from '@/lib/jwt'
 
 interface NavbarUserMenuProps {
   user: DecodedTokenPayload | null
-  onLogout: () => void
+  onLogout: () => Promise<void>
 }
 
 function getDisplayName(email: string): string {
@@ -29,10 +30,17 @@ function getInitials(name: string): string {
 }
 
 export function NavbarUserMenu({ user, onLogout }: NavbarUserMenuProps) {
+  const [isLoggingOut, setIsLoggingOut] = useState(false)
+
   if (!user) return null
 
   const displayName = getDisplayName(user.email)
   const initials = getInitials(displayName)
+
+  const handleLogout = async () => {
+    setIsLoggingOut(true)
+    await onLogout()
+  }
 
   return (
     <DropdownMenu modal={false}>
@@ -71,11 +79,12 @@ export function NavbarUserMenu({ user, onLogout }: NavbarUserMenuProps) {
         <DropdownMenuSeparator />
 
         <DropdownMenuItem
-          onClick={onLogout}
+          onClick={handleLogout}
+          disabled={isLoggingOut}
           className="gap-2 cursor-pointer text-state-error focus:text-state-error"
         >
-          <LogOut className="h-4 w-4" />
-          Log out
+          {isLoggingOut ? <Loader2 className="h-4 w-4 animate-spin" /> : <LogOut className="h-4 w-4" />}
+          {isLoggingOut ? 'Logging out...' : 'Log out'}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
