@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react'
-import { useInfiniteListBooks } from '@/api/books'
+import { useInfiniteListBooks, useInfiniteListMyBooks } from '@/api/books'
 import { BooksListResponse } from '@/@types/book'
 import type { InfiniteData } from '@tanstack/react-query'
 
@@ -11,6 +11,7 @@ interface UseBookListProps {
 
 export function useBookList(props: UseBookListProps = {}) {
   const limit = props.limit ?? 50
+  const scope = props.scope ?? 'all'
 
   const [search, setSearch] = useState('')
   const [genre, setGenre] = useState<string>('')
@@ -22,12 +23,18 @@ export function useBookList(props: UseBookListProps = {}) {
       ...(search && { 'where[title][like]': search }),
       ...(genre && { 'where[genre][equals]': genre }),
       ...(status && { 'where[status][equals]': status }),
-      ...(props.ownerId && { 'where[owner][equals]': props.ownerId }),
     }),
-    [limit, search, genre, status, props.ownerId]
+    [limit, search, genre, status]
   )
 
-  const query = useInfiniteListBooks(params)
+  const allBooksQuery = useInfiniteListBooks(scope === 'all' ? params : undefined, {
+    enabled: scope === 'all',
+  })
+  const myBooksQuery = useInfiniteListMyBooks(scope === 'mine' ? params : undefined, {
+    enabled: scope === 'mine',
+  })
+
+  const query = scope === 'mine' ? myBooksQuery : allBooksQuery
 
   const allBooks = useMemo(() => {
     const data = query.data as InfiniteData<BooksListResponse, unknown> | undefined

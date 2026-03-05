@@ -1,6 +1,8 @@
 import { useEffect, useRef } from 'react'
 import { useVirtualizer } from '@tanstack/react-virtual'
+import { useQueryClient } from '@tanstack/react-query'
 import { useBookList, useBookForm } from '@/hooks/pages/books'
+import { booksQueryKeys } from '@/api/books'
 import { useAuthContext } from '@/contexts/auth'
 import { BookFilters } from '@/components/pages/books/BookFilters'
 import { DeleteBookDialog } from '@/components/pages/books/DeleteBookDialog'
@@ -35,9 +37,14 @@ const STATUSES = ['want-to-read', 'reading', 'finished']
 
 export function ShelfPage() {
   const auth = useAuthContext()
-  const bookList = useBookList({ limit: 50, ownerId: auth.decodedToken?.id })
+  const queryClient = useQueryClient()
+  const bookList = useBookList({ limit: 50, scope: 'mine' })
   const bookForm = useBookForm()
   const parentRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    queryClient.invalidateQueries({ queryKey: booksQueryKeys.myBooksList() })
+  }, [auth.isAuthenticated, queryClient])
 
   const virtualizer = useVirtualizer({
     count: bookList.hasNextPage ? bookList.allBooks.length + 1 : bookList.allBooks.length,

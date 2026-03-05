@@ -1,6 +1,8 @@
 import { useEffect, useRef } from 'react'
 import { useVirtualizer } from '@tanstack/react-virtual'
+import { useQueryClient } from '@tanstack/react-query'
 import { useBookList } from '@/hooks/pages/books'
+import { booksQueryKeys } from '@/api/books'
 import { useAuthContext } from '@/contexts/auth'
 import { BookCard } from '@/components/pages/books/BookCard'
 import { BookFilters } from '@/components/pages/books/BookFilters'
@@ -27,8 +29,13 @@ const STATUSES = ['want-to-read', 'reading', 'finished']
 
 export function ExplorePage() {
   const auth = useAuthContext()
-  const bookList = useBookList({ limit: 50 })
+  const queryClient = useQueryClient()
+  const bookList = useBookList({ limit: 50, scope: 'all' })
   const parentRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    queryClient.invalidateQueries({ queryKey: booksQueryKeys.lists() })
+  }, [auth.isAuthenticated, queryClient])
 
   const virtualizer = useVirtualizer({
     count: bookList.hasNextPage ? bookList.allBooks.length + 1 : bookList.allBooks.length,
