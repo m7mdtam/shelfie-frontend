@@ -5,32 +5,56 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import {
   Dialog,
+  DialogBody,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
-import { BookForm } from '@/components/pages/books/BookForm'
+import {
+  Drawer,
+  DrawerBody,
+  DrawerContent,
+  DrawerDescription,
+  DrawerHeader,
+  DrawerTitle,
+} from '@/components/ui/drawer'
+import { DeleteBookDialog } from '@/components/pages/books/delete-book-dialog'
+import { BookForm } from '@/components/pages/books/book-form'
 import { BookOpen, Edit2, Trash2, ArrowLeft } from 'lucide-react'
 import { useState } from 'react'
 import { useAuthContext } from '@/contexts/auth'
+import { useIsMobile } from '@/hooks/use-is-mobile'
 
 const GENRES = [
-  'fiction', 'non-fiction', 'fantasy', 'science-fiction', 'mystery',
-  'thriller', 'romance', 'historical-fiction', 'biography', 'self-help', 'other',
+  'fiction',
+  'non-fiction',
+  'fantasy',
+  'science-fiction',
+  'mystery',
+  'thriller',
+  'romance',
+  'historical-fiction',
+  'biography',
+  'self-help',
+  'other',
 ]
 const STATUSES = ['want-to-read', 'reading', 'finished']
 
 const formatLabel = (value: string) =>
-  value.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')
+  value
+    .split('-')
+    .map(w => w.charAt(0).toUpperCase() + w.slice(1))
+    .join(' ')
 
 export function BookDetailPage() {
   const params = useParams({ from: '/books/$bookId' })
   const navigate = useNavigate()
-  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
+  const [deleteOpen, setDeleteOpen] = useState(false)
   const [editOpen, setEditOpen] = useState(false)
 
   const auth = useAuthContext()
+  const isMobile = useIsMobile()
   const { data: book, isLoading, error } = useGetBook(params.bookId)
   const deleteBook = useDeleteBook()
   const updateBook = useUpdateBook(params.bookId)
@@ -98,6 +122,17 @@ export function BookDetailPage() {
 
   const isOwner = String(auth.decodedToken?.id) === String(book.owner.id)
 
+  const editFormContent = (
+    <BookForm
+      mode="edit"
+      initialData={book}
+      onSubmit={handleEdit}
+      isLoading={updateBook.isPending}
+      genres={GENRES}
+      statuses={STATUSES}
+    />
+  )
+
   return (
     <>
       <div className="min-h-screen bg-background-base p-4 md:p-6">
@@ -109,9 +144,13 @@ export function BookDetailPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
             <div className="col-span-1 md:col-span-1">
-              <div className="w-full bg-gradient-to-br from-accent-primary-hover to-accent-primary rounded-lg h-80 flex items-center justify-center sticky top-4 overflow-hidden">
+              <div className="w-full bg-linear-to-br from-accent-primary-hover to-accent-primary rounded-lg h-80 flex items-center justify-center sticky top-4 overflow-hidden">
                 {book.coverImage?.url ? (
-                  <img src={book.coverImage.url} alt={book.title} className="w-full h-full object-cover" />
+                  <img
+                    src={book.coverImage.url}
+                    alt={book.title}
+                    className="w-full h-full object-cover"
+                  />
                 ) : (
                   <BookOpen className="w-24 h-24 text-white opacity-50" />
                 )}
@@ -141,7 +180,9 @@ export function BookDetailPage() {
                     {book.genre && (
                       <div>
                         <span className="text-xs text-text-secondary">Genre</span>
-                        <p className="text-sm font-medium text-text-primary mt-1">{formatLabel(book.genre)}</p>
+                        <p className="text-sm font-medium text-text-primary mt-1">
+                          {formatLabel(book.genre)}
+                        </p>
                       </div>
                     )}
 
@@ -160,7 +201,9 @@ export function BookDetailPage() {
                             <span
                               key={i}
                               className={`text-lg ${
-                                i < (book.rating || 0) ? 'text-accent-primary' : 'text-text-tertiary'
+                                i < (book.rating || 0)
+                                  ? 'text-accent-primary'
+                                  : 'text-text-tertiary'
                               }`}
                             >
                               ★
@@ -184,34 +227,22 @@ export function BookDetailPage() {
 
               {isOwner && (
                 <div className="flex gap-2">
-                  <Button onClick={() => setEditOpen(true)} variant="default" className="flex gap-2">
+                  <Button
+                    onClick={() => setEditOpen(true)}
+                    variant="default"
+                    className="flex gap-2"
+                  >
                     <Edit2 className="w-4 h-4" />
                     Edit
                   </Button>
-
-                  {!showDeleteConfirm ? (
-                    <Button
-                      onClick={() => setShowDeleteConfirm(true)}
-                      variant="error"
-                      className="flex gap-2"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                      Delete
-                    </Button>
-                  ) : (
-                    <div className="flex gap-2">
-                      <Button onClick={handleDelete} variant="error" disabled={deleteBook.isPending}>
-                        {deleteBook.isPending ? 'Deleting...' : 'Confirm Delete'}
-                      </Button>
-                      <Button
-                        onClick={() => setShowDeleteConfirm(false)}
-                        variant="outline"
-                        disabled={deleteBook.isPending}
-                      >
-                        Cancel
-                      </Button>
-                    </div>
-                  )}
+                  <Button
+                    onClick={() => setDeleteOpen(true)}
+                    variant="error"
+                    className="flex gap-2"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                    Delete
+                  </Button>
                 </div>
               )}
             </div>
@@ -219,22 +250,35 @@ export function BookDetailPage() {
         </div>
       </div>
 
-      <Dialog open={editOpen} onOpenChange={setEditOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Edit Book</DialogTitle>
-            <DialogDescription>Update "{book.title}"</DialogDescription>
-          </DialogHeader>
-          <BookForm
-            mode="edit"
-            initialData={book}
-            onSubmit={handleEdit}
-            isLoading={updateBook.isPending}
-            genres={GENRES}
-            statuses={STATUSES}
-          />
-        </DialogContent>
-      </Dialog>
+      {isMobile ? (
+        <Drawer open={editOpen} onOpenChange={setEditOpen}>
+          <DrawerContent>
+            <DrawerHeader>
+              <DrawerTitle>Edit Book</DrawerTitle>
+              <DrawerDescription>Update "{book.title}"</DrawerDescription>
+            </DrawerHeader>
+            <DrawerBody>{editFormContent}</DrawerBody>
+          </DrawerContent>
+        </Drawer>
+      ) : (
+        <Dialog open={editOpen} onOpenChange={setEditOpen}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Edit Book</DialogTitle>
+              <DialogDescription>Update "{book.title}"</DialogDescription>
+            </DialogHeader>
+            <DialogBody>{editFormContent}</DialogBody>
+          </DialogContent>
+        </Dialog>
+      )}
+
+      <DeleteBookDialog
+        open={deleteOpen}
+        onOpenChange={setDeleteOpen}
+        bookTitle={book.title}
+        onConfirm={handleDelete}
+        isLoading={deleteBook.isPending}
+      />
     </>
   )
 }

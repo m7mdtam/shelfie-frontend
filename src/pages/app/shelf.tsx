@@ -3,19 +3,29 @@ import { useQueryClient } from '@tanstack/react-query'
 import { useBookList, useBookForm } from '@/hooks/pages/books'
 import { booksQueryKeys } from '@/api/books'
 import { useAuthContext } from '@/contexts/auth'
+import { useIsMobile } from '@/hooks/use-is-mobile'
 import { BookFilters } from '@/components/pages/books/BookFilters'
 import { BookListDisplay } from '@/components/pages/books/book-list-display'
-import { DeleteBookDialog } from '@/components/pages/books/DeleteBookDialog'
-import { BookForm } from '@/components/pages/books/BookForm'
+import { DeleteBookDialog } from '@/components/pages/books/delete-book-dialog'
+import { BookForm } from '@/components/pages/books/book-form'
 import { PageSection } from '@/components/page-section'
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import {
   Dialog,
+  DialogBody,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
+import {
+  Drawer,
+  DrawerBody,
+  DrawerContent,
+  DrawerDescription,
+  DrawerHeader,
+  DrawerTitle,
+} from '@/components/ui/drawer'
 import { Button } from '@/components/ui/button'
 import { Plus } from 'lucide-react'
 
@@ -40,6 +50,7 @@ export function ShelfPage() {
   const queryClient = useQueryClient()
   const bookList = useBookList({ limit: 50, scope: 'mine' })
   const bookForm = useBookForm()
+  const isMobile = useIsMobile()
 
   useEffect(() => {
     queryClient.invalidateQueries({ queryKey: booksQueryKeys.myBooksList() })
@@ -59,6 +70,20 @@ export function ShelfPage() {
       </div>
     )
   }
+
+  const formTitle = bookForm.mode === 'create' ? 'Add Book' : 'Edit Book'
+  const formDescription =
+    bookForm.mode === 'create' ? 'Add a new book to your shelf' : 'Update book information'
+  const formContent = (
+    <BookForm
+      mode={bookForm.mode}
+      initialData={bookForm.selectedBook || undefined}
+      onSubmit={bookForm.submitForm}
+      isLoading={bookForm.isCreating || bookForm.isUpdating}
+      genres={GENRES}
+      statuses={STATUSES}
+    />
+  )
 
   return (
     <div className="flex-1 flex flex-col bg-background-base p-4 md:p-6">
@@ -106,26 +131,27 @@ export function ShelfPage() {
         </PageSection>
       </div>
 
-      <Dialog open={bookForm.formOpen} onOpenChange={bookForm.setFormOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>{bookForm.mode === 'create' ? 'Add Book' : 'Edit Book'}</DialogTitle>
-            <DialogDescription>
-              {bookForm.mode === 'create'
-                ? 'Add a new book to your shelf'
-                : 'Update book information'}
-            </DialogDescription>
-          </DialogHeader>
-          <BookForm
-            mode={bookForm.mode}
-            initialData={bookForm.selectedBook || undefined}
-            onSubmit={bookForm.submitForm}
-            isLoading={bookForm.isCreating || bookForm.isUpdating}
-            genres={GENRES}
-            statuses={STATUSES}
-          />
-        </DialogContent>
-      </Dialog>
+      {isMobile ? (
+        <Drawer open={bookForm.formOpen} onOpenChange={bookForm.setFormOpen}>
+          <DrawerContent>
+            <DrawerHeader>
+              <DrawerTitle>{formTitle}</DrawerTitle>
+              <DrawerDescription>{formDescription}</DrawerDescription>
+            </DrawerHeader>
+            <DrawerBody>{formContent}</DrawerBody>
+          </DrawerContent>
+        </Drawer>
+      ) : (
+        <Dialog open={bookForm.formOpen} onOpenChange={bookForm.setFormOpen}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>{formTitle}</DialogTitle>
+              <DialogDescription>{formDescription}</DialogDescription>
+            </DialogHeader>
+            <DialogBody>{formContent}</DialogBody>
+          </DialogContent>
+        </Dialog>
+      )}
 
       <DeleteBookDialog
         open={bookForm.deleteDialogOpen}

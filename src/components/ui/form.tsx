@@ -10,12 +10,49 @@ import {
   type ControllerProps,
   type FieldPath,
   type FieldValues,
+  type UseFormReturn,
 } from 'react-hook-form'
+import { z } from 'zod'
 
 import { cn } from '@/lib/utils'
 import { Label } from '@/components/ui/label'
 
-const Form = FormProvider
+type ZodObjectSchema = z.ZodObject<any, any, any>
+
+const ZodSchemaContext = React.createContext<ZodObjectSchema | null>(null)
+
+function isFieldRequired(schema: ZodObjectSchema, fieldName: string): boolean {
+  try {
+    const fieldSchema = schema.shape[fieldName]
+    if (!fieldSchema) return false
+    if (fieldSchema instanceof z.ZodDefault) return false
+    if (fieldSchema instanceof z.ZodOptional) return false
+    return true
+  } catch {
+    return false
+  }
+}
+
+type FormProps<
+  TFieldValues extends FieldValues = FieldValues,
+  TContext = any,
+  TTransformedValues extends FieldValues | undefined = undefined,
+> = UseFormReturn<TFieldValues, TContext, TTransformedValues> & {
+  schema?: ZodObjectSchema
+  children: React.ReactNode
+}
+
+function Form<
+  TFieldValues extends FieldValues = FieldValues,
+  TContext = any,
+  TTransformedValues extends FieldValues | undefined = undefined,
+>({ schema, children, ...props }: FormProps<TFieldValues, TContext, TTransformedValues>) {
+  return (
+    <ZodSchemaContext.Provider value={schema ?? null}>
+      <FormProvider {...props}>{children}</FormProvider>
+    </ZodSchemaContext.Provider>
+  )
+}
 
 type FormFieldContextValue<
   TFieldValues extends FieldValues = FieldValues,
@@ -89,13 +126,17 @@ const FormLabel = React.forwardRef<
   React.ElementRef<typeof LabelPrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root>
 >(({ className, ...props }, ref) => {
-  const { error, formItemId } = useFormField()
+  const { error, formItemId, name } = useFormField()
+  const schema = React.useContext(ZodSchemaContext)
+  const required = schema ? isFieldRequired(schema, name) : false
 
   return (
     <Label
       ref={ref}
-      className={cn(error && 'text-destructive', className)}
+      className={cn(error && 'text-state-error', className)}
       htmlFor={formItemId}
+      required={required}
+      error={!!error}
       {...props}
     />
   )
@@ -152,7 +193,7 @@ const FormMessage = React.forwardRef<
     <p
       ref={ref}
       id={formMessageId}
-      className={cn('text-[0.8rem] font-medium text-destructive', className)}
+      className={cn('text-[0.8rem] font-medium text-state-error', className)}
       {...props}
     >
       {body}
