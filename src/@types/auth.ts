@@ -60,6 +60,14 @@ export interface PayloadUser {
   }
 }
 
+export interface ForgotPasswordRequest {
+  email: string
+}
+
+export interface ForgotPasswordResponse {
+  message: string
+}
+
 export interface DecodedToken {
   id: string
   email: string
