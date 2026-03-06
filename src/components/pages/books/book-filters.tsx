@@ -1,3 +1,4 @@
+import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import {
   Select,
@@ -33,9 +34,9 @@ export function BookFilters({
   statuses,
 }: BookFiltersProps) {
   return (
-    <div className="space-y-4 md:space-y-0 md:flex md:gap-3 md:items-end mb-6">
+    <div className="flex flex-col md:flex-row md:items-end gap-3 mb-6">
       <div className="flex-1">
-        <label className="text-sm text-text-secondary block mb-2">Search</label>
+        <Label className="text-text-secondary mb-2">Search</Label>
         <div className="relative">
           <Search className="absolute left-3 top-2.5 w-4 h-4 text-text-secondary" />
           <Input
@@ -48,7 +49,7 @@ export function BookFilters({
       </div>
 
       <div className="w-full md:w-48">
-        <label className="text-sm text-text-secondary block mb-2">Genre</label>
+        <Label className="text-text-secondary mb-2">Genre</Label>
         <Select value={genre || 'all'} onValueChange={v => onGenreChange(v === 'all' ? '' : v)}>
           <SelectTrigger>
             <SelectValue placeholder="All genres" />
@@ -65,7 +66,7 @@ export function BookFilters({
       </div>
 
       <div className="w-full md:w-48">
-        <label className="text-sm text-text-secondary block mb-2">Status</label>
+        <Label className="text-text-secondary mb-2">Status</Label>
         <Select value={status || 'all'} onValueChange={v => onStatusChange(v === 'all' ? '' : v)}>
           <SelectTrigger>
             <SelectValue placeholder="All statuses" />

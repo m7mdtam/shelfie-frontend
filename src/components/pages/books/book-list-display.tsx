@@ -33,7 +33,7 @@ export function BookListDisplay({
 }: BookListDisplayProps) {
   if (isLoading && books.length === 0) {
     return (
-      <div className="space-y-4">
+      <div className="flex flex-col gap-4">
         {Array.from({ length: 6 }).map((_, i) => (
           <div key={i} className="h-32 bg-background-surface rounded-lg animate-pulse" />
         ))}

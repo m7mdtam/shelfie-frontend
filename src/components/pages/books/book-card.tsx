@@ -42,7 +42,7 @@ export function BookCard({ book, isOwner, onEdit, onDelete }: BookCardProps) {
           <p className="text-sm text-text-secondary line-clamp-1">{book.author}</p>
         </CardHeader>
 
-        <CardContent className="space-y-3">
+        <CardContent className="flex flex-col gap-3">
           <div className="grid grid-cols-2 gap-2 text-xs">
             {book.genre && (
               <div>
