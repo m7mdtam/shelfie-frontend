@@ -65,7 +65,7 @@ export function BookForm({
 
   return (
     <Form {...form} schema={bookSchema}>
-      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
+      <form onSubmit={form.handleSubmit(handleSubmit)} className="flex flex-col gap-4">
         <FormField
           control={form.control}
           name="title"

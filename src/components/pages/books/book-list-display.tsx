@@ -81,12 +81,7 @@ export function BookListDisplay({
       <p className="text-sm text-text-secondary mb-4">
         Showing {books.length} of {totalCount} books
       </p>
-      <div
-        className="grid gap-4"
-        style={{
-          gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))',
-        }}
-      >
+      <div className="grid gap-4 grid-cols-[repeat(auto-fill,minmax(250px,1fr))]">
         {books.map(book => (
           <BookCard
             key={book.id}

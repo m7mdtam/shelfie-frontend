@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { Compass } from 'lucide-react'
-import DotGrid from '@/components/DotGrid'
+import DotGrid from '@/components/dot-grid'
 
 export const Route = createFileRoute('/')({
   component: HomePage,
@@ -22,7 +22,7 @@ function HomePage() {
           maxSpeed={3000}
           resistance={600}
           returnDuration={1.5}
-          style={{ height: '100%', width: '100%' }}
+          className="h-full w-full"
         />
       </div>
       <div className="relative z-10 w-full max-w-2xl text-center">
