@@ -4,7 +4,7 @@ import { useNavigate } from '@tanstack/react-router'
 
 import { signInSchema, SignInFormData } from '@/schemas'
 import { auth } from '@/api/auth/hooks'
-import { getErrorMessage } from '@/utils'
+import { getSignInError } from '@/api/auth/error-handler'
 import { ROUTES } from '@/utils/api/routes'
 import { setToken } from '@/lib/cookies'
 
@@ -32,11 +32,8 @@ export const useSignInForm = () => {
           navigate({ to: ROUTES.BOOKS })
         },
         onError: (error: Error) => {
-          const errorMessage = getErrorMessage(error)
-          form.setError('root', {
-            type: 'manual',
-            message: errorMessage,
-          })
+          const { field, message } = getSignInError(error)
+          form.setError(field as 'root' | 'email' | 'password', { type: 'manual', message })
         },
       }
     )

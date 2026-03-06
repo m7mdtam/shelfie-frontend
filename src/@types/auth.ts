@@ -42,6 +42,7 @@ export interface PayloadUser {
   lastName: string
   createdAt: string
   updatedAt?: string
+  _verified?: boolean
   avatar?: {
     id: string
     filename: string

@@ -1,10 +1,12 @@
 import { motion } from 'motion/react'
 import { useIsMobile } from '@/hooks'
+import { useVerificationPolling } from '@/hooks/auth'
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { MailCheck } from 'lucide-react'
+import { CheckCircle2, Loader, MailCheck } from 'lucide-react'
 
 export function SignUpSuccessPage() {
   const isMobile = useIsMobile()
+  const { isVerified } = useVerificationPolling()
 
   return (
     <div
@@ -31,7 +33,11 @@ export function SignUpSuccessPage() {
                     damping: 12,
                   }}
                 >
-                  <MailCheck className="w-16 h-16 text-state-success" />
+                  {isVerified ? (
+                    <CheckCircle2 className="w-16 h-16 text-state-success" />
+                  ) : (
+                    <MailCheck className="w-16 h-16 text-state-success" />
+                  )}
                 </motion.div>
               </div>
               <motion.div
@@ -39,7 +45,7 @@ export function SignUpSuccessPage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.6, duration: 0.6 }}
               >
-                <CardTitle>Check your email</CardTitle>
+                <CardTitle>{isVerified ? 'Email Verified!' : 'Check your email'}</CardTitle>
               </motion.div>
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
@@ -47,9 +53,22 @@ export function SignUpSuccessPage() {
                 transition={{ delay: 0.8, duration: 0.6 }}
               >
                 <CardDescription>
-                  We sent a verification link to your email. Please verify your account before signing in.
+                  {isVerified
+                    ? 'Your account is verified. Redirecting you to your shelf...'
+                    : 'We sent a verification link to your email. Click it to verify your account.'}
                 </CardDescription>
               </motion.div>
+              {!isVerified && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 1.1, duration: 0.5 }}
+                  className="flex items-center justify-center gap-2 mt-4 text-text-secondary text-sm"
+                >
+                  <Loader className="w-4 h-4 animate-spin" />
+                  <span>Waiting for email verification...</span>
+                </motion.div>
+              )}
             </CardHeader>
           </Card>
         </motion.div>

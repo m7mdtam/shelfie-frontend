@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 
 import { forgotPasswordSchema, ForgotPasswordFormData } from '@/schemas'
 import { auth } from '@/api/auth/hooks'
-import { getErrorMessage } from '@/utils'
+import { getForgotPasswordError } from '@/api/auth/error-handler'
 
 export const useForgotPasswordForm = () => {
   const [isSuccess, setIsSuccess] = useState(false)
@@ -22,14 +22,12 @@ export const useForgotPasswordForm = () => {
       { email: data.email },
       {
         onSuccess: () => {
+          sessionStorage.setItem('reset_password_email', data.email)
           setIsSuccess(true)
         },
         onError: (error: Error) => {
-          const errorMessage = getErrorMessage(error)
-          form.setError('root', {
-            type: 'manual',
-            message: errorMessage,
-          })
+          const { field, message } = getForgotPasswordError(error)
+          form.setError(field as 'root' | 'email', { type: 'manual', message })
         },
       }
     )
