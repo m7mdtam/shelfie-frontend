@@ -60,6 +60,15 @@ export interface PayloadUser {
   }
 }
 
+export interface ResetPasswordRequest {
+  token: string
+  password: string
+}
+
+export interface ResetPasswordResponse {
+  message: string
+}
+
 export interface ForgotPasswordRequest {
   email: string
 }

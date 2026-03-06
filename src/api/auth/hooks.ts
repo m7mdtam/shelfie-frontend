@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { loginFn, registerFn, logoutFn, getMeFn, forgotPasswordFn } from './requests'
+import { loginFn, registerFn, logoutFn, getMeFn, forgotPasswordFn, resetPasswordFn } from './requests'
 import { authKeys } from './keys'
-import { LoginRequest, RegisterRequest, ForgotPasswordRequest } from './types'
+import { LoginRequest, RegisterRequest, ForgotPasswordRequest, ResetPasswordRequest } from './types'
 
 export const auth = {
   useSignIn: () => {
@@ -37,6 +37,13 @@ export const auth = {
     return useMutation({
       mutationFn: (data: ForgotPasswordRequest) => forgotPasswordFn(data),
       mutationKey: authKeys.forgotPassword(),
+    })
+  },
+
+  useResetPassword: () => {
+    return useMutation({
+      mutationFn: (data: ResetPasswordRequest) => resetPasswordFn(data),
+      mutationKey: authKeys.resetPassword(),
     })
   },
 }

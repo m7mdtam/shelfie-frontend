@@ -9,6 +9,8 @@ import {
   LogoutResponse,
   ForgotPasswordRequest,
   ForgotPasswordResponse,
+  ResetPasswordRequest,
+  ResetPasswordResponse,
 } from './types'
 
 export const loginFn = async (data: LoginRequest): Promise<LoginResponse> => {
@@ -38,5 +40,10 @@ export const getMeFn = async (): Promise<GetMeResponse> => {
 
 export const forgotPasswordFn = async (data: ForgotPasswordRequest): Promise<ForgotPasswordResponse> => {
   const response = await axiosInstance.post('/api/users/forgot-password', data)
+  return response.data
+}
+
+export const resetPasswordFn = async (data: ResetPasswordRequest): Promise<ResetPasswordResponse> => {
+  const response = await axiosInstance.post('/api/users/reset-password', data)
   return response.data
 }

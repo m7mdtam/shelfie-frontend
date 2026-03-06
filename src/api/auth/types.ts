@@ -10,6 +10,8 @@ import {
   DecodedToken,
   ForgotPasswordRequest,
   ForgotPasswordResponse,
+  ResetPasswordRequest,
+  ResetPasswordResponse,
 } from '@/@types/auth'
 
 export type {
@@ -24,4 +26,6 @@ export type {
   DecodedToken,
   ForgotPasswordRequest,
   ForgotPasswordResponse,
+  ResetPasswordRequest,
+  ResetPasswordResponse,
 }
