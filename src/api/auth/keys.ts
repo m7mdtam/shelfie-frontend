@@ -7,4 +7,5 @@ export const authKeys = {
   refreshToken: () => [...authKeys.all(), 'refresh-token'] as const,
   forgotPassword: () => [...authKeys.all(), 'forgot-password'] as const,
   resetPassword: () => [...authKeys.all(), 'reset-password'] as const,
+  verifyEmail: () => [...authKeys.all(), 'verify-email'] as const,
 }

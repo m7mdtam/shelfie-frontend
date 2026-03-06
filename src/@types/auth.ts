@@ -77,6 +77,14 @@ export interface ForgotPasswordResponse {
   message: string
 }
 
+export interface VerifyEmailRequest {
+  token: string
+}
+
+export interface VerifyEmailResponse {
+  message: string
+}
+
 export interface DecodedToken {
   id: string
   email: string

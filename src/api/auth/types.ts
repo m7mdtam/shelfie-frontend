@@ -12,6 +12,8 @@ import {
   ForgotPasswordResponse,
   ResetPasswordRequest,
   ResetPasswordResponse,
+  VerifyEmailRequest,
+  VerifyEmailResponse,
 } from '@/@types/auth'
 
 export type {
@@ -28,4 +30,6 @@ export type {
   ForgotPasswordResponse,
   ResetPasswordRequest,
   ResetPasswordResponse,
+  VerifyEmailRequest,
+  VerifyEmailResponse,
 }
