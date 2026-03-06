@@ -1,0 +1,69 @@
+import { Link, useSearch } from '@tanstack/react-router'
+import { BookOpen } from 'lucide-react'
+import { useIsMobile } from '@/hooks'
+import {
+  PageSection,
+  PageSectionContent,
+  PageSectionDescription,
+  PageSectionHeader,
+  PageSectionTitle,
+} from '@/components/page-section'
+import { ResetPasswordForm } from '@/components/auth'
+import DotGrid from '@/components/DotGrid'
+
+export function ResetPasswordPage() {
+  const isMobile = useIsMobile()
+  const search = useSearch({ strict: false })
+  const token = (search as Record<string, string>).token
+
+  return (
+    <div
+      className="flex-1 flex flex-col items-center justify-center px-4 py-8 relative"
+      data-mobile={isMobile}
+    >
+      <div className="absolute inset-0 z-0 pointer-events-none opacity-10">
+        <DotGrid
+          dotSize={8}
+          gap={40}
+          baseColor="#9B8B7E"
+          activeColor="#C9A876"
+          proximity={120}
+          speedTrigger={80}
+          shockRadius={200}
+          shockStrength={3}
+          maxSpeed={3000}
+          resistance={600}
+          returnDuration={1.5}
+          style={{ height: '100%', width: '100%' }}
+        />
+      </div>
+      <Link to="/" className="relative z-10 flex items-center gap-2 mb-5 group">
+        <BookOpen className="h-6 w-6 text-accent-primary" />
+        <span className="font-bold text-xl text-text-primary">Shelfie</span>
+      </Link>
+      <div className="relative z-10 w-full max-w-sm">
+        <PageSection variant="default" className="w-full gap-4 flex flex-col">
+          <PageSectionHeader className="text-center">
+            <PageSectionTitle>Reset Password</PageSectionTitle>
+            <PageSectionDescription>Enter your new password below</PageSectionDescription>
+          </PageSectionHeader>
+          <PageSectionContent>
+            {!token ? (
+              <div className="rounded-md p-4 border border-state-error bg-state-error-bg text-state-error flex flex-col gap-2">
+                <p className="text-sm font-medium">Invalid or expired reset link</p>
+                <Link
+                  to="/forgot-password"
+                  className="text-sm font-medium underline underline-offset-4 hover:opacity-80 transition-opacity"
+                >
+                  Request a new one
+                </Link>
+              </div>
+            ) : (
+              <ResetPasswordForm />
+            )}
+          </PageSectionContent>
+        </PageSection>
+      </div>
+    </div>
+  )
+}

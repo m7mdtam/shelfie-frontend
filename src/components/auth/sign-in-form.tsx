@@ -10,6 +10,7 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { useSignInForm } from '@/hooks/auth'
 import { Loader } from 'lucide-react'
+import { Link } from '@tanstack/react-router'
 
 export const SignInForm = () => {
   const { form, onSubmit, isPending } = useSignInForm()
@@ -62,6 +63,15 @@ export const SignInForm = () => {
             </FormItem>
           )}
         />
+
+        <div className="flex justify-end">
+          <Link
+            to="/forgot-password"
+            className="text-accent-primary text-sm font-medium hover:text-accent-primary-hover transition-colors"
+          >
+            Forgot password?
+          </Link>
+        </div>
 
         <Button type="submit" className="w-full mt-4" disabled={isPending}>
           {isPending ? (
