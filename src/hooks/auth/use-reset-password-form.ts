@@ -1,37 +1,31 @@
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useNavigate } from '@tanstack/react-router'
-import { signUpSchema, SignUpFormData } from '@/schemas'
+import { useNavigate, useSearch } from '@tanstack/react-router'
+
+import { resetPasswordSchema, ResetPasswordFormData } from '@/schemas'
 import { auth } from '@/api/auth/hooks'
 import { getErrorMessage } from '@/utils'
 import { ROUTES } from '@/utils/api/routes'
 
-export const useSignUpForm = () => {
+export const useResetPasswordForm = () => {
   const navigate = useNavigate()
-  const { mutate: signUp, isPending } = auth.useSignUp()
+  const search = useSearch({ strict: false })
+  const { mutate: resetPassword, isPending } = auth.useResetPassword()
 
-  const form = useForm<SignUpFormData>({
-    resolver: zodResolver(signUpSchema),
+  const form = useForm<ResetPasswordFormData>({
+    resolver: zodResolver(resetPasswordSchema),
     defaultValues: {
-      firstName: '',
-      lastName: '',
-      email: '',
       password: '',
       confirmPassword: '',
     },
   })
 
-  const onSubmit = async (data: SignUpFormData) => {
-    signUp(
-      {
-        firstName: data.firstName,
-        lastName: data.lastName,
-        email: data.email,
-        password: data.password,
-      },
+  const onSubmit = async (data: ResetPasswordFormData) => {
+    resetPassword(
+      { token: (search as Record<string, string>).token, password: data.password },
       {
         onSuccess: () => {
-          navigate({ to: ROUTES.SIGN_UP_SUCCESS })
+          navigate({ to: ROUTES.SIGN_IN })
         },
         onError: (error: Error) => {
           const errorMessage = getErrorMessage(error)

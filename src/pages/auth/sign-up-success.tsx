@@ -1,24 +1,10 @@
-import { useEffect } from 'react'
-import { useNavigate } from '@tanstack/react-router'
 import { motion } from 'motion/react'
 import { useIsMobile } from '@/hooks'
-import { useAuthContext } from '@/contexts/auth'
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { CheckCircle2 } from 'lucide-react'
+import { MailCheck } from 'lucide-react'
 
 export function SignUpSuccessPage() {
   const isMobile = useIsMobile()
-  const navigate = useNavigate()
-  const { isAuthenticated } = useAuthContext()
-
-  useEffect(() => {
-    if (isAuthenticated) {
-      const timer = setTimeout(() => {
-        navigate({ to: '/books/shelf' })
-      }, 3500)
-      return () => clearTimeout(timer)
-    }
-  }, [isAuthenticated, navigate])
 
   return (
     <div
@@ -45,7 +31,7 @@ export function SignUpSuccessPage() {
                     damping: 12,
                   }}
                 >
-                  <CheckCircle2 className="w-16 h-16 text-state-success" />
+                  <MailCheck className="w-16 h-16 text-state-success" />
                 </motion.div>
               </div>
               <motion.div
@@ -53,14 +39,16 @@ export function SignUpSuccessPage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.6, duration: 0.6 }}
               >
-                <CardTitle>Account Created!</CardTitle>
+                <CardTitle>Check your email</CardTitle>
               </motion.div>
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.8, duration: 0.6 }}
               >
-                <CardDescription>Your account has been successfully created.</CardDescription>
+                <CardDescription>
+                  We sent a verification link to your email. Please verify your account before signing in.
+                </CardDescription>
               </motion.div>
             </CardHeader>
           </Card>

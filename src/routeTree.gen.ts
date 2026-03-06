@@ -16,9 +16,12 @@ import { Route as BooksShelfRouteImport } from './routes/books/shelf'
 import { Route as BooksExploreRouteImport } from './routes/books/explore'
 import { Route as BooksAddRouteImport } from './routes/books/add'
 import { Route as BooksBookIdRouteImport } from './routes/books/$bookId'
+import { Route as authVerifyEmailRouteImport } from './routes/(auth)/verify-email'
 import { Route as authSignUpSuccessRouteImport } from './routes/(auth)/sign-up-success'
 import { Route as authSignUpRouteImport } from './routes/(auth)/sign-up'
 import { Route as authSignInRouteImport } from './routes/(auth)/sign-in'
+import { Route as authResetPasswordRouteImport } from './routes/(auth)/reset-password'
+import { Route as authForgotPasswordRouteImport } from './routes/(auth)/forgot-password'
 import { Route as BooksBookIdEditRouteImport } from './routes/books/$bookId/edit'
 
 const BooksRoute = BooksRouteImport.update({
@@ -56,6 +59,11 @@ const BooksBookIdRoute = BooksBookIdRouteImport.update({
   path: '/$bookId',
   getParentRoute: () => BooksRoute,
 } as any)
+const authVerifyEmailRoute = authVerifyEmailRouteImport.update({
+  id: '/(auth)/verify-email',
+  path: '/verify-email',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const authSignUpSuccessRoute = authSignUpSuccessRouteImport.update({
   id: '/(auth)/sign-up-success',
   path: '/sign-up-success',
@@ -71,6 +79,16 @@ const authSignInRoute = authSignInRouteImport.update({
   path: '/sign-in',
   getParentRoute: () => rootRouteImport,
 } as any)
+const authResetPasswordRoute = authResetPasswordRouteImport.update({
+  id: '/(auth)/reset-password',
+  path: '/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const authForgotPasswordRoute = authForgotPasswordRouteImport.update({
+  id: '/(auth)/forgot-password',
+  path: '/forgot-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const BooksBookIdEditRoute = BooksBookIdEditRouteImport.update({
   id: '/edit',
   path: '/edit',
@@ -80,9 +98,12 @@ const BooksBookIdEditRoute = BooksBookIdEditRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/books': typeof BooksRouteWithChildren
+  '/forgot-password': typeof authForgotPasswordRoute
+  '/reset-password': typeof authResetPasswordRoute
   '/sign-in': typeof authSignInRoute
   '/sign-up': typeof authSignUpRoute
   '/sign-up-success': typeof authSignUpSuccessRoute
+  '/verify-email': typeof authVerifyEmailRoute
   '/books/$bookId': typeof BooksBookIdRouteWithChildren
   '/books/add': typeof BooksAddRoute
   '/books/explore': typeof BooksExploreRoute
@@ -92,9 +113,12 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/forgot-password': typeof authForgotPasswordRoute
+  '/reset-password': typeof authResetPasswordRoute
   '/sign-in': typeof authSignInRoute
   '/sign-up': typeof authSignUpRoute
   '/sign-up-success': typeof authSignUpSuccessRoute
+  '/verify-email': typeof authVerifyEmailRoute
   '/books/$bookId': typeof BooksBookIdRouteWithChildren
   '/books/add': typeof BooksAddRoute
   '/books/explore': typeof BooksExploreRoute
@@ -106,9 +130,12 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/books': typeof BooksRouteWithChildren
+  '/(auth)/forgot-password': typeof authForgotPasswordRoute
+  '/(auth)/reset-password': typeof authResetPasswordRoute
   '/(auth)/sign-in': typeof authSignInRoute
   '/(auth)/sign-up': typeof authSignUpRoute
   '/(auth)/sign-up-success': typeof authSignUpSuccessRoute
+  '/(auth)/verify-email': typeof authVerifyEmailRoute
   '/books/$bookId': typeof BooksBookIdRouteWithChildren
   '/books/add': typeof BooksAddRoute
   '/books/explore': typeof BooksExploreRoute
@@ -121,9 +148,12 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/books'
+    | '/forgot-password'
+    | '/reset-password'
     | '/sign-in'
     | '/sign-up'
     | '/sign-up-success'
+    | '/verify-email'
     | '/books/$bookId'
     | '/books/add'
     | '/books/explore'
@@ -133,9 +163,12 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/forgot-password'
+    | '/reset-password'
     | '/sign-in'
     | '/sign-up'
     | '/sign-up-success'
+    | '/verify-email'
     | '/books/$bookId'
     | '/books/add'
     | '/books/explore'
@@ -146,9 +179,12 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/books'
+    | '/(auth)/forgot-password'
+    | '/(auth)/reset-password'
     | '/(auth)/sign-in'
     | '/(auth)/sign-up'
     | '/(auth)/sign-up-success'
+    | '/(auth)/verify-email'
     | '/books/$bookId'
     | '/books/add'
     | '/books/explore'
@@ -160,9 +196,12 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   BooksRoute: typeof BooksRouteWithChildren
+  authForgotPasswordRoute: typeof authForgotPasswordRoute
+  authResetPasswordRoute: typeof authResetPasswordRoute
   authSignInRoute: typeof authSignInRoute
   authSignUpRoute: typeof authSignUpRoute
   authSignUpSuccessRoute: typeof authSignUpSuccessRoute
+  authVerifyEmailRoute: typeof authVerifyEmailRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -216,6 +255,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BooksBookIdRouteImport
       parentRoute: typeof BooksRoute
     }
+    '/(auth)/verify-email': {
+      id: '/(auth)/verify-email'
+      path: '/verify-email'
+      fullPath: '/verify-email'
+      preLoaderRoute: typeof authVerifyEmailRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/(auth)/sign-up-success': {
       id: '/(auth)/sign-up-success'
       path: '/sign-up-success'
@@ -235,6 +281,20 @@ declare module '@tanstack/react-router' {
       path: '/sign-in'
       fullPath: '/sign-in'
       preLoaderRoute: typeof authSignInRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/(auth)/reset-password': {
+      id: '/(auth)/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof authResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/(auth)/forgot-password': {
+      id: '/(auth)/forgot-password'
+      path: '/forgot-password'
+      fullPath: '/forgot-password'
+      preLoaderRoute: typeof authForgotPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/books/$bookId/edit': {
@@ -280,9 +340,12 @@ const BooksRouteWithChildren = BooksRoute._addFileChildren(BooksRouteChildren)
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   BooksRoute: BooksRouteWithChildren,
+  authForgotPasswordRoute: authForgotPasswordRoute,
+  authResetPasswordRoute: authResetPasswordRoute,
   authSignInRoute: authSignInRoute,
   authSignUpRoute: authSignUpRoute,
   authSignUpSuccessRoute: authSignUpSuccessRoute,
+  authVerifyEmailRoute: authVerifyEmailRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

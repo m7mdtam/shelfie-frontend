@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import {
   Form,
   FormControl,
@@ -8,12 +9,20 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import { useSignInForm } from '@/hooks/auth'
+import { useForgotPasswordForm } from '@/hooks/auth'
 import { Loader } from 'lucide-react'
-import { Link } from '@tanstack/react-router'
 
-export const SignInForm = () => {
-  const { form, onSubmit, isPending } = useSignInForm()
+export const ForgotPasswordForm = () => {
+  const { form, onSubmit, isPending, isSuccess } = useForgotPasswordForm()
+  const [emailFocused, setEmailFocused] = useState(false)
+
+  if (isSuccess) {
+    return (
+      <div className="rounded-md p-4 border border-state-success bg-state-success-bg text-state-success">
+        <p className="text-sm font-medium">Check your email for a reset link</p>
+      </div>
+    )
+  }
 
   return (
     <Form {...form}>
@@ -36,51 +45,32 @@ export const SignInForm = () => {
                   type="email"
                   autoComplete="email"
                   disabled={isPending}
+                  className={`bg-background-base text-text-primary placeholder:text-text-secondary rounded-md transition-all duration-200 ${
+                    emailFocused
+                      ? 'border border-accent-primary ring-2 ring-accent-background'
+                      : 'border-0'
+                  }`}
                   {...field}
+                  onFocus={() => setEmailFocused(true)}
+                  onBlur={() => {
+                    field.onBlur()
+                    setEmailFocused(false)
+                  }}
                 />
               </FormControl>
               <FormMessage className="text-state-error" />
             </FormItem>
           )}
         />
-
-        <FormField
-          control={form.control}
-          name="password"
-          render={({ field }) => (
-            <FormItem className="flex flex-col">
-              <FormLabel className="text-text-primary">Password</FormLabel>
-              <FormControl>
-                <Input
-                  placeholder="Enter your password"
-                  type="password"
-                  autoComplete="current-password"
-                  disabled={isPending}
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage className="text-state-error" />
-            </FormItem>
-          )}
-        />
-
-        <div className="flex justify-end">
-          <Link
-            to="/forgot-password"
-            className="text-accent-primary text-sm font-medium hover:text-accent-primary-hover transition-colors"
-          >
-            Forgot password?
-          </Link>
-        </div>
 
         <Button type="submit" className="w-full mt-4" disabled={isPending}>
           {isPending ? (
             <div className="flex items-center gap-2">
               <Loader className="h-4 w-4 animate-spin" />
-              Signing in...
+              Sending...
             </div>
           ) : (
-            'Sign in'
+            'Send reset link'
           )}
         </Button>
       </form>

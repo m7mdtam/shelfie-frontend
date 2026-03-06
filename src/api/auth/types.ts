@@ -8,6 +8,12 @@ import {
   LogoutResponse,
   PayloadUser,
   DecodedToken,
+  ForgotPasswordRequest,
+  ForgotPasswordResponse,
+  ResetPasswordRequest,
+  ResetPasswordResponse,
+  VerifyEmailRequest,
+  VerifyEmailResponse,
 } from '@/@types/auth'
 
 export type {
@@ -20,4 +26,10 @@ export type {
   LogoutResponse,
   PayloadUser,
   DecodedToken,
+  ForgotPasswordRequest,
+  ForgotPasswordResponse,
+  ResetPasswordRequest,
+  ResetPasswordResponse,
+  VerifyEmailRequest,
+  VerifyEmailResponse,
 }
