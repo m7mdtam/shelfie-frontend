@@ -16,6 +16,7 @@ import { Route as BooksShelfRouteImport } from './routes/books/shelf'
 import { Route as BooksExploreRouteImport } from './routes/books/explore'
 import { Route as BooksAddRouteImport } from './routes/books/add'
 import { Route as BooksBookIdRouteImport } from './routes/books/$bookId'
+import { Route as authVerifyEmailRouteImport } from './routes/(auth)/verify-email'
 import { Route as authSignUpSuccessRouteImport } from './routes/(auth)/sign-up-success'
 import { Route as authSignUpRouteImport } from './routes/(auth)/sign-up'
 import { Route as authSignInRouteImport } from './routes/(auth)/sign-in'
@@ -58,6 +59,11 @@ const BooksBookIdRoute = BooksBookIdRouteImport.update({
   path: '/$bookId',
   getParentRoute: () => BooksRoute,
 } as any)
+const authVerifyEmailRoute = authVerifyEmailRouteImport.update({
+  id: '/(auth)/verify-email',
+  path: '/verify-email',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const authSignUpSuccessRoute = authSignUpSuccessRouteImport.update({
   id: '/(auth)/sign-up-success',
   path: '/sign-up-success',
@@ -97,6 +103,7 @@ export interface FileRoutesByFullPath {
   '/sign-in': typeof authSignInRoute
   '/sign-up': typeof authSignUpRoute
   '/sign-up-success': typeof authSignUpSuccessRoute
+  '/verify-email': typeof authVerifyEmailRoute
   '/books/$bookId': typeof BooksBookIdRouteWithChildren
   '/books/add': typeof BooksAddRoute
   '/books/explore': typeof BooksExploreRoute
@@ -111,6 +118,7 @@ export interface FileRoutesByTo {
   '/sign-in': typeof authSignInRoute
   '/sign-up': typeof authSignUpRoute
   '/sign-up-success': typeof authSignUpSuccessRoute
+  '/verify-email': typeof authVerifyEmailRoute
   '/books/$bookId': typeof BooksBookIdRouteWithChildren
   '/books/add': typeof BooksAddRoute
   '/books/explore': typeof BooksExploreRoute
@@ -127,6 +135,7 @@ export interface FileRoutesById {
   '/(auth)/sign-in': typeof authSignInRoute
   '/(auth)/sign-up': typeof authSignUpRoute
   '/(auth)/sign-up-success': typeof authSignUpSuccessRoute
+  '/(auth)/verify-email': typeof authVerifyEmailRoute
   '/books/$bookId': typeof BooksBookIdRouteWithChildren
   '/books/add': typeof BooksAddRoute
   '/books/explore': typeof BooksExploreRoute
@@ -144,6 +153,7 @@ export interface FileRouteTypes {
     | '/sign-in'
     | '/sign-up'
     | '/sign-up-success'
+    | '/verify-email'
     | '/books/$bookId'
     | '/books/add'
     | '/books/explore'
@@ -158,6 +168,7 @@ export interface FileRouteTypes {
     | '/sign-in'
     | '/sign-up'
     | '/sign-up-success'
+    | '/verify-email'
     | '/books/$bookId'
     | '/books/add'
     | '/books/explore'
@@ -173,6 +184,7 @@ export interface FileRouteTypes {
     | '/(auth)/sign-in'
     | '/(auth)/sign-up'
     | '/(auth)/sign-up-success'
+    | '/(auth)/verify-email'
     | '/books/$bookId'
     | '/books/add'
     | '/books/explore'
@@ -189,6 +201,7 @@ export interface RootRouteChildren {
   authSignInRoute: typeof authSignInRoute
   authSignUpRoute: typeof authSignUpRoute
   authSignUpSuccessRoute: typeof authSignUpSuccessRoute
+  authVerifyEmailRoute: typeof authVerifyEmailRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -241,6 +254,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/books/$bookId'
       preLoaderRoute: typeof BooksBookIdRouteImport
       parentRoute: typeof BooksRoute
+    }
+    '/(auth)/verify-email': {
+      id: '/(auth)/verify-email'
+      path: '/verify-email'
+      fullPath: '/verify-email'
+      preLoaderRoute: typeof authVerifyEmailRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/(auth)/sign-up-success': {
       id: '/(auth)/sign-up-success'
@@ -325,6 +345,7 @@ const rootRouteChildren: RootRouteChildren = {
   authSignInRoute: authSignInRoute,
   authSignUpRoute: authSignUpRoute,
   authSignUpSuccessRoute: authSignUpSuccessRoute,
+  authVerifyEmailRoute: authVerifyEmailRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
