@@ -4,8 +4,10 @@ import { useNavigate, useSearch } from '@tanstack/react-router'
 
 import { resetPasswordSchema, ResetPasswordFormData } from '@/schemas'
 import { auth } from '@/api/auth/hooks'
-import { getErrorMessage } from '@/utils'
-import { ROUTES } from '@/utils/api/routes'
+import { getResetPasswordError } from '@/api/auth/error-handler'
+import { loginFn } from '@/api/auth/requests'
+import { setToken } from '@/lib/cookies'
+
 
 export const useResetPasswordForm = () => {
   const navigate = useNavigate()
@@ -24,15 +26,26 @@ export const useResetPasswordForm = () => {
     resetPassword(
       { token: (search as Record<string, string>).token, password: data.password },
       {
-        onSuccess: () => {
-          navigate({ to: ROUTES.SIGN_IN })
+        onSuccess: async () => {
+          const email = sessionStorage.getItem('reset_password_email')
+          if (email) {
+            try {
+              const response = await loginFn({ email, password: data.password })
+              if (response.token) {
+                setToken(response.token)
+                sessionStorage.removeItem('reset_password_email')
+                navigate({ to: '/books/shelf' })
+                return
+              }
+            } catch {
+              // fall through to sign-in
+            }
+          }
+          navigate({ to: '/sign-in' })
         },
         onError: (error: Error) => {
-          const errorMessage = getErrorMessage(error)
-          form.setError('root', {
-            type: 'manual',
-            message: errorMessage,
-          })
+          const { field, message } = getResetPasswordError(error)
+          form.setError(field as 'root' | 'password' | 'confirmPassword', { type: 'manual', message })
         },
       }
     )

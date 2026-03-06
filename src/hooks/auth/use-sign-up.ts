@@ -3,7 +3,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useNavigate } from '@tanstack/react-router'
 import { signUpSchema, SignUpFormData } from '@/schemas'
 import { auth } from '@/api/auth/hooks'
-import { getErrorMessage } from '@/utils'
+import { getSignUpError } from '@/api/auth/error-handler'
 import { ROUTES } from '@/utils/api/routes'
 
 export const useSignUpForm = () => {
@@ -31,14 +31,13 @@ export const useSignUpForm = () => {
       },
       {
         onSuccess: () => {
+          sessionStorage.setItem('pending_verification_email', data.email)
+          sessionStorage.setItem('pending_verification_password', data.password)
           navigate({ to: ROUTES.SIGN_UP_SUCCESS })
         },
         onError: (error: Error) => {
-          const errorMessage = getErrorMessage(error)
-          form.setError('root', {
-            type: 'manual',
-            message: errorMessage,
-          })
+          const { field, message } = getSignUpError(error)
+          form.setError(field as 'root' | 'email' | 'password' | 'firstName' | 'lastName', { type: 'manual', message })
         },
       }
     )
