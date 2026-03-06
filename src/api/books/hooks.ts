@@ -72,6 +72,7 @@ export const useCreateBook = (
     ...options,
     onSuccess: (data, variables, context, mutation) => {
       queryClient.invalidateQueries({ queryKey: booksQueryKeys.lists() })
+      queryClient.invalidateQueries({ queryKey: booksQueryKeys.myBooks() })
       options?.onSuccess?.(data, variables, context, mutation)
     },
   })
@@ -88,6 +89,7 @@ export const useUpdateBook = (
     onSuccess: (data, variables, context, mutation) => {
       queryClient.invalidateQueries({ queryKey: booksQueryKeys.detail(id) })
       queryClient.invalidateQueries({ queryKey: booksQueryKeys.lists() })
+      queryClient.invalidateQueries({ queryKey: booksQueryKeys.myBooks() })
       options?.onSuccess?.(data, variables, context, mutation)
     },
   })
@@ -100,6 +102,7 @@ export const useDeleteBook = (options?: UseMutationOptions<void, ApiError, strin
     ...options,
     onSuccess: (data, variables, context, mutation) => {
       queryClient.invalidateQueries({ queryKey: booksQueryKeys.lists() })
+      queryClient.invalidateQueries({ queryKey: booksQueryKeys.myBooks() })
       options?.onSuccess?.(data, variables, context, mutation)
     },
   })
