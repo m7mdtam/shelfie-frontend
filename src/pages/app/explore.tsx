@@ -1,11 +1,7 @@
 import { useBookList } from '@/hooks/pages/books'
-import { useAuthContext } from '@/contexts/auth'
 import { BookListDisplay } from '@/components/pages/books/book-list-display'
 import { BookFilters } from '@/components/pages/books/book-filters'
 import { PageSection } from '@/components/page-section'
-import { Link } from '@tanstack/react-router'
-import { Button } from '@/components/ui/button'
-import { Plus } from 'lucide-react'
 
 const GENRES = [
   'fiction',
@@ -22,7 +18,6 @@ const GENRES = [
 ]
 
 export function ExplorePage() {
-  const auth = useAuthContext()
   const bookList = useBookList({ limit: 10, scope: 'all' })
 
   return (
@@ -33,14 +28,6 @@ export function ExplorePage() {
             <h1 className="text-3xl md:text-4xl font-bold text-text-primary mb-2">Explore Books</h1>
             <p className="text-text-secondary">Discover books from the community</p>
           </div>
-          {auth.isAuthenticated && (
-            <Link to="/books/shelf">
-              <Button variant="default" className="flex gap-2 w-full sm:w-auto">
-                <Plus className="w-4 h-4" />
-                Add Book
-              </Button>
-            </Link>
-          )}
         </div>
 
         <PageSection>
