@@ -38,16 +38,13 @@ interface BookFormProps {
   genres: string[]
 }
 
-export function BookForm({
-  mode,
-  initialData,
-  onSubmit,
-  isLoading,
-  genres,
-}: BookFormProps) {
+export function BookForm({ mode, initialData, onSubmit, isLoading, genres }: BookFormProps) {
   const [coverFile, setCoverFile] = useState<File | null>(null)
   const [coverPreview, setCoverPreview] = useState<string | null>(
     initialData?.coverImage?.url ?? null
+  )
+  const [coverImageId, setCoverImageId] = useState<string | null>(
+    (initialData?.coverImage?.id as string) ?? null
   )
   const [isUploading, setIsUploading] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -57,11 +54,13 @@ export function BookForm({
     if (!file) return
     setCoverFile(file)
     setCoverPreview(URL.createObjectURL(file))
+    setCoverImageId(null) // will be replaced after upload
   }
 
   const removeCover = () => {
     setCoverFile(null)
     setCoverPreview(null)
+    setCoverImageId(null)
     if (fileInputRef.current) fileInputRef.current.value = ''
   }
 
@@ -86,9 +85,14 @@ export function BookForm({
       try {
         const media = await uploadMedia(coverFile, data.title || 'Book cover')
         payload.coverImage = media.id
+        setCoverImageId(media.id)
       } finally {
         setIsUploading(false)
       }
+    } else if (coverImageId) {
+      payload.coverImage = coverImageId
+    } else if (mode === 'edit') {
+      payload.coverImage = null
     }
     onSubmit(payload)
   }
@@ -96,7 +100,6 @@ export function BookForm({
   return (
     <Form {...form} schema={bookSchema}>
       <form onSubmit={form.handleSubmit(handleSubmit)} className="flex flex-col gap-4">
-        {/* Cover image upload */}
         <div className="flex flex-col gap-1.5">
           <span className="text-sm font-medium text-text-primary">Cover Image</span>
           <input
@@ -108,7 +111,11 @@ export function BookForm({
           />
           {coverPreview ? (
             <div className="relative w-full h-40 rounded-md overflow-hidden group">
-              <img src={coverPreview} alt="Cover preview" className="w-full h-full object-contain" />
+              <img
+                src={coverPreview}
+                alt="Cover preview"
+                className="w-full h-full object-contain"
+              />
               <button
                 type="button"
                 onClick={removeCover}
@@ -257,7 +264,13 @@ export function BookForm({
         />
 
         <Button type="submit" className="w-full" disabled={isLoading || isUploading}>
-          {isUploading ? 'Uploading cover...' : isLoading ? 'Saving...' : mode === 'create' ? 'Add Book' : 'Update Book'}
+          {isUploading
+            ? 'Uploading cover...'
+            : isLoading
+              ? 'Saving...'
+              : mode === 'create'
+                ? 'Add Book'
+                : 'Update Book'}
         </Button>
       </form>
     </Form>
