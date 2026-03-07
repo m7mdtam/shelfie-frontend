@@ -44,7 +44,7 @@ export interface Book {
   isDownloadable?: boolean
   downloadLink?: string
   rating?: number
-  notes?: string
+  description?: string
   isPublic: boolean
   owner: {
     id: string
@@ -75,7 +75,7 @@ export interface CreateBookRequest {
   isDownloadable?: boolean
   downloadLink?: string
   rating?: number
-  notes?: string
+  description?: string
   isPublic: boolean
 }
 
@@ -88,7 +88,7 @@ export interface UpdateBookRequest {
   isDownloadable?: boolean
   downloadLink?: string
   rating?: number
-  notes?: string
+  description?: string
   isPublic?: boolean
 }
 

@@ -74,7 +74,7 @@ export function BookForm({ mode, initialData, onSubmit, isLoading, genres }: Boo
       isDownloadable: initialData?.isDownloadable ?? false,
       downloadLink: initialData?.downloadLink || '',
       rating: initialData?.rating || 0,
-      notes: initialData?.notes || '',
+      description: initialData?.description || '',
       isPublic: initialData?.isPublic ?? false,
     },
   })
@@ -294,7 +294,7 @@ export function BookForm({ mode, initialData, onSubmit, isLoading, genres }: Boo
         />
         <FormField
           control={form.control}
-          name="notes"
+          name="description"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Notes</FormLabel>
