@@ -154,7 +154,6 @@ export function BookDetailPage() {
 
           <PageSection>
             <div className="flex flex-col sm:flex-row gap-5">
-              {/* Cover */}
               <div className="w-full sm:w-44 shrink-0 rounded-lg overflow-hidden self-start">
                 <img
                   src={book.coverImage?.url ?? fallbackImage}
@@ -163,7 +162,6 @@ export function BookDetailPage() {
                 />
               </div>
 
-              {/* Details */}
               <div className="flex-1 flex flex-col gap-4 min-w-0">
                 <div>
                   <h1 className="text-xl sm:text-2xl font-bold text-text-primary leading-tight">
@@ -172,7 +170,6 @@ export function BookDetailPage() {
                   <p className="text-sm sm:text-base text-text-secondary mt-1">{book.author}</p>
                 </div>
 
-                {/* Badges */}
                 <div className="flex flex-wrap gap-1.5">
                   {book.genre && <Badge variant="muted">{formatLabel(book.genre)}</Badge>}
                   {book.isPublic !== undefined && (
@@ -185,21 +182,27 @@ export function BookDetailPage() {
                   )}
                 </div>
 
-                {/* Rating */}
-                {book.rating ? (
-                  <div className="flex items-center gap-0.5">
-                    {Array.from({ length: 5 }).map((_, i) =>
-                      i < (book.rating || 0) ? (
-                        <Star key={i} className="w-4 h-4 fill-star-filled text-star-filled" />
-                      ) : (
-                        <Star key={i} className="w-4 h-4 text-text-secondary" />
-                      )
-                    )}
-                    <span className="text-sm text-text-secondary ml-1">{book.rating}/5</span>
-                  </div>
-                ) : null}
+                <div className="flex items-center gap-1.5">
+                  {Array.from({ length: 5 }, (_, i) => (
+                    <Star
+                      key={i}
+                      className={[
+                        'w-4 h-4',
+                        i < Math.round(book.averageRating ?? 0)
+                          ? 'fill-star-filled text-star-filled'
+                          : 'text-text-secondary',
+                      ].join(' ')}
+                    />
+                  ))}
+                  <span className="text-sm font-medium text-text-primary ml-0.5">
+                    {(book.averageRating ?? 0).toFixed(1)}
+                  </span>
+                  <span className="text-sm text-text-secondary">
+                    ({book.totalRatings ?? 0}{' '}
+                    {(book.totalRatings ?? 0) === 1 ? 'rating' : 'ratings'})
+                  </span>
+                </div>
 
-                {/* Download */}
                 {book.isDownloadable && book.downloadLink && (
                   <Button
                     variant="outline"
@@ -211,7 +214,6 @@ export function BookDetailPage() {
                   </Button>
                 )}
 
-                {/* Actions */}
                 <div className="flex flex-wrap gap-2 mt-auto pt-2">
                   {isOwner && (
                     <>
@@ -247,7 +249,12 @@ export function BookDetailPage() {
             </PageSection>
           )}
 
-          <CommentsSection bookId={book.id} />
+          <CommentsSection
+            bookId={book.id}
+            averageRating={book.averageRating}
+            userRating={book.userRating}
+            totalRatings={book.totalRatings}
+          />
         </div>
       </div>
 

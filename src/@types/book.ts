@@ -34,6 +34,12 @@ export interface BookMedia {
   }>
 }
 
+export interface BookRatingInfo {
+  averageRating: number
+  userRating: number | null
+  totalRatings: number
+}
+
 export interface Book {
   id: string
   title: string
@@ -43,7 +49,6 @@ export interface Book {
   status: BookStatus
   isDownloadable?: boolean
   downloadLink?: string
-  rating?: number
   description?: string
   isPublic: boolean
   owner: {
@@ -52,6 +57,9 @@ export interface Book {
     firstName: string
     lastName: string
   }
+  averageRating: number
+  userRating: number | null
+  totalRatings: number
   createdAt: string
   updatedAt: string
 }
@@ -74,7 +82,6 @@ export interface CreateBookRequest {
   status: BookStatus
   isDownloadable?: boolean
   downloadLink?: string
-  rating?: number
   description?: string
   isPublic: boolean
 }
@@ -87,7 +94,6 @@ export interface UpdateBookRequest {
   status?: BookStatus
   isDownloadable?: boolean
   downloadLink?: string
-  rating?: number
   description?: string
   isPublic?: boolean
 }
