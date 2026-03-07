@@ -1,7 +1,4 @@
-import { useEffect } from 'react'
-import { useQueryClient } from '@tanstack/react-query'
 import { useBookList, useBookForm } from '@/hooks/pages/books'
-import { booksQueryKeys } from '@/api/books'
 import { useAuthContext } from '@/contexts/auth'
 import { useIsMobile } from '@/hooks/use-is-mobile'
 import { BookFilters } from '@/components/pages/books/book-filters'
@@ -47,14 +44,9 @@ const STATUSES = ['want-to-read', 'reading', 'finished']
 
 export function ShelfPage() {
   const auth = useAuthContext()
-  const queryClient = useQueryClient()
   const bookList = useBookList({ limit: 50, scope: 'mine' })
   const bookForm = useBookForm()
   const isMobile = useIsMobile()
-
-  useEffect(() => {
-    queryClient.invalidateQueries({ queryKey: booksQueryKeys.myBooksList() })
-  }, [auth.isAuthenticated, queryClient])
 
   if (!auth.isAuthenticated || !auth.decodedToken?.id) {
     return (
@@ -81,12 +73,11 @@ export function ShelfPage() {
       onSubmit={bookForm.submitForm}
       isLoading={bookForm.isCreating || bookForm.isUpdating}
       genres={GENRES}
-      statuses={STATUSES}
     />
   )
 
   return (
-    <div className="flex-1 flex flex-col bg-background-base p-4 md:p-6">
+    <div className="flex-1 flex flex-col bg-background-base p-2 sm:p-4 md:p-6">
       <div className="max-w-7xl mx-auto w-full flex flex-col gap-6 flex-1">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>

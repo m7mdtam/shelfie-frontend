@@ -39,7 +39,6 @@ const GENRES = [
   'self-help',
   'other',
 ]
-const STATUSES = ['want-to-read', 'reading', 'finished']
 
 const formatLabel = (value: string) =>
   value
@@ -129,7 +128,6 @@ export function BookDetailPage() {
       onSubmit={handleEdit}
       isLoading={updateBook.isPending}
       genres={GENRES}
-      statuses={STATUSES}
     />
   )
 

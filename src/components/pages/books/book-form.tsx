@@ -1,7 +1,9 @@
+import { useState, useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Book } from '@/@types/book'
 import { bookSchema } from '@/schemas/book.ts'
+import { uploadMedia } from '@/api/media/requests'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
@@ -20,6 +22,7 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form'
+import { ImagePlus, X } from 'lucide-react'
 
 const formatLabel = (value: string) =>
   value
@@ -33,7 +36,6 @@ interface BookFormProps {
   onSubmit: (data: any) => void
   isLoading?: boolean
   genres: string[]
-  statuses: string[]
 }
 
 export function BookForm({
@@ -42,8 +44,27 @@ export function BookForm({
   onSubmit,
   isLoading,
   genres,
-  statuses,
 }: BookFormProps) {
+  const [coverFile, setCoverFile] = useState<File | null>(null)
+  const [coverPreview, setCoverPreview] = useState<string | null>(
+    initialData?.coverImage?.url ?? null
+  )
+  const [isUploading, setIsUploading] = useState(false)
+  const fileInputRef = useRef<HTMLInputElement>(null)
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+    setCoverFile(file)
+    setCoverPreview(URL.createObjectURL(file))
+  }
+
+  const removeCover = () => {
+    setCoverFile(null)
+    setCoverPreview(null)
+    if (fileInputRef.current) fileInputRef.current.value = ''
+  }
+
   const form = useForm({
     resolver: zodResolver(bookSchema),
     defaultValues: {
@@ -57,15 +78,66 @@ export function BookForm({
     },
   })
 
-  const handleSubmit = (data: any) => {
+  const handleSubmit = async (data: any) => {
     const payload = { ...data }
     if (!payload.rating) delete payload.rating
+    if (coverFile) {
+      setIsUploading(true)
+      try {
+        const media = await uploadMedia(coverFile, data.title || 'Book cover')
+        payload.coverImage = media.id
+      } finally {
+        setIsUploading(false)
+      }
+    }
     onSubmit(payload)
   }
 
   return (
     <Form {...form} schema={bookSchema}>
       <form onSubmit={form.handleSubmit(handleSubmit)} className="flex flex-col gap-4">
+        {/* Cover image upload */}
+        <div className="flex flex-col gap-1.5">
+          <span className="text-sm font-medium text-text-primary">Cover Image</span>
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/*"
+            className="hidden"
+            onChange={handleFileChange}
+          />
+          {coverPreview ? (
+            <div className="relative w-full h-40 rounded-md overflow-hidden group">
+              <img src={coverPreview} alt="Cover preview" className="w-full h-full object-contain" />
+              <button
+                type="button"
+                onClick={removeCover}
+                className="absolute top-2 right-2 bg-background-base/80 rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+              >
+                <X className="w-4 h-4 text-text-primary" />
+              </button>
+            </div>
+          ) : (
+            <button
+              type="button"
+              onClick={() => fileInputRef.current?.click()}
+              className="w-full h-40 rounded-md border border-dashed border-text-border flex flex-col items-center justify-center gap-2 text-text-secondary hover:border-accent-primary hover:text-accent-primary transition-colors"
+            >
+              <ImagePlus className="w-7 h-7" />
+              <span className="text-sm">Click to upload cover</span>
+            </button>
+          )}
+          {coverPreview && (
+            <button
+              type="button"
+              onClick={() => fileInputRef.current?.click()}
+              className="text-xs text-accent-primary hover:underline text-left"
+            >
+              Change image
+            </button>
+          )}
+        </div>
+
         <FormField
           control={form.control}
           name="title"
@@ -94,57 +166,30 @@ export function BookForm({
           )}
         />
 
-        <div className="grid grid-cols-2 gap-4">
-          <FormField
-            control={form.control}
-            name="genre"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Genre</FormLabel>
-                <Select value={field.value || ''} onValueChange={field.onChange}>
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select genre" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    {genres.map(g => (
-                      <SelectItem key={g} value={g}>
-                        {formatLabel(g)}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="status"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Status</FormLabel>
-                <Select value={field.value || ''} onValueChange={field.onChange}>
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select status" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    {statuses.map(s => (
-                      <SelectItem key={s} value={s}>
-                        {formatLabel(s)}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
+        <FormField
+          control={form.control}
+          name="genre"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Genre</FormLabel>
+              <Select value={field.value || ''} onValueChange={field.onChange}>
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select genre" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  {genres.map(g => (
+                    <SelectItem key={g} value={g}>
+                      {formatLabel(g)}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
         <FormField
           control={form.control}
@@ -211,8 +256,8 @@ export function BookForm({
           )}
         />
 
-        <Button type="submit" className="w-full" disabled={isLoading}>
-          {isLoading ? 'Saving...' : mode === 'create' ? 'Add Book' : 'Update Book'}
+        <Button type="submit" className="w-full" disabled={isLoading || isUploading}>
+          {isUploading ? 'Uploading cover...' : isLoading ? 'Saving...' : mode === 'create' ? 'Add Book' : 'Update Book'}
         </Button>
       </form>
     </Form>

@@ -1,7 +1,4 @@
-import { useEffect } from 'react'
-import { useQueryClient } from '@tanstack/react-query'
 import { useBookList } from '@/hooks/pages/books'
-import { booksQueryKeys } from '@/api/books'
 import { useAuthContext } from '@/contexts/auth'
 import { BookListDisplay } from '@/components/pages/books/book-list-display'
 import { BookFilters } from '@/components/pages/books/book-filters'
@@ -28,12 +25,7 @@ const STATUSES = ['want-to-read', 'reading', 'finished']
 
 export function ExplorePage() {
   const auth = useAuthContext()
-  const queryClient = useQueryClient()
   const bookList = useBookList({ limit: 50, scope: 'all' })
-
-  useEffect(() => {
-    queryClient.invalidateQueries({ queryKey: booksQueryKeys.lists() })
-  }, [auth.isAuthenticated, queryClient])
 
   return (
     <div className="flex-1 flex flex-col bg-background-base p-4 md:p-6">

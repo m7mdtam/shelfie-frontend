@@ -73,11 +73,11 @@ export function BookListDisplay({
   }
 
   return (
-    <div className="mt-6 rounded-lg p-4">
+    <div className="mt-4 sm:mt-6 rounded-lg p-2 sm:p-4">
       <p className="text-sm text-text-secondary mb-4">
         Showing {books.length} of {totalCount} books
       </p>
-      <div className="grid gap-3 grid-cols-[repeat(auto-fill,minmax(300px,1fr))]">
+      <div className="grid gap-3 grid-cols-1 sm:grid-cols-[repeat(auto-fill,minmax(300px,1fr))]">
         {books.map(book => (
           <BookCard key={book.id} book={book} />
         ))}
