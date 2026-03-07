@@ -27,9 +27,7 @@ export interface RefreshTokenResponse {
   message: string
 }
 
-export interface GetMeResponse {
-  user: PayloadUser
-}
+export type GetMeResponse = PayloadUser
 
 export interface LogoutResponse {
   message: string
@@ -43,8 +41,9 @@ export interface PayloadUser {
   createdAt: string
   updatedAt?: string
   _verified?: boolean
-  avatar?: {
+  profileImage?: {
     id: string
+    url?: string
     filename: string
     mimeType: string
     filesize: number
@@ -52,6 +51,7 @@ export interface PayloadUser {
     height: number
     sizes?: Array<{
       size?: string
+      url?: string
       filename: string
       width: number
       height: number
@@ -59,6 +59,8 @@ export interface PayloadUser {
       filesize: number
     }>
   }
+  sex?: string
+  birthDate?: string
 }
 
 export interface ResetPasswordRequest {

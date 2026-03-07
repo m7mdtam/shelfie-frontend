@@ -2,10 +2,13 @@ import { createContext, useContext, useEffect, useState, useCallback, ReactNode 
 import { getToken, clearToken } from '@/lib/cookies'
 import { decodeToken, isTokenExpired, DecodedTokenPayload } from '@/lib/jwt'
 import { auth } from '@/api/auth/hooks'
+import type { PayloadUser } from '@/@types/auth'
 
 interface AuthContextProps {
   isAuthenticated: boolean
   decodedToken: DecodedTokenPayload | null
+  user: PayloadUser | null
+  setUser: (user: PayloadUser) => void
   logout: () => Promise<void>
 }
 
@@ -14,7 +17,9 @@ const AuthContext = createContext<AuthContextProps | null>(null)
 export default function AuthProvider({ children }: { children: ReactNode }) {
   const [decodedToken, setDecodedToken] = useState<DecodedTokenPayload | null>(null)
   const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [user, setUserState] = useState<PayloadUser | null>(null)
   const logoutMutation = auth.useLogout()
+  const { data: meData } = auth.useGetMe(isAuthenticated && !user)
 
   const checkToken = useCallback(() => {
     const token = getToken()
@@ -25,6 +30,7 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
     } else {
       setDecodedToken(null)
       setIsAuthenticated(false)
+      setUserState(null)
     }
   }, [])
 
@@ -38,6 +44,12 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
     }
   }, [checkToken])
 
+  useEffect(() => {
+    if (meData && isAuthenticated) {
+      setUserState(meData)
+    }
+  }, [meData, isAuthenticated])
+
   const logout = async () => {
     try {
       await logoutMutation.mutateAsync()
@@ -45,11 +57,16 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
       clearToken()
       setDecodedToken(null)
       setIsAuthenticated(false)
+      setUserState(null)
     }
   }
 
+  const setUser = (updatedUser: PayloadUser) => {
+    setUserState(updatedUser)
+  }
+
   return (
-    <AuthContext.Provider value={{ isAuthenticated, decodedToken, logout }}>
+    <AuthContext.Provider value={{ isAuthenticated, decodedToken, user, setUser, logout }}>
       {children}
     </AuthContext.Provider>
   )

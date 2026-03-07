@@ -11,6 +11,7 @@ const routeTitles: Record<string, string> = {
   '/books/explore': 'Explore Books - Shelfie',
   '/books/shelf': 'My Shelf - Shelfie',
   '/books/add': 'Add Book - Shelfie',
+  '/profile': 'My Profile - Shelfie',
 }
 
 function RootLayout() {
@@ -29,9 +30,7 @@ function RootLayout() {
     <div className="relative min-h-dvh bg-background-base">
       {!shouldHideNavbar && <Navbar />}
       <main
-        className={
-          shouldHideNavbar ? 'flex flex-col min-h-dvh' : 'pt-10 flex flex-col min-h-dvh'
-        }
+        className={shouldHideNavbar ? 'flex flex-col min-h-dvh' : 'pt-10 flex flex-col min-h-dvh'}
       >
         <Outlet />
       </main>
