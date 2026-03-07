@@ -21,6 +21,7 @@ import {
 import { DeleteBookDialog } from '@/components/pages/books/delete-book-dialog'
 import { BookForm } from '@/components/pages/books/book-form'
 import { PageSection } from '@/components/page-section'
+import { CommentsSection } from '@/components/pages/books/comments-section'
 import { Star, Download, Edit2, Trash2, ArrowLeft, ExternalLink } from 'lucide-react'
 import { useState } from 'react'
 import { useAuthContext } from '@/contexts/auth'
@@ -245,6 +246,8 @@ export function BookDetailPage() {
               <p className="text-sm text-text-primary leading-relaxed">{book.description}</p>
             </PageSection>
           )}
+
+          <CommentsSection bookId={book.id} />
         </div>
       </div>
 
