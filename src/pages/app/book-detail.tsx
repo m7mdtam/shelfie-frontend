@@ -1,5 +1,6 @@
 import { useGetBook, useDeleteBook, useUpdateBook } from '@/api/books'
 import { useParams, useNavigate } from '@tanstack/react-router'
+import { useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import {
@@ -23,7 +24,6 @@ import { BookForm } from '@/components/pages/books/book-form'
 import { PageSection } from '@/components/page-section'
 import { CommentsSection } from '@/components/pages/books/comments-section'
 import { Star, Download, Edit2, Trash2, ArrowLeft, ExternalLink } from 'lucide-react'
-import { useState } from 'react'
 import { useAuthContext } from '@/contexts/auth'
 import { useIsMobile } from '@/hooks/use-is-mobile'
 import fallbackImage from '@/assets/images/fallbackImage.jfif'
@@ -56,9 +56,13 @@ export function BookDetailPage() {
 
   const auth = useAuthContext()
   const isMobile = useIsMobile()
-  const { data: book, isLoading, error } = useGetBook(params.bookId)
+  const { data: book, isLoading, error, refetch } = useGetBook(params.bookId)
   const deleteBook = useDeleteBook()
   const updateBook = useUpdateBook(params.bookId)
+
+  useEffect(() => {
+    refetch()
+  }, [auth.decodedToken?.id, refetch])
 
   if (isLoading) {
     return (
@@ -81,6 +85,23 @@ export function BookDetailPage() {
               </div>
             </div>
           </PageSection>
+
+          <PageSection>
+            <div className="animate-pulse flex flex-col gap-3">
+              <div className="h-4 w-40 bg-background-surface rounded" />
+              <div className="h-3 w-full bg-background-surface rounded" />
+              <div className="h-3 w-full bg-background-surface rounded" />
+              <div className="h-3 w-3/4 bg-background-surface rounded" />
+            </div>
+          </PageSection>
+
+          <CommentsSection
+            bookId={params.bookId}
+            averageRating={0}
+            userRating={null}
+            totalRatings={0}
+            isLoading={true}
+          />
         </div>
       </div>
     )
@@ -127,7 +148,8 @@ export function BookDetailPage() {
     }
   }
 
-  const isOwner = String(auth.decodedToken?.id) === String(book.owner.id)
+  const isAuthenticated = !!auth.decodedToken
+  const isOwner = isAuthenticated && String(auth.decodedToken?.id) === String(book.owner.id)
 
   const editFormContent = (
     <BookForm

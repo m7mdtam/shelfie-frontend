@@ -1,6 +1,7 @@
 import { useAuthContext } from '@/contexts/auth'
 import { useRating } from '@/hooks/pages/books/use-rating'
 import { StarRating } from './star-rating'
+import { Badge } from '@/components/ui/badge'
 
 interface RatingsSectionProps {
   bookId: string
@@ -31,7 +32,7 @@ export function RatingsSection({
         <StarRating
           value={userRating ?? 0}
           onChange={isAuthenticated && !hasRated ? handleRate : undefined}
-          disabled={isPending}
+          disabled={isPending || hasRated}
         />
         {(totalRatings ?? 0) > 0 && (
           <span className="text-sm text-text-secondary">
@@ -45,7 +46,9 @@ export function RatingsSection({
           {hasRated ? `Your rating: ${userRating}/5 — thanks!` : 'Rate this book'}
         </p>
       ) : (
-        <p className="text-xs text-text-secondary">Sign in to rate this book.</p>
+        <Badge variant="destructive" className="w-fit">
+          Sign in to rate this book.
+        </Badge>
       )}
     </div>
   )

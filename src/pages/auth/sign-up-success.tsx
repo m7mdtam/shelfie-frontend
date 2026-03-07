@@ -1,12 +1,27 @@
 import { motion } from 'motion/react'
+import { useEffect } from 'react'
+import { useNavigate } from '@tanstack/react-router'
 import { useIsMobile } from '@/hooks'
-import { useVerificationPolling } from '@/hooks/auth'
+import { useVerificationPolling, useEmailVerificationEnabled } from '@/hooks/auth'
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { CheckCircle2, Loader, MailCheck } from 'lucide-react'
+import { ROUTES } from '@/utils/api/routes'
 
 export function SignUpSuccessPage() {
   const isMobile = useIsMobile()
+  const navigate = useNavigate()
+  const emailVerificationEnabled = useEmailVerificationEnabled()
   const { isVerified } = useVerificationPolling()
+
+  useEffect(() => {
+    if (!emailVerificationEnabled) {
+      navigate({ to: ROUTES.SIGN_IN })
+    }
+  }, [emailVerificationEnabled, navigate])
+
+  if (!emailVerificationEnabled) {
+    return null
+  }
 
   return (
     <div

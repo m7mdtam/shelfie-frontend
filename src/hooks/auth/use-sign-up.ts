@@ -5,10 +5,12 @@ import { signUpSchema, SignUpFormData } from '@/schemas'
 import { auth } from '@/api/auth/hooks'
 import { getSignUpError } from '@/api/auth/error-handler'
 import { ROUTES } from '@/utils/api/routes'
+import { useEmailVerificationEnabled } from './use-email-verification-enabled'
 
 export const useSignUpForm = () => {
   const navigate = useNavigate()
   const { mutate: signUp, isPending } = auth.useSignUp()
+  const emailVerificationEnabled = useEmailVerificationEnabled()
 
   const form = useForm<SignUpFormData>({
     resolver: zodResolver(signUpSchema),
@@ -31,13 +33,20 @@ export const useSignUpForm = () => {
       },
       {
         onSuccess: () => {
-          sessionStorage.setItem('pending_verification_email', data.email)
-          sessionStorage.setItem('pending_verification_password', data.password)
-          navigate({ to: ROUTES.SIGN_UP_SUCCESS })
+          if (emailVerificationEnabled) {
+            sessionStorage.setItem('pending_verification_email', data.email)
+            sessionStorage.setItem('pending_verification_password', data.password)
+            navigate({ to: ROUTES.SIGN_UP_SUCCESS })
+          } else {
+            navigate({ to: ROUTES.SIGN_IN })
+          }
         },
         onError: (error: Error) => {
           const { field, message } = getSignUpError(error)
-          form.setError(field as 'root' | 'email' | 'password' | 'firstName' | 'lastName', { type: 'manual', message })
+          form.setError(field as 'root' | 'email' | 'password' | 'firstName' | 'lastName', {
+            type: 'manual',
+            message,
+          })
         },
       }
     )
