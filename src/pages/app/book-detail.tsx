@@ -39,7 +39,6 @@ const GENRES = [
   'self-help',
   'other',
 ]
-const STATUSES = ['want-to-read', 'reading', 'finished']
 
 const formatLabel = (value: string) =>
   value
@@ -63,14 +62,14 @@ export function BookDetailPage() {
     return (
       <div className="min-h-screen bg-background-base p-4 md:p-6">
         <div className="max-w-4xl mx-auto">
-          <div className="animate-pulse space-y-6">
+          <div className="animate-pulse flex flex-col gap-6">
             <div className="h-10 bg-background-surface rounded w-32" />
             <div className="flex flex-col md:flex-row gap-6">
               <div className="w-full md:w-64 h-96 bg-background-surface rounded-lg" />
-              <div className="flex-1 space-y-4">
+              <div className="flex-1 flex flex-col gap-4">
                 <div className="h-8 bg-background-surface rounded w-3/4" />
                 <div className="h-6 bg-background-surface rounded w-1/2" />
-                <div className="space-y-2">
+                <div className="flex flex-col gap-2">
                   <div className="h-4 bg-background-surface rounded w-full" />
                   <div className="h-4 bg-background-surface rounded w-full" />
                   <div className="h-4 bg-background-surface rounded w-3/4" />
@@ -129,7 +128,6 @@ export function BookDetailPage() {
       onSubmit={handleEdit}
       isLoading={updateBook.isPending}
       genres={GENRES}
-      statuses={STATUSES}
     />
   )
 
@@ -168,7 +166,7 @@ export function BookDetailPage() {
                   </div>
                 </CardHeader>
 
-                <CardContent className="space-y-6">
+                <CardContent className="flex flex-col gap-6">
                   {book.notes && (
                     <div>
                       <h3 className="text-sm font-semibold text-text-primary mb-2">Notes</h3>

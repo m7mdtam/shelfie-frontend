@@ -12,8 +12,6 @@ interface BookListDisplayProps {
   isFetchingNextPage?: boolean
   isOwner?: boolean
   onAddBook?: () => void
-  onEditBook?: (book: Book) => void
-  onDeleteBook?: (book: Book) => void
   emptyTitle?: string
   emptyDescription?: string
 }
@@ -26,14 +24,12 @@ export function BookListDisplay({
   isFetchingNextPage = false,
   isOwner = false,
   onAddBook,
-  onEditBook,
-  onDeleteBook,
   emptyTitle = 'No Books Found',
   emptyDescription = 'Try adjusting your filters',
 }: BookListDisplayProps) {
   if (isLoading && books.length === 0) {
     return (
-      <div className="space-y-4">
+      <div className="flex flex-col gap-4">
         {Array.from({ length: 6 }).map((_, i) => (
           <div key={i} className="h-32 bg-background-surface rounded-lg animate-pulse" />
         ))}
@@ -77,24 +73,13 @@ export function BookListDisplay({
   }
 
   return (
-    <div className="mt-6 rounded-lg p-4">
+    <div className="mt-4 sm:mt-6 rounded-lg p-2 sm:p-4">
       <p className="text-sm text-text-secondary mb-4">
         Showing {books.length} of {totalCount} books
       </p>
-      <div
-        className="grid gap-4"
-        style={{
-          gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))',
-        }}
-      >
+      <div className="grid gap-3 grid-cols-1 sm:grid-cols-[repeat(auto-fill,minmax(300px,1fr))]">
         {books.map(book => (
-          <BookCard
-            key={book.id}
-            book={book}
-            isOwner={isOwner}
-            onEdit={isOwner && onEditBook ? onEditBook : undefined}
-            onDelete={isOwner && onDeleteBook ? onDeleteBook : undefined}
-          />
+          <BookCard key={book.id} book={book} />
         ))}
       </div>
       {isFetchingNextPage && (

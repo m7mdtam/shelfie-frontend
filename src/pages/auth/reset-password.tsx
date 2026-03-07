@@ -9,7 +9,7 @@ import {
   PageSectionTitle,
 } from '@/components/page-section'
 import { ResetPasswordForm } from '@/components/auth'
-import DotGrid from '@/components/DotGrid'
+import DotGrid from '@/components/dot-grid'
 
 export function ResetPasswordPage() {
   const isMobile = useIsMobile()
@@ -34,7 +34,7 @@ export function ResetPasswordPage() {
           maxSpeed={3000}
           resistance={600}
           returnDuration={1.5}
-          style={{ height: '100%', width: '100%' }}
+          className="h-full w-full"
         />
       </div>
       <Link to="/" className="relative z-10 flex items-center gap-2 mb-5 group">

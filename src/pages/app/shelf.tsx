@@ -1,10 +1,7 @@
-import { useEffect } from 'react'
-import { useQueryClient } from '@tanstack/react-query'
 import { useBookList, useBookForm } from '@/hooks/pages/books'
-import { booksQueryKeys } from '@/api/books'
 import { useAuthContext } from '@/contexts/auth'
 import { useIsMobile } from '@/hooks/use-is-mobile'
-import { BookFilters } from '@/components/pages/books/BookFilters'
+import { BookFilters } from '@/components/pages/books/book-filters'
 import { BookListDisplay } from '@/components/pages/books/book-list-display'
 import { DeleteBookDialog } from '@/components/pages/books/delete-book-dialog'
 import { BookForm } from '@/components/pages/books/book-form'
@@ -47,14 +44,9 @@ const STATUSES = ['want-to-read', 'reading', 'finished']
 
 export function ShelfPage() {
   const auth = useAuthContext()
-  const queryClient = useQueryClient()
   const bookList = useBookList({ limit: 50, scope: 'mine' })
   const bookForm = useBookForm()
   const isMobile = useIsMobile()
-
-  useEffect(() => {
-    queryClient.invalidateQueries({ queryKey: booksQueryKeys.myBooksList() })
-  }, [auth.isAuthenticated, queryClient])
 
   if (!auth.isAuthenticated || !auth.decodedToken?.id) {
     return (
@@ -81,7 +73,6 @@ export function ShelfPage() {
       onSubmit={bookForm.submitForm}
       isLoading={bookForm.isCreating || bookForm.isUpdating}
       genres={GENRES}
-      statuses={STATUSES}
     />
   )
 
@@ -123,8 +114,6 @@ export function ShelfPage() {
             isFetchingNextPage={bookList.isFetchingNextPage}
             isOwner={true}
             onAddBook={() => bookForm.openCreate()}
-            onEditBook={b => bookForm.openEdit(b)}
-            onDeleteBook={b => bookForm.openDelete(b)}
             emptyTitle="No Books Yet"
             emptyDescription="Add your first book to get started"
           />
