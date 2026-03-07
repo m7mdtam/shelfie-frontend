@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { User, LogOut, Loader2 } from 'lucide-react'
+import { Link } from '@tanstack/react-router'
 import { Button } from '@/components/ui/button'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import {
@@ -11,9 +12,11 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import type { DecodedTokenPayload } from '@/lib/jwt'
+import type { PayloadUser } from '@/@types/auth'
 
 interface NavbarUserMenuProps {
   user: DecodedTokenPayload | null
+  profileUser?: PayloadUser | null
   onLogout: () => Promise<void>
 }
 
@@ -29,13 +32,22 @@ function getInitials(name: string): string {
     : name.slice(0, 2).toUpperCase()
 }
 
-export function NavbarUserMenu({ user, onLogout }: NavbarUserMenuProps) {
+export function NavbarUserMenu({ user, profileUser, onLogout }: NavbarUserMenuProps) {
   const [isLoggingOut, setIsLoggingOut] = useState(false)
 
   if (!user) return null
 
-  const displayName = getDisplayName(user.email)
+  if (!profileUser) {
+    return null
+  }
+
+  const firstName = profileUser?.firstName
+  const lastName = profileUser?.lastName
+  const displayName =
+    firstName && lastName ? `${firstName} ${lastName}` : getDisplayName(user.email)
   const initials = getInitials(displayName)
+  const profileImageUrl =
+    profileUser?.profileImage?.sizes?.[0]?.url || profileUser?.profileImage?.url
 
   const handleLogout = async () => {
     setIsLoggingOut(true)
@@ -52,7 +64,7 @@ export function NavbarUserMenu({ user, onLogout }: NavbarUserMenuProps) {
           className="p-0 overflow-hidden"
         >
           <Avatar className="h-7 w-7 ring-2 ring-transparent hover:ring-accent-primary transition-all duration-200">
-            <AvatarImage src={undefined} alt={user.email} />
+            <AvatarImage src={profileImageUrl} alt={displayName} />
             <AvatarFallback className="bg-background-tertiary dark:bg-accent-background text-accent-primary text-xs font-semibold">
               {initials}
             </AvatarFallback>
@@ -60,10 +72,10 @@ export function NavbarUserMenu({ user, onLogout }: NavbarUserMenuProps) {
         </Button>
       </DropdownMenuTrigger>
 
-      <DropdownMenuContent align="end" side="left" className="w-56 sm:side-auto">
+      <DropdownMenuContent align="end" side="bottom" className="w-56">
         <DropdownMenuLabel className="flex items-center gap-3 py-3">
           <Avatar className="h-9 w-9 shrink-0">
-            <AvatarImage src={undefined} alt={user.email} />
+            <AvatarImage src={profileImageUrl} alt={displayName} />
             <AvatarFallback className="bg-background-tertiary dark:bg-accent-background text-accent-primary text-xs font-semibold">
               {initials}
             </AvatarFallback>
@@ -76,9 +88,11 @@ export function NavbarUserMenu({ user, onLogout }: NavbarUserMenuProps) {
 
         <DropdownMenuSeparator />
 
-        <DropdownMenuItem className="gap-2 cursor-pointer">
-          <User className="h-4 w-4" />
-          Profile
+        <DropdownMenuItem asChild className="gap-2 cursor-pointer p-0">
+          <Link to="/profile" className="flex items-center gap-2 px-2 py-1.5">
+            <User className="h-4 w-4 text-text-primary" />
+            Profile
+          </Link>
         </DropdownMenuItem>
 
         <DropdownMenuSeparator />
@@ -89,9 +103,9 @@ export function NavbarUserMenu({ user, onLogout }: NavbarUserMenuProps) {
           className="gap-2 cursor-pointer text-state-error focus:text-state-error"
         >
           {isLoggingOut ? (
-            <Loader2 className="h-4 w-4 animate-spin" />
+            <Loader2 className="h-4 w-4 animate-spin text-state-error" />
           ) : (
-            <LogOut className="h-4 w-4" />
+            <LogOut className="h-4 w-4 text-state-error" />
           )}
           {isLoggingOut ? 'Logging out...' : 'Log out'}
         </DropdownMenuItem>

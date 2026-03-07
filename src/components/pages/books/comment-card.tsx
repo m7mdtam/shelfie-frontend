@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Link } from '@tanstack/react-router'
 import { Comment } from '@/@types/comment'
 import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -22,10 +23,11 @@ import {
   DrawerTitle,
 } from '@/components/ui/drawer'
 import { useAuthContext } from '@/contexts/auth'
+import { auth as authHooks } from '@/api/auth/hooks'
 import { useDeleteComment, useUpdateComment } from '@/hooks/pages/books/use-comments'
 import { useIsMobile } from '@/hooks/use-is-mobile'
 import { Trash2, Edit2, X } from 'lucide-react'
-import { Avatar, AvatarFallback } from '@/components/ui/avatar'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 
 interface CommentCardProps {
   comment: Comment
@@ -44,6 +46,13 @@ export function CommentCard({ comment, bookId }: CommentCardProps) {
 
   const isOwner = String(auth.decodedToken?.id) === String(comment.userId)
   const isLongComment = comment.text.length > 300
+
+  const { data: commentUserData } = authHooks.useGetUserById(comment.user?.id ?? '')
+  const profileImageUrl =
+    commentUserData?.profileImage?.sizes?.[0]?.url ||
+    commentUserData?.profileImage?.url ||
+    comment.user?.profileImage?.sizes?.[0]?.url ||
+    comment.user?.profileImage?.url
 
   const handleDelete = () => {
     deleteComment.mutate(comment.id)
@@ -87,14 +96,57 @@ export function CommentCard({ comment, bookId }: CommentCardProps) {
   return (
     <Card variant="default" className="p-4">
       <div className="flex gap-4">
-        <Avatar className="w-10 h-10">
-          <AvatarFallback>{userInitials}</AvatarFallback>
-        </Avatar>
+        {comment.user ? (
+          isOwner ? (
+            <Link to="/profile" className="shrink-0">
+              <Avatar className="w-10 h-10 hover:ring-2 hover:ring-accent-primary transition-all">
+                <AvatarImage
+                  src={profileImageUrl}
+                  alt={userName}
+                />
+                <AvatarFallback>{userInitials}</AvatarFallback>
+              </Avatar>
+            </Link>
+          ) : (
+            <Link to="/profile/$userId" params={{ userId: comment.user.id }} className="shrink-0">
+              <Avatar className="w-10 h-10 hover:ring-2 hover:ring-accent-primary transition-all">
+                <AvatarImage
+                  src={profileImageUrl}
+                  alt={userName}
+                />
+                <AvatarFallback>{userInitials}</AvatarFallback>
+              </Avatar>
+            </Link>
+          )
+        ) : (
+          <Avatar className="w-10 h-10 shrink-0">
+            <AvatarFallback>{userInitials}</AvatarFallback>
+          </Avatar>
+        )}
 
         <div className="flex-1">
           <div className="flex items-center justify-between mb-4">
             <div>
-              <p className="font-medium text-sm text-text-primary">{userName}</p>
+              {comment.user ? (
+                isOwner ? (
+                  <Link
+                    to="/profile"
+                    className="font-medium text-sm text-text-primary hover:text-accent-primary transition-colors"
+                  >
+                    {userName}
+                  </Link>
+                ) : (
+                  <Link
+                    to="/profile/$userId"
+                    params={{ userId: comment.user.id }}
+                    className="font-medium text-sm text-text-primary hover:text-accent-primary transition-colors"
+                  >
+                    {userName}
+                  </Link>
+                )
+              ) : (
+                <p className="font-medium text-sm text-text-primary">{userName}</p>
+              )}
               <p className="text-xs text-text-secondary">{formatDate(comment.createdAt)}</p>
             </div>
             {isOwner && (

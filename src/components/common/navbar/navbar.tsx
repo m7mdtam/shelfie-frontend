@@ -27,7 +27,7 @@ export function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const isMobile = useIsMobile()
-  const { isAuthenticated, decodedToken, logout } = useAuthContext()
+  const { isAuthenticated, decodedToken, user, logout } = useAuthContext()
   const navigate = useNavigate()
   const location = useLocation()
 
@@ -90,7 +90,7 @@ export function Navbar() {
           <ModeToggle />
 
           {isAuthenticated ? (
-            <NavbarUserMenu user={decodedToken} onLogout={handleLogout} />
+            <NavbarUserMenu user={decodedToken} profileUser={user} onLogout={handleLogout} />
           ) : (
             !isMobile && (
               <Button variant="default" size="sm" onClick={() => navigate({ to: '/sign-in' })}>
@@ -98,7 +98,6 @@ export function Navbar() {
               </Button>
             )
           )}
-
 
           {isMobile && (
             <Button
@@ -111,7 +110,6 @@ export function Navbar() {
               {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </Button>
           )}
-
         </div>
       </div>
 

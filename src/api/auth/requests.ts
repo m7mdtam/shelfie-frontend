@@ -36,21 +36,37 @@ export const refreshTokenFn = async (): Promise<RefreshTokenResponse> => {
 }
 
 export const getMeFn = async (): Promise<GetMeResponse> => {
-  const response = await axiosInstance.get('/api/users/me')
-  return response.data
+  try {
+    console.log('📡 Fetching /api/users/me...')
+    const response = await axiosInstance.get('/api/users/me')
+    console.log('✅ /api/users/me response:', response.data)
+    return response.data
+  } catch (error: any) {
+    console.error('❌ /api/users/me error:', error?.response?.data || error.message)
+    throw error
+  }
 }
 
-export const forgotPasswordFn = async (data: ForgotPasswordRequest): Promise<ForgotPasswordResponse> => {
+export const forgotPasswordFn = async (
+  data: ForgotPasswordRequest
+): Promise<ForgotPasswordResponse> => {
   const response = await axiosInstance.post('/api/users/forgot-password', data)
   return response.data
 }
 
-export const resetPasswordFn = async (data: ResetPasswordRequest): Promise<ResetPasswordResponse> => {
+export const resetPasswordFn = async (
+  data: ResetPasswordRequest
+): Promise<ResetPasswordResponse> => {
   const response = await axiosInstance.post('/api/users/reset-password', data)
   return response.data
 }
 
 export const verifyEmailFn = async (data: VerifyEmailRequest): Promise<VerifyEmailResponse> => {
   const response = await axiosInstance.post('/api/users/verify-email', data)
+  return response.data
+}
+
+export const getUserByIdFn = async (id: string): Promise<GetMeResponse> => {
+  const response = await axiosInstance.get(`/api/users/${id}`)
   return response.data
 }

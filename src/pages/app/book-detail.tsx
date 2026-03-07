@@ -1,4 +1,5 @@
 import { useGetBook, useDeleteBook, useUpdateBook } from '@/api/books'
+import { getBookOwner } from '@/@types/book'
 import { useParams, useNavigate } from '@tanstack/react-router'
 import { useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button'
@@ -23,7 +24,9 @@ import { DeleteBookDialog } from '@/components/pages/books/delete-book-dialog'
 import { BookForm } from '@/components/pages/books/book-form'
 import { PageSection } from '@/components/page-section'
 import { CommentsSection } from '@/components/pages/books/comments-section'
-import { Star, Download, Edit2, Trash2, ArrowLeft, ExternalLink } from 'lucide-react'
+import { Star, Download, Edit2, Trash2, ArrowLeft, ExternalLink, PenLine } from 'lucide-react'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { Link } from '@tanstack/react-router'
 import { useAuthContext } from '@/contexts/auth'
 import { useIsMobile } from '@/hooks/use-is-mobile'
 import fallbackImage from '@/assets/images/fallbackImage.jfif'
@@ -149,7 +152,8 @@ export function BookDetailPage() {
   }
 
   const isAuthenticated = !!auth.decodedToken
-  const isOwner = isAuthenticated && String(auth.decodedToken?.id) === String(book.owner.id)
+  const bookOwner = getBookOwner(book.owner)
+  const isOwner = isAuthenticated && String(auth.decodedToken?.id) === String(bookOwner?.id)
 
   const editFormContent = (
     <BookForm
@@ -189,7 +193,28 @@ export function BookDetailPage() {
                   <h1 className="text-xl sm:text-2xl font-bold text-text-primary leading-tight">
                     {book.title}
                   </h1>
-                  <p className="text-sm sm:text-base text-text-secondary mt-1">{book.author}</p>
+                  <p className="flex items-center gap-1.5 text-sm sm:text-base text-text-secondary mt-1">
+                    <PenLine className="w-3.5 h-3.5 shrink-0 text-accent-primary" />
+                    {book.author}
+                  </p>
+                  {bookOwner && (
+                    <Link
+                      to="/profile/$userId"
+                      params={{ userId: bookOwner.id }}
+                      className="flex items-center gap-1.5 text-xs sm:text-sm text-text-secondary mt-1 hover:text-accent-primary transition-colors w-fit"
+                    >
+                      <Avatar className="w-5 h-5 shrink-0">
+                        <AvatarImage
+                          src={bookOwner.profileImage?.sizes?.[0]?.url || bookOwner.profileImage?.url}
+                          alt={`${bookOwner.firstName} ${bookOwner.lastName}`}
+                        />
+                        <AvatarFallback className="text-[9px]">
+                          {bookOwner.firstName[0]}{bookOwner.lastName[0]}
+                        </AvatarFallback>
+                      </Avatar>
+                      {bookOwner.firstName} {bookOwner.lastName}
+                    </Link>
+                  )}
                 </div>
 
                 <div className="flex flex-wrap gap-1.5">

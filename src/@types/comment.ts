@@ -3,6 +3,10 @@ export interface CommentUser {
   firstName: string
   lastName: string
   email: string
+  profileImage?: {
+    url?: string
+    sizes?: Array<{ url?: string }>
+  }
 }
 
 export interface Comment {
