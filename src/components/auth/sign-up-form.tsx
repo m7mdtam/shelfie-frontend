@@ -9,6 +9,7 @@ import {
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { useSignUpForm } from '@/hooks/auth'
+import { signUpObjectSchema } from '@/schemas'
 import { Loader } from 'lucide-react'
 import { useState } from 'react'
 
@@ -21,7 +22,7 @@ export const SignUpForm = () => {
   const [confirmPasswordFocused, setConfirmPasswordFocused] = useState(false)
 
   return (
-    <Form {...form}>
+    <Form {...form} schema={signUpObjectSchema}>
       <form onSubmit={onSubmit} className="flex flex-col gap-3">
         {form.formState.errors.root && (
           <div className="rounded-md p-4 border border-state-error bg-state-error-bg text-state-error">

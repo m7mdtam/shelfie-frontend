@@ -9,6 +9,7 @@ import {
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { useSignInForm } from '@/hooks/auth'
+import { signInSchema } from '@/schemas'
 import { Loader } from 'lucide-react'
 import { Link } from '@tanstack/react-router'
 
@@ -16,7 +17,7 @@ export const SignInForm = () => {
   const { form, onSubmit, isPending } = useSignInForm()
 
   return (
-    <Form {...form}>
+    <Form {...form} schema={signInSchema}>
       <form onSubmit={onSubmit} className="flex flex-col gap-3">
         {form.formState.errors.root && (
           <div className="rounded-md p-4 border border-state-error bg-state-error-bg text-state-error">

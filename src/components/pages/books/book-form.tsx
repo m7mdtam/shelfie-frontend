@@ -118,32 +118,37 @@ export function BookForm({ mode, initialData, onSubmit, isLoading, genres }: Boo
                 alt="Cover preview"
                 className="w-full h-full object-contain"
               />
-              <button
+              <Button
                 type="button"
+                variant="ghost"
+                size="icon"
                 onClick={removeCover}
-                className="absolute top-2 right-2 bg-background-base/80 rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                className="absolute top-2 right-2 bg-background-base/80 rounded-full w-7 h-7 opacity-0 group-hover:opacity-100 transition-opacity"
               >
                 <X className="w-4 h-4 text-text-primary" />
-              </button>
+              </Button>
             </div>
           ) : (
-            <button
+            <Button
               type="button"
+              variant="outline"
               onClick={() => fileInputRef.current?.click()}
-              className="w-full h-40 rounded-md border border-dashed border-text-border flex flex-col items-center justify-center gap-2 text-text-secondary hover:border-accent-primary hover:text-accent-primary transition-colors"
+              className="w-full h-40 rounded-md border-dashed flex flex-col gap-2 text-text-secondary hover:border-accent-primary hover:text-accent-primary"
             >
               <ImagePlus className="w-7 h-7" />
               <span className="text-sm">Click to upload cover</span>
-            </button>
+            </Button>
           )}
           {coverPreview && (
-            <button
+            <Button
               type="button"
+              variant="link"
+              size="sm"
               onClick={() => fileInputRef.current?.click()}
-              className="text-xs text-accent-primary hover:underline text-left"
+              className="text-xs text-accent-primary p-0 h-auto justify-start"
             >
               Change image
-            </button>
+            </Button>
           )}
         </div>
 
