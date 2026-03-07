@@ -20,9 +20,9 @@ export function BookCard({ book }: BookCardProps) {
     <Link to="/books/$bookId" params={{ bookId: book.id }} className="block">
       <Card
         variant="default"
-        className="flex flex-row hover:shadow-lg transition-shadow cursor-pointer p-3 gap-3"
+        className="flex flex-row hover:shadow-lg transition-shadow cursor-pointer p-3 gap-3 h-32 sm:h-36"
       >
-        <div className="w-16 sm:w-20 min-h-24 sm:min-h-28 self-stretch shrink-0 rounded-md overflow-hidden">
+        <div className="w-16 sm:w-20 self-stretch shrink-0 rounded-md overflow-hidden">
           <img
             src={book.coverImage?.url ?? fallbackImage}
             alt={book.title}
@@ -30,7 +30,7 @@ export function BookCard({ book }: BookCardProps) {
           />
         </div>
 
-        <div className="flex-1 flex flex-col justify-between min-w-0">
+        <div className="flex-1 flex flex-col justify-between min-w-0 overflow-hidden">
           <div>
             <p className="font-semibold text-sm sm:text-base text-text-primary line-clamp-1">{book.title}</p>
             <p className="text-xs sm:text-sm text-text-secondary line-clamp-1 mt-0.5">{book.author}</p>
