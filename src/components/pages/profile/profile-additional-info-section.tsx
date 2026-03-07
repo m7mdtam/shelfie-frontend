@@ -1,7 +1,10 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useIsMobile } from '@/hooks/use-is-mobile'
+import { format, isValid, parse } from 'date-fns'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
+import { CalendarDays, Edit2, Mars, Venus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
   Form,
@@ -11,7 +14,6 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
 import {
   Select,
   SelectContent,
@@ -19,6 +21,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import { DatePicker } from '@/components/ui/date-picker'
 import { useUpdateProfile } from '@/hooks/pages/profile'
 import type { PayloadUser } from '@/@types/auth'
 
@@ -33,25 +36,39 @@ interface ProfileAdditionalInfoSectionProps {
   user: PayloadUser | undefined
 }
 
+function parseBirthDate(raw: string | undefined): Date | undefined {
+  if (!raw?.trim()) return undefined
+  const d = parse(raw.slice(0, 10), 'yyyy-MM-dd', new Date())
+  return isValid(d) ? d : undefined
+}
+
+function SexIcon({ sex }: { sex?: string }) {
+  if (sex === 'male') return <Mars className="h-4 w-4 shrink-0 text-accent-primary" />
+  if (sex === 'female') return <Venus className="h-4 w-4 shrink-0 text-accent-primary" />
+  return null
+}
+
 export function ProfileAdditionalInfoSection({
   user,
 }: ProfileAdditionalInfoSectionProps): React.ReactElement {
   const [isEditing, setIsEditing] = useState(false)
+  const isMobile = useIsMobile()
   const { mutate: updateProfile, isPending: isSaving } = useUpdateProfile()
-
-  // TODO: Replace with actual user data when available from backend
-  const userAdditionalInfo = {
-    sex: user?.sex,
-    birthDate: user?.birthDate,
-  }
 
   const form = useForm<AdditionalInfoFormData>({
     resolver: zodResolver(additionalInfoSchema),
     defaultValues: {
-      sex: userAdditionalInfo.sex || '',
-      birthDate: userAdditionalInfo.birthDate || '',
+      sex: user?.sex || '',
+      birthDate: user?.birthDate?.slice(0, 10) || '',
     },
   })
+
+  useEffect(() => {
+    form.reset({
+      sex: user?.sex || '',
+      birthDate: user?.birthDate?.slice(0, 10) || '',
+    })
+  }, [user])
 
   const onSubmit = (data: AdditionalInfoFormData) => {
     updateProfile(data, {
@@ -61,13 +78,16 @@ export function ProfileAdditionalInfoSection({
     })
   }
 
+  const birthDateDisplay = parseBirthDate(user?.birthDate)
+
   if (!isEditing) {
     return (
       <div className="space-y-4">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-semibold text-text-primary">Additional Information</h2>
-          <Button onClick={() => setIsEditing(true)} variant="outline" size="sm">
-            Edit
+          <Button onClick={() => setIsEditing(true)} variant="default" size="sm" className="flex items-center gap-2">
+            <Edit2 className="w-4 h-4" />
+            {!isMobile && 'Edit'}
           </Button>
         </div>
 
@@ -77,17 +97,27 @@ export function ProfileAdditionalInfoSection({
               <p className="text-xs font-semibold text-text-secondary uppercase tracking-wide mb-1">
                 Sex
               </p>
-              <p className="text-sm text-text-primary">
-                {userAdditionalInfo.sex || 'Not provided'}
-              </p>
+              {user?.sex ? (
+                <p className="flex items-center gap-2 text-sm text-text-primary capitalize">
+                  <SexIcon sex={user.sex} />
+                  {user.sex}
+                </p>
+              ) : (
+                <p className="text-sm text-text-primary">Not provided</p>
+              )}
             </div>
             <div>
               <p className="text-xs font-semibold text-text-secondary uppercase tracking-wide mb-1">
                 Birth Date
               </p>
-              <p className="text-sm text-text-primary">
-                {userAdditionalInfo.birthDate || 'Not provided'}
-              </p>
+              {birthDateDisplay ? (
+                <p className="flex items-center gap-2 text-sm text-text-primary">
+                  <CalendarDays className="h-4 w-4 shrink-0 text-accent-primary" />
+                  {format(birthDateDisplay, 'MMM dd, yyyy')}
+                </p>
+              ) : (
+                <p className="text-sm text-text-primary">Not provided</p>
+              )}
             </div>
           </div>
         </div>
@@ -109,17 +139,25 @@ export function ProfileAdditionalInfoSection({
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Sex (Optional)</FormLabel>
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <Select onValueChange={field.onChange} value={field.value}>
                   <FormControl>
                     <SelectTrigger>
                       <SelectValue placeholder="Select your sex" />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    <SelectItem value="male">Male</SelectItem>
-                    <SelectItem value="female">Female</SelectItem>
-                    <SelectItem value="other">Other</SelectItem>
-                    <SelectItem value="prefer-not-to-say">Prefer not to say</SelectItem>
+                    <SelectItem value="male">
+                      <div className="flex items-center gap-2">
+                        <Mars className="h-4 w-4 text-accent-primary" />
+                        Male
+                      </div>
+                    </SelectItem>
+                    <SelectItem value="female">
+                      <div className="flex items-center gap-2">
+                        <Venus className="h-4 w-4 text-accent-primary" />
+                        Female
+                      </div>
+                    </SelectItem>
                   </SelectContent>
                 </Select>
                 <FormMessage />
@@ -134,7 +172,13 @@ export function ProfileAdditionalInfoSection({
               <FormItem>
                 <FormLabel>Birth Date (Optional)</FormLabel>
                 <FormControl>
-                  <Input type="date" placeholder="Select your birth date" {...field} />
+                  <DatePicker
+                    date={parseBirthDate(field.value)}
+                    onDateChange={date => {
+                      field.onChange(date ? format(date, 'yyyy-MM-dd') : '')
+                    }}
+                    placeholder="Pick a birth date"
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>

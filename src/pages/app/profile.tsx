@@ -35,6 +35,8 @@ export function ProfilePage() {
             <ProfilePersonalInfoSection user={user} />
           </div>
 
+          <hr className="mt-8 border-text-border" />
+
           <div className="mt-8">
             <ProfileAdditionalInfoSection user={user} />
           </div>

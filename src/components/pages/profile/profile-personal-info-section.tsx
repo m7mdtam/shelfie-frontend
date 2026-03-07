@@ -1,7 +1,9 @@
 import { useState } from 'react'
+import { useIsMobile } from '@/hooks/use-is-mobile'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
+import { Edit2, Mail, User } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
   Form,
@@ -11,7 +13,7 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
+import { InputWithIcon } from '@/components/ui/input'
 import { useUpdateProfile } from '@/hooks/pages/profile'
 import type { PayloadUser } from '@/@types/auth'
 
@@ -28,6 +30,7 @@ interface ProfilePersonalInfoSectionProps {
 
 export function ProfilePersonalInfoSection({ user }: ProfilePersonalInfoSectionProps) {
   const [isEditing, setIsEditing] = useState(false)
+  const isMobile = useIsMobile()
   const { mutate: updateProfile, isPending: isSaving } = useUpdateProfile()
 
   const form = useForm<PersonalInfoFormData>({
@@ -51,8 +54,9 @@ export function ProfilePersonalInfoSection({ user }: ProfilePersonalInfoSectionP
       <div className="space-y-4">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-semibold text-text-primary">Personal Information</h2>
-          <Button onClick={() => setIsEditing(true)} variant="outline" size="sm">
-            Edit
+          <Button onClick={() => setIsEditing(true)} variant="default" size="sm" className="flex items-center gap-2">
+            <Edit2 className="w-4 h-4" />
+            {!isMobile && 'Edit'}
           </Button>
         </div>
 
@@ -62,13 +66,19 @@ export function ProfilePersonalInfoSection({ user }: ProfilePersonalInfoSectionP
               <p className="text-xs font-semibold text-text-secondary uppercase tracking-wide mb-1">
                 First Name
               </p>
-              <p className="text-sm text-text-primary">{user?.firstName || 'Not provided'}</p>
+              <p className="flex items-center gap-2 text-sm text-text-primary">
+                <User className="h-4 w-4 shrink-0 text-accent-primary" />
+                {user?.firstName || 'Not provided'}
+              </p>
             </div>
             <div>
               <p className="text-xs font-semibold text-text-secondary uppercase tracking-wide mb-1">
                 Last Name
               </p>
-              <p className="text-sm text-text-primary">{user?.lastName || 'Not provided'}</p>
+              <p className="flex items-center gap-2 text-sm text-text-primary">
+                <User className="h-4 w-4 shrink-0 text-accent-primary" />
+                {user?.lastName || 'Not provided'}
+              </p>
             </div>
           </div>
 
@@ -76,7 +86,10 @@ export function ProfilePersonalInfoSection({ user }: ProfilePersonalInfoSectionP
             <p className="text-xs font-semibold text-text-secondary uppercase tracking-wide mb-1">
               Email
             </p>
-            <p className="text-sm text-text-primary">{user?.email}</p>
+            <p className="flex items-center gap-2 text-sm text-text-primary">
+              <Mail className="h-4 w-4 shrink-0 text-accent-primary" />
+              {user?.email}
+            </p>
           </div>
         </div>
       </div>
@@ -99,7 +112,7 @@ export function ProfilePersonalInfoSection({ user }: ProfilePersonalInfoSectionP
                 <FormItem>
                   <FormLabel>First Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="Enter your first name" {...field} />
+                    <InputWithIcon prefixIcon={<User />} placeholder="Enter your first name" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -113,7 +126,7 @@ export function ProfilePersonalInfoSection({ user }: ProfilePersonalInfoSectionP
                 <FormItem>
                   <FormLabel>Last Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="Enter your last name" {...field} />
+                    <InputWithIcon prefixIcon={<User />} placeholder="Enter your last name" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -125,7 +138,10 @@ export function ProfilePersonalInfoSection({ user }: ProfilePersonalInfoSectionP
             <p className="text-xs font-semibold text-text-secondary uppercase tracking-wide mb-1">
               Email
             </p>
-            <p className="text-sm text-text-primary">{user?.email}</p>
+            <p className="flex items-center gap-2 text-sm text-text-primary">
+              <Mail className="h-4 w-4 shrink-0 text-accent-primary" />
+              {user?.email}
+            </p>
             <p className="text-xs text-text-secondary mt-1">Email cannot be changed</p>
           </div>
 
