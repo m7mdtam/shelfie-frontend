@@ -34,6 +34,7 @@ type AdditionalInfoFormData = z.infer<typeof additionalInfoSchema>
 
 interface ProfileAdditionalInfoSectionProps {
   user: PayloadUser | undefined
+  isOwner?: boolean
 }
 
 function parseBirthDate(raw: string | undefined): Date | undefined {
@@ -50,6 +51,7 @@ function SexIcon({ sex }: { sex?: string }) {
 
 export function ProfileAdditionalInfoSection({
   user,
+  isOwner = true,
 }: ProfileAdditionalInfoSectionProps): React.ReactElement {
   const [isEditing, setIsEditing] = useState(false)
   const isMobile = useIsMobile()
@@ -85,10 +87,12 @@ export function ProfileAdditionalInfoSection({
       <div className="space-y-4">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-semibold text-text-primary">Additional Information</h2>
-          <Button onClick={() => setIsEditing(true)} variant="default" size="sm" className="flex items-center gap-2">
-            <Edit2 className="w-4 h-4" />
-            {!isMobile && 'Edit'}
-          </Button>
+          {isOwner && (
+            <Button onClick={() => setIsEditing(true)} variant="default" size="sm" className="flex items-center gap-2">
+              <Edit2 className="w-4 h-4" />
+              {!isMobile && 'Edit'}
+            </Button>
+          )}
         </div>
 
         <div className="space-y-3">

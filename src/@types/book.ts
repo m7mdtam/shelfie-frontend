@@ -40,6 +40,17 @@ export interface BookRatingInfo {
   totalRatings: number
 }
 
+export interface BookOwner {
+  id: string
+  email?: string
+  firstName: string
+  lastName: string
+  profileImage?: {
+    url?: string
+    sizes?: Array<{ url?: string }>
+  }
+}
+
 export interface Book {
   id: string
   title: string
@@ -51,17 +62,17 @@ export interface Book {
   downloadLink?: string
   description?: string
   isPublic: boolean
-  owner: {
-    id: string
-    email: string
-    firstName: string
-    lastName: string
-  }
+  owner?: number | BookOwner
   averageRating: number
   userRating: number | null
   totalRatings: number
   createdAt: string
   updatedAt: string
+}
+
+export function getBookOwner(owner: Book['owner']): BookOwner | undefined {
+  if (typeof owner === 'object' && owner !== null) return owner
+  return undefined
 }
 
 export interface GetBooksParams {

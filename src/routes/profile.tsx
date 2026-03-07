@@ -1,16 +1,9 @@
-import { createFileRoute, redirect } from '@tanstack/react-router'
-import { ProfilePage } from '@/pages/app/profile'
-import { getToken } from '@/lib/cookies'
-import { isTokenExpired } from '@/lib/jwt'
+import { createFileRoute, Outlet } from '@tanstack/react-router'
+
+function ProfileLayout() {
+  return <Outlet />
+}
 
 export const Route = createFileRoute('/profile')({
-  beforeLoad: () => {
-    const token = getToken()
-    if (!token || isTokenExpired(token)) {
-      throw redirect({
-        to: '/sign-in',
-      })
-    }
-  },
-  component: ProfilePage,
+  component: ProfileLayout,
 })

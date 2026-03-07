@@ -12,7 +12,9 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as BooksRouteImport } from './routes/books'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ProfileIndexRouteImport } from './routes/profile/index'
 import { Route as BooksIndexRouteImport } from './routes/books/index'
+import { Route as ProfileUserIdRouteImport } from './routes/profile/$userId'
 import { Route as BooksShelfRouteImport } from './routes/books/shelf'
 import { Route as BooksExploreRouteImport } from './routes/books/explore'
 import { Route as BooksAddRouteImport } from './routes/books/add'
@@ -40,10 +42,20 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ProfileIndexRoute = ProfileIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => ProfileRoute,
+} as any)
 const BooksIndexRoute = BooksIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => BooksRoute,
+} as any)
+const ProfileUserIdRoute = ProfileUserIdRouteImport.update({
+  id: '/$userId',
+  path: '/$userId',
+  getParentRoute: () => ProfileRoute,
 } as any)
 const BooksShelfRoute = BooksShelfRouteImport.update({
   id: '/shelf',
@@ -104,7 +116,7 @@ const BooksBookIdEditRoute = BooksBookIdEditRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/books': typeof BooksRouteWithChildren
-  '/profile': typeof ProfileRoute
+  '/profile': typeof ProfileRouteWithChildren
   '/forgot-password': typeof authForgotPasswordRoute
   '/reset-password': typeof authResetPasswordRoute
   '/sign-in': typeof authSignInRoute
@@ -115,12 +127,13 @@ export interface FileRoutesByFullPath {
   '/books/add': typeof BooksAddRoute
   '/books/explore': typeof BooksExploreRoute
   '/books/shelf': typeof BooksShelfRoute
+  '/profile/$userId': typeof ProfileUserIdRoute
   '/books/': typeof BooksIndexRoute
+  '/profile/': typeof ProfileIndexRoute
   '/books/$bookId/edit': typeof BooksBookIdEditRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/profile': typeof ProfileRoute
   '/forgot-password': typeof authForgotPasswordRoute
   '/reset-password': typeof authResetPasswordRoute
   '/sign-in': typeof authSignInRoute
@@ -131,14 +144,16 @@ export interface FileRoutesByTo {
   '/books/add': typeof BooksAddRoute
   '/books/explore': typeof BooksExploreRoute
   '/books/shelf': typeof BooksShelfRoute
+  '/profile/$userId': typeof ProfileUserIdRoute
   '/books': typeof BooksIndexRoute
+  '/profile': typeof ProfileIndexRoute
   '/books/$bookId/edit': typeof BooksBookIdEditRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/books': typeof BooksRouteWithChildren
-  '/profile': typeof ProfileRoute
+  '/profile': typeof ProfileRouteWithChildren
   '/(auth)/forgot-password': typeof authForgotPasswordRoute
   '/(auth)/reset-password': typeof authResetPasswordRoute
   '/(auth)/sign-in': typeof authSignInRoute
@@ -149,7 +164,9 @@ export interface FileRoutesById {
   '/books/add': typeof BooksAddRoute
   '/books/explore': typeof BooksExploreRoute
   '/books/shelf': typeof BooksShelfRoute
+  '/profile/$userId': typeof ProfileUserIdRoute
   '/books/': typeof BooksIndexRoute
+  '/profile/': typeof ProfileIndexRoute
   '/books/$bookId/edit': typeof BooksBookIdEditRoute
 }
 export interface FileRouteTypes {
@@ -168,12 +185,13 @@ export interface FileRouteTypes {
     | '/books/add'
     | '/books/explore'
     | '/books/shelf'
+    | '/profile/$userId'
     | '/books/'
+    | '/profile/'
     | '/books/$bookId/edit'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/profile'
     | '/forgot-password'
     | '/reset-password'
     | '/sign-in'
@@ -184,7 +202,9 @@ export interface FileRouteTypes {
     | '/books/add'
     | '/books/explore'
     | '/books/shelf'
+    | '/profile/$userId'
     | '/books'
+    | '/profile'
     | '/books/$bookId/edit'
   id:
     | '__root__'
@@ -201,14 +221,16 @@ export interface FileRouteTypes {
     | '/books/add'
     | '/books/explore'
     | '/books/shelf'
+    | '/profile/$userId'
     | '/books/'
+    | '/profile/'
     | '/books/$bookId/edit'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   BooksRoute: typeof BooksRouteWithChildren
-  ProfileRoute: typeof ProfileRoute
+  ProfileRoute: typeof ProfileRouteWithChildren
   authForgotPasswordRoute: typeof authForgotPasswordRoute
   authResetPasswordRoute: typeof authResetPasswordRoute
   authSignInRoute: typeof authSignInRoute
@@ -240,12 +262,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/profile/': {
+      id: '/profile/'
+      path: '/'
+      fullPath: '/profile/'
+      preLoaderRoute: typeof ProfileIndexRouteImport
+      parentRoute: typeof ProfileRoute
+    }
     '/books/': {
       id: '/books/'
       path: '/'
       fullPath: '/books/'
       preLoaderRoute: typeof BooksIndexRouteImport
       parentRoute: typeof BooksRoute
+    }
+    '/profile/$userId': {
+      id: '/profile/$userId'
+      path: '/$userId'
+      fullPath: '/profile/$userId'
+      preLoaderRoute: typeof ProfileUserIdRouteImport
+      parentRoute: typeof ProfileRoute
     }
     '/books/shelf': {
       id: '/books/shelf'
@@ -357,10 +393,23 @@ const BooksRouteChildren: BooksRouteChildren = {
 
 const BooksRouteWithChildren = BooksRoute._addFileChildren(BooksRouteChildren)
 
+interface ProfileRouteChildren {
+  ProfileUserIdRoute: typeof ProfileUserIdRoute
+  ProfileIndexRoute: typeof ProfileIndexRoute
+}
+
+const ProfileRouteChildren: ProfileRouteChildren = {
+  ProfileUserIdRoute: ProfileUserIdRoute,
+  ProfileIndexRoute: ProfileIndexRoute,
+}
+
+const ProfileRouteWithChildren =
+  ProfileRoute._addFileChildren(ProfileRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   BooksRoute: BooksRouteWithChildren,
-  ProfileRoute: ProfileRoute,
+  ProfileRoute: ProfileRouteWithChildren,
   authForgotPasswordRoute: authForgotPasswordRoute,
   authResetPasswordRoute: authResetPasswordRoute,
   authSignInRoute: authSignInRoute,

@@ -1,7 +1,8 @@
-import { Book } from '@/@types/book'
+import { Book, getBookOwner } from '@/@types/book'
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Star, Download } from 'lucide-react'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { Star, Download, PenLine } from 'lucide-react'
 import { Link } from '@tanstack/react-router'
 import fallbackImage from '@/assets/images/fallbackImage.jfif'
 
@@ -16,11 +17,12 @@ interface BookCardProps {
 }
 
 export function BookCard({ book }: BookCardProps) {
+  const owner = getBookOwner(book.owner)
   return (
     <Link to="/books/$bookId" params={{ bookId: book.id }} className="block">
       <Card
         variant="default"
-        className="flex flex-row hover:shadow-lg transition-shadow cursor-pointer p-3 gap-3 h-32 sm:h-36"
+        className="flex flex-row hover:shadow-lg transition-shadow cursor-pointer p-3 gap-3 h-40 sm:h-44"
       >
         <div className="w-20 sm:w-24 self-stretch shrink-0 rounded-md overflow-hidden">
           <img
@@ -35,9 +37,26 @@ export function BookCard({ book }: BookCardProps) {
             <p className="font-semibold text-sm sm:text-base text-text-primary line-clamp-1">
               {book.title}
             </p>
-            <p className="text-xs sm:text-sm text-text-secondary line-clamp-1 mt-0.5">
+            <p className="flex items-center gap-1 text-xs sm:text-sm text-text-secondary line-clamp-1 mt-0.5">
+              <PenLine className="w-3 h-3 shrink-0 text-accent-primary" />
               {book.author}
             </p>
+            {owner && (
+              <div className="flex items-center gap-1 mt-0.5">
+                <Avatar className="w-4 h-4 shrink-0">
+                  <AvatarImage
+                    src={owner.profileImage?.sizes?.[0]?.url || owner.profileImage?.url}
+                    alt={`${owner.firstName} ${owner.lastName}`}
+                  />
+                  <AvatarFallback className="text-[8px]">
+                    {owner.firstName[0]}{owner.lastName[0]}
+                  </AvatarFallback>
+                </Avatar>
+                <p className="text-xs text-text-secondary line-clamp-1">
+                  {owner.firstName} {owner.lastName}
+                </p>
+              </div>
+            )}
           </div>
 
           <div className="flex flex-wrap gap-1.5">

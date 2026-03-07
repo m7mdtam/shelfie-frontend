@@ -8,13 +8,14 @@ import type { PayloadUser } from '@/@types/auth'
 
 interface ProfileAvatarSectionProps {
   user: PayloadUser | undefined
+  isOwner?: boolean
 }
 
 function getInitials(firstName: string, lastName: string): string {
   return ((firstName[0] || '') + (lastName[0] || '')).toUpperCase()
 }
 
-export function ProfileAvatarSection({ user }: ProfileAvatarSectionProps) {
+export function ProfileAvatarSection({ user, isOwner = true }: ProfileAvatarSectionProps) {
   const [isHoveringAvatar, setIsHoveringAvatar] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const { mutate: uploadImage, isPending: isUploading } = useUploadProfileImage()
@@ -38,7 +39,7 @@ export function ProfileAvatarSection({ user }: ProfileAvatarSectionProps) {
   }
 
   const handleAvatarClick = () => {
-    fileInputRef.current?.click()
+    if (isOwner) fileInputRef.current?.click()
   }
 
   const handleDeleteAvatar = () => {
@@ -48,9 +49,9 @@ export function ProfileAvatarSection({ user }: ProfileAvatarSectionProps) {
   return (
     <div className="flex flex-col items-center gap-4">
       <div
-        className="relative cursor-pointer"
-        onMouseEnter={() => setIsHoveringAvatar(true)}
-        onMouseLeave={() => setIsHoveringAvatar(false)}
+        className={isOwner ? 'relative cursor-pointer' : 'relative'}
+        onMouseEnter={() => isOwner && setIsHoveringAvatar(true)}
+        onMouseLeave={() => isOwner && setIsHoveringAvatar(false)}
         onClick={handleAvatarClick}
       >
         <Avatar className="h-32 w-32 ring-2 ring-accent-primary">
@@ -60,7 +61,7 @@ export function ProfileAvatarSection({ user }: ProfileAvatarSectionProps) {
           </AvatarFallback>
         </Avatar>
 
-        {(isHoveringAvatar || isUploading) && (
+        {isOwner && (isHoveringAvatar || isUploading) && (
           <div className="absolute inset-0 bg-black/40 rounded-full flex items-center justify-center">
             {isUploading ? (
               <Loader className="w-6 h-6 text-white animate-spin" />
@@ -71,16 +72,18 @@ export function ProfileAvatarSection({ user }: ProfileAvatarSectionProps) {
         )}
       </div>
 
-      <Input
-        ref={fileInputRef}
-        type="file"
-        accept="image/*"
-        onChange={handleImageUpload}
-        disabled={isUploading}
-        className="hidden"
-      />
+      {isOwner && (
+        <Input
+          ref={fileInputRef}
+          type="file"
+          accept="image/*"
+          onChange={handleImageUpload}
+          disabled={isUploading}
+          className="hidden"
+        />
+      )}
 
-      {hasProfileImage && (
+      {isOwner && hasProfileImage && (
         <Button
           onClick={handleDeleteAvatar}
           variant="destructive"

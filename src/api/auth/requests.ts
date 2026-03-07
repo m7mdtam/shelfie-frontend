@@ -65,3 +65,8 @@ export const verifyEmailFn = async (data: VerifyEmailRequest): Promise<VerifyEma
   const response = await axiosInstance.post('/api/users/verify-email', data)
   return response.data
 }
+
+export const getUserByIdFn = async (id: string): Promise<GetMeResponse> => {
+  const response = await axiosInstance.get(`/api/users/${id}`)
+  return response.data
+}

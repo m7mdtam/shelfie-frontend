@@ -26,9 +26,10 @@ type PersonalInfoFormData = z.infer<typeof personalInfoSchema>
 
 interface ProfilePersonalInfoSectionProps {
   user: PayloadUser | undefined
+  isOwner?: boolean
 }
 
-export function ProfilePersonalInfoSection({ user }: ProfilePersonalInfoSectionProps) {
+export function ProfilePersonalInfoSection({ user, isOwner = true }: ProfilePersonalInfoSectionProps) {
   const [isEditing, setIsEditing] = useState(false)
   const isMobile = useIsMobile()
   const { mutate: updateProfile, isPending: isSaving } = useUpdateProfile()
@@ -54,10 +55,12 @@ export function ProfilePersonalInfoSection({ user }: ProfilePersonalInfoSectionP
       <div className="space-y-4">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-semibold text-text-primary">Personal Information</h2>
-          <Button onClick={() => setIsEditing(true)} variant="default" size="sm" className="flex items-center gap-2">
-            <Edit2 className="w-4 h-4" />
-            {!isMobile && 'Edit'}
-          </Button>
+          {isOwner && (
+            <Button onClick={() => setIsEditing(true)} variant="default" size="sm" className="flex items-center gap-2">
+              <Edit2 className="w-4 h-4" />
+              {!isMobile && 'Edit'}
+            </Button>
+          )}
         </div>
 
         <div className="space-y-3">

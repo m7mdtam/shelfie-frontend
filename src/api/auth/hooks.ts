@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { loginFn, registerFn, logoutFn, getMeFn, forgotPasswordFn, resetPasswordFn, verifyEmailFn } from './requests'
+import { loginFn, registerFn, logoutFn, getMeFn, forgotPasswordFn, resetPasswordFn, verifyEmailFn, getUserByIdFn } from './requests'
 import { authKeys } from './keys'
 import { LoginRequest, RegisterRequest, ForgotPasswordRequest, ResetPasswordRequest, VerifyEmailRequest } from './types'
 
@@ -51,6 +51,14 @@ export const auth = {
     return useMutation({
       mutationFn: (data: VerifyEmailRequest) => verifyEmailFn(data),
       mutationKey: authKeys.verifyEmail(),
+    })
+  },
+
+  useGetUserById: (id: string, enabled = true) => {
+    return useQuery({
+      queryKey: authKeys.getUserById(id),
+      queryFn: () => getUserByIdFn(id),
+      enabled: !!id && enabled,
     })
   },
 }
