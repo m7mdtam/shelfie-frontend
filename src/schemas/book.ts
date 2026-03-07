@@ -7,7 +7,6 @@ export const bookObjectSchema = z.object({
   status: z.string().default('want-to-read'),
   isDownloadable: z.boolean().default(false),
   downloadLink: z.string(),
-  rating: z.number().min(0).max(5).default(0),
   description: z.string().optional().default(''),
   isPublic: z.boolean().default(false),
 })

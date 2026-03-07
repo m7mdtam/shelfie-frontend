@@ -73,7 +73,6 @@ export function BookForm({ mode, initialData, onSubmit, isLoading, genres }: Boo
       status: initialData?.status || 'want-to-read',
       isDownloadable: initialData?.isDownloadable ?? false,
       downloadLink: initialData?.downloadLink || '',
-      rating: initialData?.rating || 0,
       description: initialData?.description || '',
       isPublic: initialData?.isPublic ?? false,
     },
@@ -81,7 +80,6 @@ export function BookForm({ mode, initialData, onSubmit, isLoading, genres }: Boo
 
   const handleSubmit = async (data: any) => {
     const payload = { ...data }
-    if (!payload.rating) delete payload.rating
     if (coverFile) {
       setIsUploading(true)
       try {
@@ -246,28 +244,6 @@ export function BookForm({ mode, initialData, onSubmit, isLoading, genres }: Boo
           />
         )}
 
-        <FormField
-          control={form.control}
-          name="rating"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Rating (0-5)</FormLabel>
-              <FormControl>
-                <Input
-                  type="number"
-                  min="0"
-                  max="5"
-                  step="1"
-                  placeholder="0"
-                  {...field}
-                  value={field.value === 0 ? '' : field.value}
-                  onChange={e => field.onChange(parseInt(e.target.value, 10) || 0)}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
         <FormField
           control={form.control}
           name="isPublic"

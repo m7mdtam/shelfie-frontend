@@ -1,0 +1,52 @@
+import { useAuthContext } from '@/contexts/auth'
+import { useRating } from '@/hooks/pages/books/use-rating'
+import { StarRating } from './star-rating'
+
+interface RatingsSectionProps {
+  bookId: string
+  averageRating: number
+  userRating: number | null
+  totalRatings: number
+}
+
+export function RatingsSection({
+  bookId,
+  averageRating,
+  userRating,
+  totalRatings,
+}: RatingsSectionProps) {
+  const auth = useAuthContext()
+  const isAuthenticated = !!auth.decodedToken
+  const { mutate: submitRating, isPending } = useRating(bookId)
+
+  const hasRated = userRating !== null && userRating !== undefined
+
+  const handleRate = (rating: number) => {
+    submitRating(rating)
+  }
+
+  return (
+    <div className="flex flex-col gap-2 mb-6">
+      <div className="flex flex-wrap items-center gap-3">
+        <StarRating
+          value={userRating ?? 0}
+          onChange={isAuthenticated && !hasRated ? handleRate : undefined}
+          disabled={isPending}
+        />
+        {(totalRatings ?? 0) > 0 && (
+          <span className="text-sm text-text-secondary">
+            {(averageRating ?? 0).toFixed(1)} ({totalRatings}{' '}
+            {totalRatings === 1 ? 'rating' : 'ratings'})
+          </span>
+        )}
+      </div>
+      {isAuthenticated ? (
+        <p className="text-xs text-text-secondary">
+          {hasRated ? `Your rating: ${userRating}/5 — thanks!` : 'Rate this book'}
+        </p>
+      ) : (
+        <p className="text-xs text-text-secondary">Sign in to rate this book.</p>
+      )}
+    </div>
+  )
+}

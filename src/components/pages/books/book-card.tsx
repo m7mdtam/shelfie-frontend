@@ -52,21 +52,25 @@ export function BookCard({ book }: BookCardProps) {
             )}
           </div>
 
-          {book.rating && (
-            <div className="flex items-center gap-0.5">
-              {Array.from({ length: 5 }).map((_, i) =>
-                i < (book.rating || 0) ? (
-                  <Star
-                    key={i}
-                    className="w-3 h-3 sm:w-4 sm:h-4 fill-star-filled text-star-filled"
-                  />
-                ) : (
-                  <Star key={i} className="w-3 h-3 sm:w-4 sm:h-4 text-text-secondary" />
-                )
-              )}
-              <span className="text-xs sm:text-sm text-text-secondary ml-1">{book.rating}/5</span>
-            </div>
-          )}
+          <div className="flex items-center gap-1">
+            {Array.from({ length: 5 }, (_, i) => (
+              <Star
+                key={i}
+                className={[
+                  'w-3 h-3 sm:w-3.5 sm:h-3.5',
+                  i < Math.round(book.averageRating ?? 0)
+                    ? 'fill-star-filled text-star-filled'
+                    : 'text-text-secondary',
+                ].join(' ')}
+              />
+            ))}
+            <span className="text-xs text-text-secondary ml-0.5">
+              {(book.averageRating ?? 0).toFixed(1)}
+              <span className="text-text-secondary/60 ml-0.5">
+                ({book.totalRatings ?? 0})
+              </span>
+            </span>
+          </div>
         </div>
       </Card>
     </Link>
