@@ -72,7 +72,7 @@ export function NavbarUserMenu({ user, profileUser, onLogout }: NavbarUserMenuPr
         </Button>
       </DropdownMenuTrigger>
 
-      <DropdownMenuContent align="end" side="left" className="w-56 sm:side-auto">
+      <DropdownMenuContent align="end" side="bottom" className="w-56">
         <DropdownMenuLabel className="flex items-center gap-3 py-3">
           <Avatar className="h-9 w-9 shrink-0">
             <AvatarImage src={profileImageUrl} alt={displayName} />
