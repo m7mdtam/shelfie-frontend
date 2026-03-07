@@ -22,7 +22,7 @@ export function BookCard({ book }: BookCardProps) {
         variant="default"
         className="flex flex-row hover:shadow-lg transition-shadow cursor-pointer p-3 gap-3 h-32 sm:h-36"
       >
-        <div className="w-16 sm:w-20 self-stretch shrink-0 rounded-md overflow-hidden">
+        <div className="w-20 sm:w-24 self-stretch shrink-0 rounded-md overflow-hidden">
           <img
             src={book.coverImage?.url ?? fallbackImage}
             alt={book.title}

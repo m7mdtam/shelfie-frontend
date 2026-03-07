@@ -2,7 +2,7 @@ import { useState, useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Book } from '@/@types/book'
-import { bookSchema } from '@/schemas/book.ts'
+import { bookSchema, bookObjectSchema } from '@/schemas/book.ts'
 import { uploadMedia } from '@/api/media/requests'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -71,6 +71,8 @@ export function BookForm({ mode, initialData, onSubmit, isLoading, genres }: Boo
       author: initialData?.author || '',
       genre: initialData?.genre || '',
       status: initialData?.status || 'want-to-read',
+      isDownloadable: initialData?.isDownloadable ?? false,
+      downloadLink: initialData?.downloadLink || '',
       rating: initialData?.rating || 0,
       notes: initialData?.notes || '',
       isPublic: initialData?.isPublic ?? false,
@@ -98,7 +100,7 @@ export function BookForm({ mode, initialData, onSubmit, isLoading, genres }: Boo
   }
 
   return (
-    <Form {...form} schema={bookSchema}>
+    <Form {...form} schema={bookObjectSchema}>
       <form onSubmit={form.handleSubmit(handleSubmit)} className="flex flex-col gap-4">
         <div className="flex flex-col gap-1.5">
           <span className="text-sm font-medium text-text-primary">Cover Image</span>
@@ -197,6 +199,47 @@ export function BookForm({ mode, initialData, onSubmit, isLoading, genres }: Boo
             </FormItem>
           )}
         />
+
+        <FormField
+          control={form.control}
+          name="isDownloadable"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Downloadable</FormLabel>
+              <Select
+                value={field.value ? 'true' : 'false'}
+                onValueChange={v => field.onChange(v === 'true')}
+              >
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Is it downloadable?" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  <SelectItem value="false">Not downloadable</SelectItem>
+                  <SelectItem value="true">Downloadable</SelectItem>
+                </SelectContent>
+              </Select>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        {form.watch('isDownloadable') && (
+          <FormField
+            control={form.control}
+            name="downloadLink"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Download Link</FormLabel>
+                <FormControl>
+                  <Input placeholder="https://example.com/book.pdf" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        )}
 
         <FormField
           control={form.control}

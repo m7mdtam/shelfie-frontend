@@ -1,5 +1,7 @@
 export type BookStatus = 'want-to-read' | 'reading' | 'finished'
 
+export type BookDownloadable = 'true' | 'false'
+
 export type BookGenre =
   | 'fiction'
   | 'non-fiction'
@@ -39,6 +41,8 @@ export interface Book {
   coverImage?: BookMedia
   genre: BookGenre
   status: BookStatus
+  isDownloadable?: boolean
+  downloadLink?: string
   rating?: number
   notes?: string
   isPublic: boolean
@@ -57,6 +61,7 @@ export interface GetBooksParams {
   limit?: number
   genre?: BookGenre
   status?: BookStatus
+  isDownloadable?: boolean
   search?: string
   ownerId?: string
 }
@@ -67,6 +72,8 @@ export interface CreateBookRequest {
   coverImage?: string
   genre: BookGenre
   status: BookStatus
+  isDownloadable?: boolean
+  downloadLink?: string
   rating?: number
   notes?: string
   isPublic: boolean
@@ -78,6 +85,8 @@ export interface UpdateBookRequest {
   coverImage?: string
   genre?: BookGenre
   status?: BookStatus
+  isDownloadable?: boolean
+  downloadLink?: string
   rating?: number
   notes?: string
   isPublic?: boolean

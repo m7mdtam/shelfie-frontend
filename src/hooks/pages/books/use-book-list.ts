@@ -15,16 +15,16 @@ export function useBookList(props: UseBookListProps = {}) {
 
   const [search, setSearch] = useState('')
   const [genre, setGenre] = useState<string>('')
-  const [status, setStatus] = useState<string>('')
+  const [downloadable, setDownloadable] = useState<string>('')
 
   const params = useMemo(
     () => ({
       limit,
       ...(search && { 'where[title][like]': search }),
       ...(genre && { 'where[genre][equals]': genre }),
-      ...(status && { 'where[status][equals]': status }),
+      ...(downloadable !== '' && { 'where[isDownloadable][equals]': downloadable === 'true' }),
     }),
-    [limit, search, genre, status]
+    [limit, search, genre, downloadable]
   )
 
   const allBooksQuery = useInfiniteListBooks(scope === 'all' ? params : undefined, {
@@ -52,12 +52,12 @@ export function useBookList(props: UseBookListProps = {}) {
     setSearch,
     genre,
     setGenre,
-    status,
-    setStatus,
+    downloadable,
+    setDownloadable,
     resetFilters: () => {
       setSearch('')
       setGenre('')
-      setStatus('')
+      setDownloadable('')
     },
     totalCount: (() => {
       const data = query.data as InfiniteData<BooksListResponse, unknown> | undefined

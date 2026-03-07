@@ -73,7 +73,7 @@ export function BookListDisplay({
   }
 
   return (
-    <div className="mt-4 sm:mt-6 rounded-lg p-2 sm:p-4">
+    <div className="mt-4 sm:mt-6 rounded-lg  min-[375px]:p-2 sm:p-4">
       <p className="text-sm text-text-secondary mb-4">
         Showing {books.length} of {totalCount} books
       </p>
