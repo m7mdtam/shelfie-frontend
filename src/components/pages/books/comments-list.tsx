@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Comment } from '@/@types/comment'
 import { CommentCard } from './comment-card'
+import { CommentsSkeleton } from './comments-skeleton'
 import { useComments } from '@/hooks/pages/books/use-comments'
 import { Button } from '@/components/ui/button'
 import { Loader } from 'lucide-react'
@@ -29,17 +30,13 @@ export function CommentsList({ bookId }: CommentsListProps) {
     setCurrentPage(prev => prev + 1)
   }
 
-  const handleShowLess = () => {
-    setCurrentPage(1)
-    setAllComments(data?.data || [])
-  }
-
   const hasMorePages = data?.pagination?.pages && currentPage < data.pagination.pages
 
   if (isLoading && currentPage === 1) {
     return (
-      <div className="flex justify-center py-8">
+      <div className="flex flex-col items-center gap-3">
         <Loader className="w-6 h-6 animate-spin text-accent-primary" />
+        <CommentsSkeleton />
       </div>
     )
   }
@@ -66,25 +63,13 @@ export function CommentsList({ bookId }: CommentsListProps) {
         <CommentCard key={comment.id} comment={comment} bookId={bookId} />
       ))}
 
-      <div className="flex justify-center gap-2 pt-4">
-        {hasMorePages && (
+      {hasMorePages && (
+        <div className="flex justify-center pt-4">
           <Button variant="outline" onClick={handleLoadMore} disabled={isLoading}>
-            {isLoading ? (
-              <>
-                <Loader className="w-4 h-4 mr-2 animate-spin" />
-                Loading...
-              </>
-            ) : (
-              'Load More'
-            )}
+            {isLoading ? <Loader className="w-4 h-4 animate-spin" /> : 'Load More'}
           </Button>
-        )}
-        {currentPage > 1 && (
-          <Button variant="outline" onClick={handleShowLess}>
-            Show Less
-          </Button>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   )
 }

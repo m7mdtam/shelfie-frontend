@@ -42,7 +42,7 @@ const GENRES = [
 
 export function ShelfPage() {
   const auth = useAuthContext()
-  const bookList = useBookList({ limit: 50, scope: 'mine' })
+  const bookList = useBookList({ limit: 10, scope: 'mine' })
   const bookForm = useBookForm()
   const isMobile = useIsMobile()
 
@@ -109,6 +109,8 @@ export function ShelfPage() {
             books={bookList.allBooks}
             totalCount={bookList.totalCount}
             isFetchingNextPage={bookList.isFetchingNextPage}
+            hasNextPage={bookList.hasNextPage}
+            onLoadMore={bookList.fetchNextPage}
             isOwner={true}
             onAddBook={() => bookForm.openCreate()}
             emptyTitle="No Books Yet"

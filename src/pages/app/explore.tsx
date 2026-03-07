@@ -23,7 +23,7 @@ const GENRES = [
 
 export function ExplorePage() {
   const auth = useAuthContext()
-  const bookList = useBookList({ limit: 50, scope: 'all' })
+  const bookList = useBookList({ limit: 10, scope: 'all' })
 
   return (
     <div className="flex-1 flex flex-col bg-background-base p-4 md:p-6">
@@ -60,6 +60,8 @@ export function ExplorePage() {
             books={bookList.allBooks}
             totalCount={bookList.totalCount}
             isFetchingNextPage={bookList.isFetchingNextPage}
+            hasNextPage={bookList.hasNextPage}
+            onLoadMore={bookList.fetchNextPage}
             isOwner={false}
             emptyTitle="No Books Found"
             emptyDescription="Try adjusting your filters"

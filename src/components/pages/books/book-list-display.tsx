@@ -1,7 +1,8 @@
 import { BookCard } from './book-card'
+import { BookCardSkeleton } from './book-card-skeleton'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { Plus } from 'lucide-react'
+import { Plus, Loader } from 'lucide-react'
 import { Book } from '@/@types/book'
 
 interface BookListDisplayProps {
@@ -14,6 +15,8 @@ interface BookListDisplayProps {
   onAddBook?: () => void
   emptyTitle?: string
   emptyDescription?: string
+  hasNextPage?: boolean
+  onLoadMore?: () => void
 }
 
 export function BookListDisplay({
@@ -26,13 +29,18 @@ export function BookListDisplay({
   onAddBook,
   emptyTitle = 'No Books Found',
   emptyDescription = 'Try adjusting your filters',
+  hasNextPage = false,
+  onLoadMore,
 }: BookListDisplayProps) {
   if (isLoading && books.length === 0) {
     return (
-      <div className="flex flex-col gap-4">
-        {Array.from({ length: 6 }).map((_, i) => (
-          <div key={i} className="h-32 bg-background-surface rounded-lg animate-pulse" />
-        ))}
+      <div className="mt-4 sm:mt-6 rounded-lg min-[375px]:p-2 sm:p-4">
+        <p className="text-sm text-text-secondary mb-4">Loading books...</p>
+        <div className="grid gap-3 grid-cols-1 sm:grid-cols-[repeat(auto-fill,minmax(300px,1fr))]">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <BookCardSkeleton key={i} />
+          ))}
+        </div>
       </div>
     )
   }
@@ -82,9 +90,16 @@ export function BookListDisplay({
           <BookCard key={book.id} book={book} />
         ))}
       </div>
-      {isFetchingNextPage && (
-        <div className="flex items-center justify-center p-4">
-          <div className="animate-spin">⟳</div>
+      {hasNextPage && (
+        <div className="flex justify-center mt-6">
+          <Button
+            onClick={onLoadMore}
+            variant="outline"
+            disabled={isFetchingNextPage}
+            className="w-fit"
+          >
+            {isFetchingNextPage ? <Loader className="w-4 h-4 animate-spin" /> : 'Load More'}
+          </Button>
         </div>
       )}
     </div>
