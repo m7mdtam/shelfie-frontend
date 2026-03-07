@@ -16,9 +16,9 @@ const buttonVariants = cva(
         secondary: 'bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80',
         ghost: 'hover:bg-background-tertiary dark:hover:bg-accent-background hover:text-text-primary data-[state=open]:bg-background-tertiary dark:data-[state=open]:bg-accent-background',
         link: 'text-primary underline-offset-4 hover:underline',
-        success: 'bg-[var(--state-success)] text-white shadow hover:opacity-90',
-        error: 'bg-[var(--state-error)] text-white shadow hover:opacity-90',
-        warning: 'bg-[var(--state-warning)] text-white shadow hover:opacity-90',
+        success: 'bg-[var(--btn-success)] text-white shadow hover:bg-[var(--btn-success-hover)]',
+        error: 'bg-[var(--btn-error)] text-white shadow hover:bg-[var(--btn-error-hover)]',
+        warning: 'bg-[var(--btn-warning)] text-white shadow hover:bg-[var(--btn-warning-hover)]',
         'primary-soft':
           'bg-[var(--accent-background)] text-[var(--accent-primary)] hover:bg-opacity-80',
         'secondary-soft':

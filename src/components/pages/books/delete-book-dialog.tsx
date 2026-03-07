@@ -1,6 +1,7 @@
 import { useIsMobile } from '@/hooks/use-is-mobile'
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -9,6 +10,7 @@ import {
 } from '@/components/ui/dialog'
 import {
   Drawer,
+  DrawerClose,
   DrawerContent,
   DrawerDescription,
   DrawerFooter,
@@ -16,7 +18,7 @@ import {
   DrawerTitle,
 } from '@/components/ui/drawer'
 import { Button } from '@/components/ui/button'
-import { AlertCircle } from 'lucide-react'
+import { Trash2 } from 'lucide-react'
 
 interface DeleteBookDialogProps {
   open: boolean
@@ -35,26 +37,32 @@ export function DeleteBookDialog({
 }: DeleteBookDialogProps) {
   const isMobile = useIsMobile()
 
+  const body = (
+    <div className="flex flex-col items-center text-center gap-3">
+      <div className="w-14 h-14 rounded-full bg-state-error-bg flex items-center justify-center shrink-0">
+        <Trash2 className="w-6 h-6 text-destructive" />
+      </div>
+      <div>
+        <p className="font-semibold text-text-primary">Delete &ldquo;{bookTitle}&rdquo;?</p>
+        <p className="text-sm text-text-secondary mt-1">This action cannot be undone.</p>
+      </div>
+    </div>
+  )
+
   if (isMobile) {
     return (
       <Drawer open={open} onOpenChange={onOpenChange}>
         <DrawerContent>
           <DrawerHeader>
-            <div className="flex gap-3">
-              <AlertCircle className="w-5 h-5 text-state-error shrink-0 mt-0.5" />
-              <div>
-                <DrawerTitle className="text-state-error">Delete Book</DrawerTitle>
-                <DrawerDescription className="mt-1">
-                  Are you sure you want to delete "{bookTitle}"? This action cannot be undone.
-                </DrawerDescription>
-              </div>
-            </div>
+            <DrawerTitle className="sr-only">Delete Book</DrawerTitle>
+            <DrawerDescription className="sr-only">Confirm deletion of {bookTitle}</DrawerDescription>
           </DrawerHeader>
-          <DrawerFooter>
-            <Button variant="outline" onClick={() => onOpenChange(false)} disabled={isLoading}>
-              Cancel
-            </Button>
-            <Button variant="destructive" onClick={onConfirm} disabled={isLoading}>
+          <div className="px-6 pb-2">{body}</div>
+          <DrawerFooter className="justify-center">
+            <DrawerClose asChild>
+              <Button variant="outline" disabled={isLoading}>Cancel</Button>
+            </DrawerClose>
+            <Button variant="error" onClick={onConfirm} disabled={isLoading}>
               {isLoading ? 'Deleting...' : 'Delete'}
             </Button>
           </DrawerFooter>
@@ -65,23 +73,17 @@ export function DeleteBookDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent>
+      <DialogContent className="w-[22vw]">
         <DialogHeader>
-          <div className="flex gap-3">
-            <AlertCircle className="w-5 h-5 text-state-error shrink-0 mt-0.5" />
-            <div>
-              <DialogTitle className="text-state-error">Delete Book</DialogTitle>
-              <DialogDescription className="mt-2">
-                Are you sure you want to delete "{bookTitle}"? This action cannot be undone.
-              </DialogDescription>
-            </div>
-          </div>
+          <DialogTitle className="sr-only">Delete Book</DialogTitle>
+          <DialogDescription className="sr-only">Confirm deletion of {bookTitle}</DialogDescription>
         </DialogHeader>
-        <DialogFooter>
-          <Button variant="outline" onClick={() => onOpenChange(false)} disabled={isLoading}>
-            Cancel
-          </Button>
-          <Button variant="destructive" onClick={onConfirm} disabled={isLoading}>
+        <div className="px-6 py-4">{body}</div>
+        <DialogFooter className="justify-center">
+          <DialogClose asChild>
+            <Button variant="outline" disabled={isLoading}>Cancel</Button>
+          </DialogClose>
+          <Button variant="error" onClick={onConfirm} disabled={isLoading}>
             {isLoading ? 'Deleting...' : 'Delete'}
           </Button>
         </DialogFooter>

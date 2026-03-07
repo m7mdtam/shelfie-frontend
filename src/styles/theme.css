@@ -67,7 +67,7 @@
   --color-secondary-foreground: var(--text-secondary);
   --color-muted: var(--background-muted);
   --color-muted-foreground: var(--text-disabled);
-  --color-destructive: var(--state-error-bg);
+  --color-destructive: var(--btn-error);
   --color-border: var(--text-border);
   --color-accent: var(--accent-background);
   --color-accent-foreground: var(--text-primary);

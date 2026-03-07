@@ -40,8 +40,6 @@ const GENRES = [
   'other',
 ]
 
-const STATUSES = ['want-to-read', 'reading', 'finished']
-
 export function ShelfPage() {
   const auth = useAuthContext()
   const bookList = useBookList({ limit: 50, scope: 'mine' })
@@ -100,10 +98,9 @@ export function ShelfPage() {
             onSearchChange={bookList.setSearch}
             genre={bookList.genre}
             onGenreChange={bookList.setGenre}
-            status={bookList.status}
-            onStatusChange={bookList.setStatus}
+            downloadable={bookList.downloadable}
+            onDownloadableChange={bookList.setDownloadable}
             genres={GENRES}
-            statuses={STATUSES}
           />
 
           <BookListDisplay

@@ -17,10 +17,9 @@ interface BookFiltersProps {
   onSearchChange: (value: string) => void
   genre?: string
   onGenreChange: (value: string) => void
-  status?: string
-  onStatusChange: (value: string) => void
+  downloadable?: string
+  onDownloadableChange: (value: string) => void
   genres: string[]
-  statuses: string[]
 }
 
 export function BookFilters({
@@ -28,10 +27,9 @@ export function BookFilters({
   onSearchChange,
   genre,
   onGenreChange,
-  status,
-  onStatusChange,
+  downloadable,
+  onDownloadableChange,
   genres,
-  statuses,
 }: BookFiltersProps) {
   return (
     <div className="flex flex-col md:flex-row md:items-end gap-3 mb-6">
@@ -66,18 +64,18 @@ export function BookFilters({
       </div>
 
       <div className="w-full md:w-48">
-        <Label className="text-text-secondary mb-2">Status</Label>
-        <Select value={status || 'all'} onValueChange={v => onStatusChange(v === 'all' ? '' : v)}>
+        <Label className="text-text-secondary mb-2">Availability</Label>
+        <Select
+          value={downloadable || 'all'}
+          onValueChange={v => onDownloadableChange(v === 'all' ? '' : v)}
+        >
           <SelectTrigger>
-            <SelectValue placeholder="All statuses" />
+            <SelectValue placeholder="All books" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">All statuses</SelectItem>
-            {statuses.map(s => (
-              <SelectItem key={s} value={s}>
-                {formatLabel(s)}
-              </SelectItem>
-            ))}
+            <SelectItem value="all">All books</SelectItem>
+            <SelectItem value="true">Downloadable</SelectItem>
+            <SelectItem value="false">Not downloadable</SelectItem>
           </SelectContent>
         </Select>
       </div>

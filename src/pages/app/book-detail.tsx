@@ -1,6 +1,5 @@
 import { useGetBook, useDeleteBook, useUpdateBook } from '@/api/books'
 import { useParams, useNavigate } from '@tanstack/react-router'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import {
@@ -21,10 +20,12 @@ import {
 } from '@/components/ui/drawer'
 import { DeleteBookDialog } from '@/components/pages/books/delete-book-dialog'
 import { BookForm } from '@/components/pages/books/book-form'
-import { BookOpen, Edit2, Trash2, ArrowLeft } from 'lucide-react'
+import { PageSection } from '@/components/page-section'
+import { Star, Download, Edit2, Trash2, ArrowLeft, ExternalLink } from 'lucide-react'
 import { useState } from 'react'
 import { useAuthContext } from '@/contexts/auth'
 import { useIsMobile } from '@/hooks/use-is-mobile'
+import fallbackImage from '@/assets/images/fallbackImage.jfif'
 
 const GENRES = [
   'fiction',
@@ -60,23 +61,25 @@ export function BookDetailPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-background-base p-4 md:p-6">
-        <div className="max-w-4xl mx-auto">
-          <div className="animate-pulse flex flex-col gap-6">
-            <div className="h-10 bg-background-surface rounded w-32" />
-            <div className="flex flex-col md:flex-row gap-6">
-              <div className="w-full md:w-64 h-96 bg-background-surface rounded-lg" />
-              <div className="flex-1 flex flex-col gap-4">
-                <div className="h-8 bg-background-surface rounded w-3/4" />
-                <div className="h-6 bg-background-surface rounded w-1/2" />
-                <div className="flex flex-col gap-2">
-                  <div className="h-4 bg-background-surface rounded w-full" />
-                  <div className="h-4 bg-background-surface rounded w-full" />
-                  <div className="h-4 bg-background-surface rounded w-3/4" />
+      <div className="flex-1 flex flex-col bg-background-base p-4 md:p-6">
+        <div className="max-w-3xl mx-auto w-full flex flex-col gap-6">
+          <div className="h-9 w-24 bg-background-surface rounded-md animate-pulse" />
+          <PageSection>
+            <div className="animate-pulse flex flex-col sm:flex-row gap-5">
+              <div className="w-full sm:w-44 h-56 sm:h-64 bg-background-base rounded-lg shrink-0" />
+              <div className="flex-1 flex flex-col gap-3">
+                <div className="h-7 bg-background-base rounded w-3/4" />
+                <div className="h-5 bg-background-base rounded w-1/2" />
+                <div className="flex gap-2 mt-1">
+                  <div className="h-5 w-16 bg-background-base rounded-full" />
+                  <div className="h-5 w-16 bg-background-base rounded-full" />
                 </div>
+                <div className="h-4 bg-background-base rounded w-full mt-2" />
+                <div className="h-4 bg-background-base rounded w-full" />
+                <div className="h-4 bg-background-base rounded w-2/3" />
               </div>
             </div>
-          </div>
+          </PageSection>
         </div>
       </div>
     )
@@ -84,18 +87,22 @@ export function BookDetailPage() {
 
   if (error || !book) {
     return (
-      <div className="min-h-screen bg-background-base p-4 md:p-6">
-        <div className="max-w-4xl mx-auto">
-          <Button onClick={() => navigate({ to: '/books' })} variant="outline" className="mb-4">
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Back to Books
+      <div className="flex-1 flex flex-col bg-background-base p-4 md:p-6">
+        <div className="max-w-3xl mx-auto w-full flex flex-col gap-6">
+          <Button
+            onClick={() => navigate({ to: '/books' })}
+            variant="outline"
+            className="w-fit flex items-center gap-2"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            Back
           </Button>
-          <Card variant="default" className="text-center p-8">
-            <CardTitle className="text-state-error">Book Not Found</CardTitle>
-            <CardDescription className="mt-2">
+          <PageSection className="text-center py-10">
+            <p className="text-state-error font-semibold text-lg">Book Not Found</p>
+            <p className="text-text-secondary text-sm mt-1">
               {error?.message || 'Unable to load book details'}
-            </CardDescription>
-          </Card>
+            </p>
+          </PageSection>
         </div>
       </div>
     )
@@ -133,118 +140,111 @@ export function BookDetailPage() {
 
   return (
     <>
-      <div className="min-h-screen bg-background-base p-4 md:p-6">
-        <div className="max-w-4xl mx-auto">
-          <Button onClick={() => navigate({ to: '/books' })} variant="outline" className="mb-6">
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Back to Books
+      <div className="flex-1 flex flex-col bg-background-base p-4 md:p-6">
+        <div className="max-w-3xl mx-auto w-full flex flex-col gap-6">
+          <Button
+            onClick={() => navigate({ to: '/books' })}
+            variant="outline"
+            className="w-fit flex items-center gap-2"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            Back
           </Button>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-            <div className="col-span-1 md:col-span-1">
-              <div className="w-full bg-linear-to-br from-accent-primary-hover to-accent-primary rounded-lg h-80 flex items-center justify-center sticky top-4 overflow-hidden">
-                {book.coverImage?.url ? (
-                  <img
-                    src={book.coverImage.url}
-                    alt={book.title}
-                    className="w-full h-full object-cover"
-                  />
-                ) : (
-                  <BookOpen className="w-24 h-24 text-white opacity-50" />
+          <PageSection>
+            <div className="flex flex-col sm:flex-row gap-5">
+              {/* Cover */}
+              <div className="w-full sm:w-44 shrink-0 rounded-lg overflow-hidden self-start">
+                <img
+                  src={book.coverImage?.url ?? fallbackImage}
+                  alt={book.title}
+                  className="w-full h-56 sm:h-64 object-cover dark:brightness-75"
+                />
+              </div>
+
+              {/* Details */}
+              <div className="flex-1 flex flex-col gap-4 min-w-0">
+                <div>
+                  <h1 className="text-xl sm:text-2xl font-bold text-text-primary leading-tight">
+                    {book.title}
+                  </h1>
+                  <p className="text-sm sm:text-base text-text-secondary mt-1">{book.author}</p>
+                </div>
+
+                {/* Badges */}
+                <div className="flex flex-wrap gap-1.5">
+                  {book.genre && <Badge variant="muted">{formatLabel(book.genre)}</Badge>}
+                  {book.isPublic !== undefined && (
+                    <Badge variant="muted">{book.isPublic ? 'Public' : 'Private'}</Badge>
+                  )}
+                  {book.isDownloadable && (
+                    <Badge variant="muted" className="flex items-center gap-1">
+                      <Download className="w-3 h-3" />
+                    </Badge>
+                  )}
+                </div>
+
+                {/* Rating */}
+                {book.rating ? (
+                  <div className="flex items-center gap-0.5">
+                    {Array.from({ length: 5 }).map((_, i) =>
+                      i < (book.rating || 0) ? (
+                        <Star key={i} className="w-4 h-4 fill-star-filled text-star-filled" />
+                      ) : (
+                        <Star key={i} className="w-4 h-4 text-text-secondary" />
+                      )
+                    )}
+                    <span className="text-sm text-text-secondary ml-1">{book.rating}/5</span>
+                  </div>
+                ) : null}
+
+                {/* Download */}
+                {book.isDownloadable && book.downloadLink && (
+                  <Button
+                    variant="outline"
+                    className="w-fit flex items-center gap-2"
+                    onClick={() => window.open(book.downloadLink, '_blank')}
+                  >
+                    <ExternalLink className="w-4 h-4" />
+                    Download
+                  </Button>
                 )}
+
+                {/* Actions */}
+                <div className="flex flex-wrap gap-2 mt-auto pt-2">
+                  {isOwner && (
+                    <>
+                      <Button
+                        variant="default"
+                        className="flex items-center gap-2"
+                        onClick={() => setEditOpen(true)}
+                      >
+                        <Edit2 className="w-4 h-4" />
+                        Edit
+                      </Button>
+                      <Button
+                        variant="error"
+                        className="flex items-center gap-2"
+                        onClick={() => setDeleteOpen(true)}
+                      >
+                        <Trash2 className="w-4 h-4" />
+                        Delete
+                      </Button>
+                    </>
+                  )}
+                </div>
               </div>
             </div>
+          </PageSection>
 
-            <div className="col-span-1 md:col-span-2">
-              <Card variant="default" className="mb-6">
-                <CardHeader>
-                  <div className="flex items-start justify-between gap-4">
-                    <div className="flex-1">
-                      <CardTitle className="text-2xl md:text-3xl mb-2">{book.title}</CardTitle>
-                      <CardDescription className="text-base">{book.author}</CardDescription>
-                    </div>
-                  </div>
-                </CardHeader>
-
-                <CardContent className="flex flex-col gap-6">
-                  {book.notes && (
-                    <div>
-                      <h3 className="text-sm font-semibold text-text-primary mb-2">Notes</h3>
-                      <p className="text-sm text-text-secondary leading-relaxed">{book.notes}</p>
-                    </div>
-                  )}
-
-                  <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                    {book.genre && (
-                      <div>
-                        <span className="text-xs text-text-secondary">Genre</span>
-                        <p className="text-sm font-medium text-text-primary mt-1">
-                          {formatLabel(book.genre)}
-                        </p>
-                      </div>
-                    )}
-
-                    {book.status && (
-                      <div>
-                        <span className="text-xs text-text-secondary">Status</span>
-                        <Badge className="mt-2">{formatLabel(book.status)}</Badge>
-                      </div>
-                    )}
-
-                    {book.rating && (
-                      <div>
-                        <span className="text-xs text-text-secondary">Rating</span>
-                        <div className="flex gap-1 mt-2">
-                          {Array.from({ length: 5 }).map((_, i) => (
-                            <span
-                              key={i}
-                              className={`text-lg ${
-                                i < (book.rating || 0)
-                                  ? 'text-accent-primary'
-                                  : 'text-text-tertiary'
-                              }`}
-                            >
-                              ★
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-
-                    {book.isPublic !== undefined && (
-                      <div>
-                        <span className="text-xs text-text-secondary">Visibility</span>
-                        <p className="text-sm font-medium text-text-primary mt-1">
-                          {book.isPublic ? 'Public' : 'Private'}
-                        </p>
-                      </div>
-                    )}
-                  </div>
-                </CardContent>
-              </Card>
-
-              {isOwner && (
-                <div className="flex gap-2">
-                  <Button
-                    onClick={() => setEditOpen(true)}
-                    variant="default"
-                    className="flex gap-2"
-                  >
-                    <Edit2 className="w-4 h-4" />
-                    Edit
-                  </Button>
-                  <Button
-                    onClick={() => setDeleteOpen(true)}
-                    variant="error"
-                    className="flex gap-2"
-                  >
-                    <Trash2 className="w-4 h-4" />
-                    Delete
-                  </Button>
-                </div>
-              )}
-            </div>
-          </div>
+          {book.description && (
+            <PageSection>
+              <p className="text-xs font-semibold text-text-secondary uppercase tracking-wide mb-3">
+                Notes from the author
+              </p>
+              <p className="text-sm text-text-primary leading-relaxed">{book.description}</p>
+            </PageSection>
+          )}
         </div>
       </div>
 

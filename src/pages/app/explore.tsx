@@ -21,8 +21,6 @@ const GENRES = [
   'other',
 ]
 
-const STATUSES = ['want-to-read', 'reading', 'finished']
-
 export function ExplorePage() {
   const auth = useAuthContext()
   const bookList = useBookList({ limit: 50, scope: 'all' })
@@ -51,10 +49,9 @@ export function ExplorePage() {
             onSearchChange={bookList.setSearch}
             genre={bookList.genre}
             onGenreChange={bookList.setGenre}
-            status={bookList.status}
-            onStatusChange={bookList.setStatus}
+            downloadable={bookList.downloadable}
+            onDownloadableChange={bookList.setDownloadable}
             genres={GENRES}
-            statuses={STATUSES}
           />
 
           <BookListDisplay

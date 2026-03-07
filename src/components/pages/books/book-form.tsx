@@ -2,7 +2,7 @@ import { useState, useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Book } from '@/@types/book'
-import { bookSchema } from '@/schemas/book.ts'
+import { bookSchema, bookObjectSchema } from '@/schemas/book.ts'
 import { uploadMedia } from '@/api/media/requests'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -71,8 +71,10 @@ export function BookForm({ mode, initialData, onSubmit, isLoading, genres }: Boo
       author: initialData?.author || '',
       genre: initialData?.genre || '',
       status: initialData?.status || 'want-to-read',
+      isDownloadable: initialData?.isDownloadable ?? false,
+      downloadLink: initialData?.downloadLink || '',
       rating: initialData?.rating || 0,
-      notes: initialData?.notes || '',
+      description: initialData?.description || '',
       isPublic: initialData?.isPublic ?? false,
     },
   })
@@ -98,7 +100,7 @@ export function BookForm({ mode, initialData, onSubmit, isLoading, genres }: Boo
   }
 
   return (
-    <Form {...form} schema={bookSchema}>
+    <Form {...form} schema={bookObjectSchema}>
       <form onSubmit={form.handleSubmit(handleSubmit)} className="flex flex-col gap-4">
         <div className="flex flex-col gap-1.5">
           <span className="text-sm font-medium text-text-primary">Cover Image</span>
@@ -116,32 +118,37 @@ export function BookForm({ mode, initialData, onSubmit, isLoading, genres }: Boo
                 alt="Cover preview"
                 className="w-full h-full object-contain"
               />
-              <button
+              <Button
                 type="button"
+                variant="ghost"
+                size="icon"
                 onClick={removeCover}
-                className="absolute top-2 right-2 bg-background-base/80 rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                className="absolute top-2 right-2 bg-background-base/80 rounded-full w-7 h-7 opacity-0 group-hover:opacity-100 transition-opacity"
               >
                 <X className="w-4 h-4 text-text-primary" />
-              </button>
+              </Button>
             </div>
           ) : (
-            <button
+            <Button
               type="button"
+              variant="outline"
               onClick={() => fileInputRef.current?.click()}
-              className="w-full h-40 rounded-md border border-dashed border-text-border flex flex-col items-center justify-center gap-2 text-text-secondary hover:border-accent-primary hover:text-accent-primary transition-colors"
+              className="w-full h-40 rounded-md border-dashed flex flex-col gap-2 text-text-secondary hover:border-accent-primary hover:text-accent-primary"
             >
               <ImagePlus className="w-7 h-7" />
               <span className="text-sm">Click to upload cover</span>
-            </button>
+            </Button>
           )}
           {coverPreview && (
-            <button
+            <Button
               type="button"
+              variant="link"
+              size="sm"
               onClick={() => fileInputRef.current?.click()}
-              className="text-xs text-accent-primary hover:underline text-left"
+              className="text-xs text-accent-primary p-0 h-auto justify-start"
             >
               Change image
-            </button>
+            </Button>
           )}
         </div>
 
@@ -200,6 +207,47 @@ export function BookForm({ mode, initialData, onSubmit, isLoading, genres }: Boo
 
         <FormField
           control={form.control}
+          name="isDownloadable"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Downloadable</FormLabel>
+              <Select
+                value={field.value ? 'true' : 'false'}
+                onValueChange={v => field.onChange(v === 'true')}
+              >
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Is it downloadable?" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  <SelectItem value="false">Not downloadable</SelectItem>
+                  <SelectItem value="true">Downloadable</SelectItem>
+                </SelectContent>
+              </Select>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        {form.watch('isDownloadable') && (
+          <FormField
+            control={form.control}
+            name="downloadLink"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Download Link</FormLabel>
+                <FormControl>
+                  <Input placeholder="https://example.com/book.pdf" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        )}
+
+        <FormField
+          control={form.control}
           name="rating"
           render={({ field }) => (
             <FormItem>
@@ -246,7 +294,7 @@ export function BookForm({ mode, initialData, onSubmit, isLoading, genres }: Boo
         />
         <FormField
           control={form.control}
-          name="notes"
+          name="description"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Notes</FormLabel>

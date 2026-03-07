@@ -42,6 +42,14 @@
   --selection-border: oklch(84% 0.055 28);
   --selection-hover: oklch(50% 0.19 25);
 
+  /* Fixed semantic button colors — never change between light/dark */
+  --btn-error: oklch(39.9% 0.198 21.3);
+  --btn-error-hover: oklch(34% 0.198 21.3);
+  --btn-success: oklch(50% 0.17 147);
+  --btn-success-hover: oklch(44% 0.17 147);
+  --btn-warning: oklch(62% 0.18 75);
+  --btn-warning-hover: oklch(56% 0.18 75);
+
   /* Star rating */
   --star-filled: oklch(78% 0.18 85);
 
