@@ -70,6 +70,7 @@ export function ProfileAdditionalInfoSection({
       sex: user?.sex || '',
       birthDate: user?.birthDate?.slice(0, 10) || '',
     })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user])
 
   const onSubmit = (data: AdditionalInfoFormData) => {
@@ -88,7 +89,12 @@ export function ProfileAdditionalInfoSection({
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-semibold text-text-primary">Additional Information</h2>
           {isOwner && (
-            <Button onClick={() => setIsEditing(true)} variant="default" size="sm" className="flex items-center gap-2">
+            <Button
+              onClick={() => setIsEditing(true)}
+              variant="default"
+              size="sm"
+              className="flex items-center gap-2"
+            >
               <Edit2 className="w-4 h-4" />
               {!isMobile && 'Edit'}
             </Button>
