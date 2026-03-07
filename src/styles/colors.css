@@ -42,6 +42,9 @@
   --selection-border: oklch(84% 0.055 28);
   --selection-hover: oklch(50% 0.19 25);
 
+  /* Star rating */
+  --star-filled: oklch(78% 0.18 85);
+
   /* Charts */
   --chart-1: oklch(0.45 0.14 187);
   --chart-2: oklch(0.58 0.16 25);
@@ -93,6 +96,9 @@
   --selection-light-background: #3d1a18;
   --selection-border: oklch(40% 0.12 25);
   --selection-hover: oklch(74% 0.18 25);
+
+  /* Star rating */
+  --star-filled: oklch(82% 0.18 88);
 
   /* Charts */
   --chart-1: oklch(0.65 0.15 190);

@@ -123,8 +123,6 @@ export function ShelfPage() {
             isFetchingNextPage={bookList.isFetchingNextPage}
             isOwner={true}
             onAddBook={() => bookForm.openCreate()}
-            onEditBook={b => bookForm.openEdit(b)}
-            onDeleteBook={b => bookForm.openDelete(b)}
             emptyTitle="No Books Yet"
             emptyDescription="Add your first book to get started"
           />

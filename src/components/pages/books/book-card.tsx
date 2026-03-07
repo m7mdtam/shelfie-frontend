@@ -1,9 +1,9 @@
 import { Book } from '@/@types/book'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
-import { BookOpen, Edit2, Trash2 } from 'lucide-react'
+import { Star } from 'lucide-react'
 import { Link } from '@tanstack/react-router'
+import fallbackImage from '@/assets/images/fallbackImage.jfif'
 
 const formatLabel = (value: string) =>
   value
@@ -13,98 +13,50 @@ const formatLabel = (value: string) =>
 
 interface BookCardProps {
   book: Book
-  isOwner?: boolean
-  onEdit?: (book: Book) => void
-  onDelete?: (book: Book) => void
 }
 
-export function BookCard({ book, isOwner, onEdit, onDelete }: BookCardProps) {
+export function BookCard({ book }: BookCardProps) {
   return (
-    <Link to="/books/$bookId" params={{ bookId: book.id }} className="block h-full">
+    <Link to="/books/$bookId" params={{ bookId: book.id }} className="block">
       <Card
         variant="default"
-        className="h-full flex flex-col hover:shadow-lg transition-shadow cursor-pointer"
+        className="flex flex-row hover:shadow-lg transition-shadow cursor-pointer p-3 gap-3"
       >
-        <div className="h-48 bg-linear-to-br from-accent-primary-hover to-accent-primary rounded-t-lg flex items-center justify-center overflow-hidden">
-          {book.coverImage?.url ? (
-            <img
-              src={book.coverImage.url}
-              alt={book.title}
-              className="w-full h-full object-cover"
-            />
-          ) : (
-            <BookOpen className="w-12 h-12 text-white opacity-50" />
-          )}
+        <div className="w-20 h-28 shrink-0 rounded-md overflow-hidden">
+          <img
+            src={book.coverImage?.url ?? fallbackImage}
+            alt={book.title}
+            className="w-full h-full object-cover dark:brightness-75"
+          />
         </div>
 
-        <CardHeader className="flex-1">
-          <CardTitle className="line-clamp-2 text-base">{book.title}</CardTitle>
-          <p className="text-sm text-text-secondary line-clamp-1">{book.author}</p>
-        </CardHeader>
+        <div className="flex-1 flex flex-col justify-between min-w-0">
+          <div>
+            <p className="font-semibold text-base text-text-primary line-clamp-1">{book.title}</p>
+            <p className="text-sm text-text-secondary line-clamp-1 mt-0.5">{book.author}</p>
+          </div>
 
-        <CardContent className="flex flex-col gap-3">
-          <div className="grid grid-cols-2 gap-2 text-xs">
-            {book.genre && (
-              <div>
-                <span className="text-text-secondary">Genre</span>
-                <Badge className="mt-1">{formatLabel(book.genre)}</Badge>
-              </div>
-            )}
-            {book.status && (
-              <div>
-                <span className="text-text-secondary">Status</span>
-                <Badge variant="outline" className="mt-1">
-                  {formatLabel(book.status)}
-                </Badge>
-              </div>
+          <div className="flex flex-wrap gap-1.5">
+            {book.genre && <Badge variant="muted">{formatLabel(book.genre)}</Badge>}
+            {book.status && <Badge variant="muted">{formatLabel(book.status)}</Badge>}
+            {book.isPublic !== undefined && (
+              <Badge variant="muted">{book.isPublic ? 'Public' : 'Private'}</Badge>
             )}
           </div>
 
           {book.rating && (
-            <div className="flex items-center gap-2 pt-2 border-t border-input">
-              <div className="flex gap-0.5">
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <span
-                    key={i}
-                    className={`text-sm ${
-                      i < (book.rating || 0) ? 'text-accent-primary' : 'text-text-tertiary'
-                    }`}
-                  >
-                    ★
-                  </span>
-                ))}
-              </div>
-              <span className="text-xs text-text-secondary ml-auto">{book.rating}/5</span>
+            <div className="flex items-center gap-0.5">
+              {Array.from({ length: 5 }).map((_, i) =>
+                i < (book.rating || 0) ? (
+                  <Star key={i} className="w-4 h-4 fill-star-filled text-star-filled" />
+                ) : (
+                  <Star key={i} className="w-4 h-4 text-text-secondary" />
+                )
+              )}
+              <span className="text-sm text-text-secondary ml-1">{book.rating}/5</span>
             </div>
           )}
-
-          {isOwner && (onEdit || onDelete) && (
-            <div className="flex gap-2 pt-2 border-t border-input">
-              {onEdit && (
-                <Button
-                  onClick={() => onEdit(book)}
-                  size="sm"
-                  variant="outline"
-                  className="flex-1 gap-1"
-                >
-                  <Edit2 className="w-3 h-3" />
-                  Edit
-                </Button>
-              )}
-              {onDelete && (
-                <Button
-                  onClick={() => onDelete(book)}
-                  size="sm"
-                  variant="destructive"
-                  className="flex-1 gap-1"
-                >
-                  <Trash2 className="w-3 h-3" />
-                  Delete
-                </Button>
-              )}
-            </div>
-          )}
-        </CardContent>
+        </div>
       </Card>
     </Link>
   )

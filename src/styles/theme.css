@@ -45,6 +45,7 @@
   --color-state-success-bg: var(--state-success-bg);
   --color-state-warning: var(--state-warning);
   --color-state-warning-bg: var(--state-warning-bg);
+  --color-star-filled: var(--star-filled);
 
   /* Selection */
   --color-selection-foreground: var(--selection-foreground);
