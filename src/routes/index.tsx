@@ -1,6 +1,5 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { Compass } from 'lucide-react'
-import DotGrid from '@/components/dot-grid'
 
 export const Route = createFileRoute('/')({
   component: HomePage,
@@ -9,23 +8,7 @@ export const Route = createFileRoute('/')({
 function HomePage() {
   return (
     <div className="flex-1 flex flex-col items-center justify-center px-4 py-8 relative">
-      <div className="absolute inset-0 z-0 pointer-events-none opacity-15">
-        <DotGrid
-          dotSize={8}
-          gap={40}
-          baseColor="#9B8B7E"
-          activeColor="#C9A876"
-          proximity={120}
-          speedTrigger={80}
-          shockRadius={200}
-          shockStrength={3}
-          maxSpeed={3000}
-          resistance={600}
-          returnDuration={1.5}
-          className="h-full w-full"
-        />
-      </div>
-      <div className="relative z-10 w-full max-w-2xl text-center">
+      <div className="w-full max-w-2xl text-center">
         <h1 className="text-5xl md:text-6xl font-bold text-text-primary mb-4">Shelfie</h1>
         <p className="text-lg md:text-xl text-text-secondary mb-12">
           Organize and track all your favorite books
