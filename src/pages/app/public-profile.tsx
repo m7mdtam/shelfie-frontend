@@ -21,7 +21,7 @@ export function PublicProfilePage() {
   }
 
   return (
-    <div className="flex-1 flex flex-col bg-background-base p-4 md:p-6">
+    <div className="flex-1 flex flex-col p-4 md:p-6">
       <div className="max-w-2xl mx-auto w-full">
         <PageSection>
           <h1 className="text-3xl md:text-4xl font-bold text-text-primary mb-6">

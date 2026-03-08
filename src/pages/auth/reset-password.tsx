@@ -8,7 +8,6 @@ import {
   PageSectionTitle,
 } from '@/components/page-section'
 import { ResetPasswordForm } from '@/components/auth'
-import DotGrid from '@/components/dot-grid'
 
 export function ResetPasswordPage() {
   const isMobile = useIsMobile()
@@ -20,23 +19,6 @@ export function ResetPasswordPage() {
       className="flex-1 flex flex-col items-center justify-center px-4 py-8 relative"
       data-mobile={isMobile}
     >
-      <div className="absolute inset-0 z-0 pointer-events-none opacity-10">
-        <DotGrid
-          dotSize={8}
-          gap={40}
-          baseColor="#9B8B7E"
-          activeColor="#C9A876"
-          proximity={120}
-          speedTrigger={80}
-          shockRadius={200}
-          shockStrength={3}
-          maxSpeed={3000}
-          resistance={600}
-          returnDuration={1.5}
-          className="h-full w-full"
-        />
-      </div>
-
       <div className="relative z-10 w-full max-w-sm">
         <PageSection variant="default" className="w-full gap-4 flex flex-col">
           <PageSectionHeader className="text-center">
