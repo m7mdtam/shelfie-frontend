@@ -3,7 +3,7 @@ import { useIsMobile } from '@/hooks/use-is-mobile'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import { Edit2, Mail, User } from 'lucide-react'
+import { PencilLine, Mail, User } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
   Form,
@@ -57,7 +57,7 @@ export function ProfilePersonalInfoSection({ user, isOwner = true }: ProfilePers
           <h2 className="text-lg font-semibold text-text-primary">Personal Information</h2>
           {isOwner && (
             <Button onClick={() => setIsEditing(true)} variant="default" size="sm" className="flex items-center gap-2">
-              <Edit2 className="w-4 h-4" />
+              <PencilLine className="w-4 h-4" />
               {!isMobile && 'Edit'}
             </Button>
           )}
@@ -145,7 +145,7 @@ export function ProfilePersonalInfoSection({ user, isOwner = true }: ProfilePers
               <Mail className="h-4 w-4 shrink-0 text-accent-primary" />
               {user?.email}
             </p>
-            <p className="text-xs text-text-secondary mt-1">Email cannot be changed</p>
+            <p className="text-xs text-state-error mt-1 italic font-bold">Email cannot be changed</p>
           </div>
 
           <div className="flex gap-2 pt-4">

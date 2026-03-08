@@ -4,7 +4,7 @@ import { format, isValid, parse } from 'date-fns'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import { CalendarDays, Edit2, Mars, Venus } from 'lucide-react'
+import { CalendarDays, PencilLine, Mars, Venus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
   Form,
@@ -95,7 +95,7 @@ export function ProfileAdditionalInfoSection({
               size="sm"
               className="flex items-center gap-2"
             >
-              <Edit2 className="w-4 h-4" />
+              <PencilLine className="w-4 h-4" />
               {!isMobile && 'Edit'}
             </Button>
           )}

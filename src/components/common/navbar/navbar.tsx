@@ -107,7 +107,7 @@ export function Navbar() {
               aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
               className="text-text-secondary hover:text-accent-primary"
             >
-              {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+              {mobileMenuOpen ? <X className="h-7 w-7" /> : <Menu className="h-7 w-7" />}
             </Button>
           )}
         </div>

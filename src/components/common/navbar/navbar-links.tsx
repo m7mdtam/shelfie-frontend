@@ -1,5 +1,5 @@
 import { Link, useNavigate } from '@tanstack/react-router'
-import { Library, Compass } from 'lucide-react'
+import { BookUser, Compass } from 'lucide-react'
 import { toast } from 'sonner'
 import { cn } from '@/lib/utils'
 import { useAuthContext } from '@/contexts/auth'
@@ -20,7 +20,7 @@ export function NavbarLinks({ variant = 'desktop', onClose }: NavbarLinksProps) 
     'data-[status=active]:text-accent-primary',
     isMobile
       ? 'px-3 py-3 rounded-lg hover:bg-accent-background text-base w-full data-[status=active]:bg-accent-background'
-      : 'text-sm px-1 py-0.5 data-[status=active]:after:absolute data-[status=active]:after:bottom-[-3px] data-[status=active]:after:left-0 data-[status=active]:after:right-0 data-[status=active]:after:h-[2px] data-[status=active]:after:rounded-full data-[status=active]:after:bg-accent-primary'
+      : 'text-base px-1 py-0.5 data-[status=active]:after:absolute data-[status=active]:after:bottom-[-3px] data-[status=active]:after:left-0 data-[status=active]:after:right-0 data-[status=active]:after:h-[2px] data-[status=active]:after:rounded-full data-[status=active]:after:bg-accent-primary'
   )
 
   const handleShelfClick = (e: React.MouseEvent) => {
@@ -41,7 +41,7 @@ export function NavbarLinks({ variant = 'desktop', onClose }: NavbarLinksProps) 
         className={linkClass}
         onClick={handleShelfClick}
       >
-        <Library className="h-4 w-4 shrink-0" />
+        <BookUser className="h-5 w-5 shrink-0" />
         <span>Shelf</span>
       </Link>
       <Link
@@ -49,7 +49,7 @@ export function NavbarLinks({ variant = 'desktop', onClose }: NavbarLinksProps) 
         className={linkClass}
         onClick={onClose}
       >
-        <Compass className="h-4 w-4 shrink-0" />
+        <Compass className="h-5 w-5 shrink-0" />
         <span>Explore</span>
       </Link>
     </>
