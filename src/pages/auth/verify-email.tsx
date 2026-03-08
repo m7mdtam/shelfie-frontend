@@ -1,5 +1,5 @@
 import { Link, useSearch } from '@tanstack/react-router'
-import { BookOpen, CheckCircle, Loader, XCircle } from 'lucide-react'
+import { CheckCircle, Loader, XCircle } from 'lucide-react'
 import { useIsMobile } from '@/hooks'
 import {
   PageSection,
@@ -40,13 +40,13 @@ export function VerifyEmailPage() {
           className="h-full w-full"
         />
       </div>
-      <Link to="/" className="relative z-10 flex items-center gap-2 mb-5 group">
-        <BookOpen className="h-6 w-6 text-accent-primary" />
-        <span className="font-bold text-xl text-text-primary">Shelfie</span>
-      </Link>
+
       <div className="relative z-10 w-full max-w-sm">
         <PageSection variant="default" className="w-full gap-4 flex flex-col">
           <PageSectionHeader className="text-center">
+            <Link to="/" className="relative z-10 justify-center flex items-center mb-5">
+              <img src="/logo.svg" alt="Shelfie" className="h-12 w-auto" />
+            </Link>{' '}
             <PageSectionTitle>Verify Email</PageSectionTitle>
           </PageSectionHeader>
           <PageSectionContent>
@@ -60,7 +60,9 @@ export function VerifyEmailPage() {
             {isSuccess && (
               <div className="flex flex-col items-center gap-3 py-4 text-center">
                 <CheckCircle className="h-10 w-10 text-state-success" />
-                <PageSectionDescription>Your email has been verified successfully</PageSectionDescription>
+                <PageSectionDescription>
+                  Your email has been verified successfully
+                </PageSectionDescription>
                 <span className="text-text-secondary text-sm">Redirecting to sign in...</span>
               </div>
             )}
