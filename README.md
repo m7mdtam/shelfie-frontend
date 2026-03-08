@@ -38,6 +38,20 @@ A community-driven book management and discovery platform. Track your reading, s
 | Linting | ESLint + Prettier + Husky |
 
 ---
-
 ## 📁 Project Structure
 
+src/
+├── components/
+│   ├── common/          # Shared layout components (Navbar, etc.)
+│   ├── pages/           # Page-specific components (book cards, forms, etc.)
+│   ├── auth/            # Auth form components
+│   └── ui/              # Base UI primitives (shadcn-style)
+├── contexts/            # React contexts (Auth)
+├── hooks/               # Custom hooks
+├── lib/                 # Utilities (axios instance, JWT, cn helper)
+├── pages/
+│   ├── auth/            # Sign in, sign up, verify email, reset password
+│   └── app/             # Shelf, explore, book detail, profile
+├── routes/              # TanStack Router file-based routes
+├── styles/              # CSS design system (colors, theme, shadows)
+└── main.tsx
