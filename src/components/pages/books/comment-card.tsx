@@ -26,7 +26,7 @@ import { useAuthContext } from '@/contexts/auth'
 import { auth as authHooks } from '@/api/auth/hooks'
 import { useDeleteComment, useUpdateComment } from '@/hooks/pages/books/use-comments'
 import { useIsMobile } from '@/hooks/use-is-mobile'
-import { Trash, Edit2, X } from 'lucide-react'
+import { Trash, PencilLine, X } from 'lucide-react'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 
 interface CommentCardProps {
@@ -150,24 +150,20 @@ export function CommentCard({ comment, bookId }: CommentCardProps) {
               <p className="text-xs text-text-secondary">{formatDate(comment.createdAt)}</p>
             </div>
             {isOwner && (
-              <div className="flex gap-2">
-                <Button
-                  size="sm"
-                  variant="ghost"
+              <div className="flex gap-2 items-center">
+                <button
                   onClick={() => setIsEditing(!isEditing)}
-                  className="h-8 w-8 p-0"
+                  className="text-text-secondary hover:text-accent-primary transition-colors cursor-pointer"
                 >
-                  {isEditing ? <X className="w-4 h-4" /> : <Edit2 className="w-4 h-4" />}
-                </Button>
-                <Button
-                  size="sm"
-                  variant="ghost"
+                  {isEditing ? <X className="w-5 h-5" /> : <PencilLine className="w-5 h-5" />}
+                </button>
+                <button
                   onClick={() => setIsDeleteDialogOpen(true)}
                   disabled={deleteComment.isPending}
-                  className="h-8 w-8 p-0 text-state-error hover:text-state-error"
+                  className="text-state-error/60 hover:text-state-error transition-colors cursor-pointer disabled:opacity-50 disabled:pointer-events-none"
                 >
-                  <Trash className="w-4 h-4" />
-                </Button>
+                  <Trash className="w-5 h-5" />
+                </button>
               </div>
             )}
           </div>

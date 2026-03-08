@@ -11,6 +11,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import type { DecodedTokenPayload } from '@/lib/jwt'
 import type { PayloadUser } from '@/@types/auth'
 
@@ -63,7 +64,7 @@ export function NavbarUserMenu({ user, profileUser, onLogout }: NavbarUserMenuPr
           aria-label="User menu"
           className="p-0 overflow-hidden"
         >
-          <Avatar className="h-7 w-7 ring-2 ring-transparent hover:ring-accent-primary transition-all duration-200">
+          <Avatar className="h-8 w-8 ring-2 ring-transparent hover:ring-accent-primary transition-all duration-200">
             <AvatarImage src={profileImageUrl} alt={displayName} />
             <AvatarFallback className="bg-background-tertiary dark:bg-accent-background text-accent-primary text-xs font-semibold">
               {initials}
@@ -81,8 +82,22 @@ export function NavbarUserMenu({ user, profileUser, onLogout }: NavbarUserMenuPr
             </AvatarFallback>
           </Avatar>
           <div className="flex flex-col min-w-0">
-            <span className="font-semibold text-text-primary text-sm truncate">{displayName}</span>
-            <span className="text-xs text-(--text-secondary) truncate">{user.email}</span>
+            <TooltipProvider delayDuration={300}>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <span className="font-semibold text-text-primary text-sm truncate cursor-default">{displayName}</span>
+                </TooltipTrigger>
+                <TooltipContent side="bottom">{displayName}</TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+            <TooltipProvider delayDuration={300}>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <span className="text-xs text-(--text-secondary) truncate cursor-default">{user.email}</span>
+                </TooltipTrigger>
+                <TooltipContent side="bottom">{user.email}</TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           </div>
         </DropdownMenuLabel>
 

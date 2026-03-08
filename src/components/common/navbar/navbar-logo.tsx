@@ -1,5 +1,4 @@
 import { Link } from '@tanstack/react-router'
-import { BookOpen } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 interface NavbarLogoProps {
@@ -8,24 +7,15 @@ interface NavbarLogoProps {
 
 export function NavbarLogo({ scrolled }: NavbarLogoProps) {
   return (
-    <Link
-      to="/"
-      className="flex items-center gap-2 no-underline hover:no-underline group"
-    >
-      <BookOpen
+    <Link to="/" className="flex items-center no-underline hover:no-underline">
+      <img
+        src="/logo.svg"
+        alt="Shelfie"
         className={cn(
-          'text-accent-primary transition-all duration-300',
-          scrolled ? 'h-5 w-5' : 'h-6 w-6'
+          'transition-all duration-300',
+          scrolled ? 'h-7 w-auto lg:h-6 scale-[1.55]' : 'h-8 w-auto lg:h-7 scale-[1.55]'
         )}
       />
-      <span
-        className={cn(
-          'font-bold text-text-primary no-underline transition-all duration-300 font-sans',
-          scrolled ? 'text-base' : 'text-lg'
-        )}
-      >
-        Shelfie
-      </span>
     </Link>
   )
 }

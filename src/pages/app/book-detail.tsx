@@ -23,7 +23,7 @@ import { DeleteBookDialog } from '@/components/pages/books/delete-book-dialog'
 import { BookForm } from '@/components/pages/books/book-form'
 import { PageSection } from '@/components/page-section'
 import { CommentsSection } from '@/components/pages/books/comments-section'
-import { Star, Edit2, Trash, ArrowLeft, ExternalLink } from 'lucide-react'
+import { Star, PencilLine, Trash, ArrowLeft, ExternalLink } from 'lucide-react'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Link } from '@tanstack/react-router'
 import { useAuthContext } from '@/contexts/auth'
@@ -199,23 +199,19 @@ export function BookDetailPage() {
                     </div>
                   </div>
                   {isOwner && (
-                    <div className="flex shrink-0">
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        className="h-8 w-8"
+                    <div className="flex shrink-0 gap-2 items-center">
+                      <button
                         onClick={() => setEditOpen(true)}
+                        className="text-text-secondary hover:text-accent-primary transition-colors cursor-pointer"
                       >
-                        <Edit2 className="w-4 h-4" />
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        className="h-8 w-8 text-state-error hover:text-state-error"
+                        <PencilLine className="w-6 h-6" />
+                      </button>
+                      <button
                         onClick={() => setDeleteOpen(true)}
+                        className="text-state-error/60 hover:text-state-error transition-colors cursor-pointer"
                       >
-                        <Trash className="w-4 h-4" />
-                      </Button>
+                        <Trash className="w-6 h-6" />
+                      </button>
                     </div>
                   )}
                 </div>
