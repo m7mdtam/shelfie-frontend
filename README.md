@@ -40,6 +40,7 @@ A community-driven book management and discovery platform. Track your reading, s
 ---
 ## 📁 Project Structure
 
+```
 src/
 ├── components/
 │   ├── common/          # Shared layout components (Navbar, etc.)
@@ -55,3 +56,4 @@ src/
 ├── routes/              # TanStack Router file-based routes
 ├── styles/              # CSS design system (colors, theme, shadows)
 └── main.tsx
+```
