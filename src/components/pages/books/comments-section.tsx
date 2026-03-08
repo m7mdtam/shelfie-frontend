@@ -5,7 +5,6 @@ import { RatingsSection } from './ratings-section'
 import { RatingsSkeleton } from './ratings-skeleton'
 import { CommentsSkeleton } from './comments-skeleton'
 import { useAuthContext } from '@/contexts/auth'
-import { Badge } from '@/components/ui/badge'
 
 interface CommentsSectionProps {
   bookId: string
@@ -43,6 +42,12 @@ export function CommentsSection({
 
   return (
     <PageSection>
+      {!isAuthenticated && (
+        <p className="text-sm font-bold italic text-state-error mb-4">
+          Sign in to rate this book and share your thoughts in the comments.
+        </p>
+      )}
+
       <p className="text-xs font-semibold text-text-secondary uppercase tracking-wide mb-4">
         Community Rating
       </p>
@@ -57,11 +62,6 @@ export function CommentsSection({
         Comments
       </p>
       {isAuthenticated && <CommentForm bookId={bookId} />}
-      {!isAuthenticated && (
-        <Badge variant="destructive" className="w-fit mb-4">
-          Sign in to leave a comment.
-        </Badge>
-      )}
       <CommentsList bookId={bookId} />
     </PageSection>
   )
