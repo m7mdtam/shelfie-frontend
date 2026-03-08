@@ -27,10 +27,10 @@ function RootLayout() {
   const shouldHideNavbar = hideNavbarPaths.includes(location.pathname)
 
   return (
-    <div className="relative min-h-dvh bg-background-base">
+    <div className="relative min-h-dvh bg-background-base flex flex-col">
       {!shouldHideNavbar && <Navbar />}
       <main
-        className={shouldHideNavbar ? 'flex flex-col min-h-dvh' : 'pt-10 flex flex-col min-h-dvh'}
+        className={shouldHideNavbar ? 'flex flex-col min-h-dvh' : 'pt-16 flex flex-col flex-1'}
       >
         <Outlet />
       </main>

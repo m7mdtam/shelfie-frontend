@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react'
-import { Trash2, Upload, Loader } from 'lucide-react'
+import { Trash, Upload, Loader } from 'lucide-react'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -90,7 +90,7 @@ export function ProfileAvatarSection({ user, isOwner = true }: ProfileAvatarSect
           className="gap-2 text-white"
           disabled={isDeleting}
         >
-          <Trash2 className="w-4 h-4" />
+          <Trash className="w-4 h-4" />
           {isDeleting ? 'Deleting...' : 'Delete Avatar'}
         </Button>
       )}

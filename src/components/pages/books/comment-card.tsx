@@ -26,7 +26,7 @@ import { useAuthContext } from '@/contexts/auth'
 import { auth as authHooks } from '@/api/auth/hooks'
 import { useDeleteComment, useUpdateComment } from '@/hooks/pages/books/use-comments'
 import { useIsMobile } from '@/hooks/use-is-mobile'
-import { Trash2, Edit2, X } from 'lucide-react'
+import { Trash, Edit2, X } from 'lucide-react'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 
 interface CommentCardProps {
@@ -166,7 +166,7 @@ export function CommentCard({ comment, bookId }: CommentCardProps) {
                   disabled={deleteComment.isPending}
                   className="h-8 w-8 p-0 text-state-error hover:text-state-error"
                 >
-                  <Trash2 className="w-4 h-4" />
+                  <Trash className="w-4 h-4" />
                 </Button>
               </div>
             )}
@@ -228,7 +228,7 @@ export function CommentCard({ comment, bookId }: CommentCardProps) {
             <div className="px-6 pb-2">
               <div className="flex flex-col items-center text-center gap-3">
                 <div className="w-14 h-14 rounded-full bg-state-error-bg flex items-center justify-center shrink-0">
-                  <Trash2 className="w-6 h-6 text-destructive" />
+                  <Trash className="w-6 h-6 text-destructive" />
                 </div>
                 <div>
                   <p className="font-semibold text-text-primary">Delete comment?</p>
@@ -258,7 +258,7 @@ export function CommentCard({ comment, bookId }: CommentCardProps) {
             <div className="px-6 py-4">
               <div className="flex flex-col items-center text-center gap-3">
                 <div className="w-14 h-14 rounded-full bg-state-error-bg flex items-center justify-center shrink-0">
-                  <Trash2 className="w-6 h-6 text-destructive" />
+                  <Trash className="w-6 h-6 text-destructive" />
                 </div>
                 <div>
                   <p className="font-semibold text-text-primary">Delete comment?</p>

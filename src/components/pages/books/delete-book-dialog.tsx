@@ -18,7 +18,7 @@ import {
   DrawerTitle,
 } from '@/components/ui/drawer'
 import { Button } from '@/components/ui/button'
-import { Trash2 } from 'lucide-react'
+import { Trash } from 'lucide-react'
 
 interface DeleteBookDialogProps {
   open: boolean
@@ -40,7 +40,7 @@ export function DeleteBookDialog({
   const body = (
     <div className="flex flex-col items-center text-center gap-3">
       <div className="w-14 h-14 rounded-full bg-state-error-bg flex items-center justify-center shrink-0">
-        <Trash2 className="w-6 h-6 text-destructive" />
+        <Trash className="w-6 h-6 text-destructive" />
       </div>
       <div>
         <p className="font-semibold text-text-primary">Delete &ldquo;{bookTitle}&rdquo;?</p>

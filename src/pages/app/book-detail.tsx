@@ -3,7 +3,6 @@ import { getBookOwner } from '@/@types/book'
 import { useParams, useNavigate } from '@tanstack/react-router'
 import { useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
 import {
   Dialog,
   DialogBody,
@@ -24,7 +23,7 @@ import { DeleteBookDialog } from '@/components/pages/books/delete-book-dialog'
 import { BookForm } from '@/components/pages/books/book-form'
 import { PageSection } from '@/components/page-section'
 import { CommentsSection } from '@/components/pages/books/comments-section'
-import { Star, Download, Edit2, Trash2, ArrowLeft, ExternalLink, PenLine } from 'lucide-react'
+import { Star, Edit2, Trash, ArrowLeft, ExternalLink } from 'lucide-react'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Link } from '@tanstack/react-router'
 import { useAuthContext } from '@/contexts/auth'
@@ -115,7 +114,7 @@ export function BookDetailPage() {
       <div className="flex-1 flex flex-col bg-background-base p-4 md:p-6">
         <div className="max-w-3xl mx-auto w-full flex flex-col gap-6">
           <Button
-            onClick={() => navigate({ to: '/books' })}
+            onClick={() => window.history.back()}
             variant="outline"
             className="w-fit flex items-center gap-2"
           >
@@ -170,7 +169,7 @@ export function BookDetailPage() {
       <div className="flex-1 flex flex-col bg-background-base p-4 md:p-6">
         <div className="max-w-3xl mx-auto w-full flex flex-col gap-6">
           <Button
-            onClick={() => navigate({ to: '/books' })}
+            onClick={() => window.history.back()}
             variant="outline"
             className="w-fit flex items-center gap-2"
           >
@@ -184,24 +183,65 @@ export function BookDetailPage() {
                 <img
                   src={book.coverImage?.url ?? fallbackImage}
                   alt={book.title}
-                  className="w-full h-56 sm:h-64 object-cover dark:brightness-75"
+                  className="w-full h-auto max-h-96 sm:h-64 sm:max-h-none object-contain sm:object-cover dark:brightness-75"
                 />
               </div>
 
-              <div className="flex-1 flex flex-col gap-4 min-w-0">
-                <div>
-                  <h1 className="text-xl sm:text-2xl font-bold text-text-primary leading-tight">
-                    {book.title}
-                  </h1>
-                  <p className="flex items-center gap-1.5 text-sm sm:text-base text-text-secondary mt-1">
-                    <PenLine className="w-3.5 h-3.5 shrink-0 text-accent-primary" />
-                    {book.author}
-                  </p>
-                  {bookOwner && (
+              <div className="flex-1 flex flex-col justify-between gap-3 min-w-0">
+                <div className="flex items-start justify-between gap-2">
+                  <div className="min-w-0">
+                    <h1 className="text-xl sm:text-2xl font-bold text-text-primary leading-tight">
+                      {book.title}
+                    </h1>
+                    <div className="mt-1">
+                      <p className="text-[11px] font-semibold text-text-secondary uppercase tracking-wide">Author</p>
+                      <p className="text-sm sm:text-base text-text-primary">{book.author}</p>
+                    </div>
+                  </div>
+                  {isOwner && (
+                    <div className="flex shrink-0">
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-8 w-8"
+                        onClick={() => setEditOpen(true)}
+                      >
+                        <Edit2 className="w-4 h-4" />
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-8 w-8 text-state-error hover:text-state-error"
+                        onClick={() => setDeleteOpen(true)}
+                      >
+                        <Trash className="w-4 h-4" />
+                      </Button>
+                    </div>
+                  )}
+                </div>
+
+                <div className="flex gap-4">
+                  {book.genre && (
+                    <div>
+                      <p className="text-[11px] font-semibold text-text-secondary uppercase tracking-wide">Genre</p>
+                      <p className="text-sm text-text-primary">{formatLabel(book.genre)}</p>
+                    </div>
+                  )}
+                  {book.isPublic !== undefined && (
+                    <div>
+                      <p className="text-[11px] font-semibold text-text-secondary uppercase tracking-wide">Visibility</p>
+                      <p className="text-sm text-text-primary">{book.isPublic ? 'Public' : 'Private'}</p>
+                    </div>
+                  )}
+                </div>
+
+                {bookOwner && (
+                  <div>
+                    <p className="text-[11px] font-semibold text-text-secondary uppercase tracking-wide mb-0.5">Posted by</p>
                     <Link
                       to="/profile/$userId"
                       params={{ userId: bookOwner.id }}
-                      className="flex items-center gap-1.5 text-xs sm:text-sm text-text-secondary mt-1 hover:text-accent-primary transition-colors w-fit"
+                      className="flex items-center gap-1.5 text-sm text-text-primary hover:text-accent-primary transition-colors w-fit"
                     >
                       <Avatar className="w-5 h-5 shrink-0">
                         <AvatarImage
@@ -214,20 +254,19 @@ export function BookDetailPage() {
                       </Avatar>
                       {bookOwner.firstName} {bookOwner.lastName}
                     </Link>
-                  )}
-                </div>
+                  </div>
+                )}
 
-                <div className="flex flex-wrap gap-1.5">
-                  {book.genre && <Badge variant="muted">{formatLabel(book.genre)}</Badge>}
-                  {book.isPublic !== undefined && (
-                    <Badge variant="muted">{book.isPublic ? 'Public' : 'Private'}</Badge>
-                  )}
-                  {book.isDownloadable && (
-                    <Badge variant="muted" className="flex items-center gap-1">
-                      <Download className="w-3 h-3" />
-                    </Badge>
-                  )}
-                </div>
+                {book.isDownloadable && book.downloadLink && (
+                  <Button
+                    variant="outline"
+                    className="w-fit flex items-center gap-2"
+                    onClick={() => window.open(book.downloadLink, '_blank')}
+                  >
+                    <ExternalLink className="w-4 h-4" />
+                    Download
+                  </Button>
+                )}
 
                 <div className="flex items-center gap-1.5">
                   {Array.from({ length: 5 }, (_, i) => (
@@ -249,40 +288,6 @@ export function BookDetailPage() {
                     {(book.totalRatings ?? 0) === 1 ? 'rating' : 'ratings'})
                   </span>
                 </div>
-
-                {book.isDownloadable && book.downloadLink && (
-                  <Button
-                    variant="outline"
-                    className="w-fit flex items-center gap-2"
-                    onClick={() => window.open(book.downloadLink, '_blank')}
-                  >
-                    <ExternalLink className="w-4 h-4" />
-                    Download
-                  </Button>
-                )}
-
-                <div className="flex flex-wrap gap-2 mt-auto pt-2">
-                  {isOwner && (
-                    <>
-                      <Button
-                        variant="default"
-                        className="flex items-center gap-2"
-                        onClick={() => setEditOpen(true)}
-                      >
-                        <Edit2 className="w-4 h-4" />
-                        Edit
-                      </Button>
-                      <Button
-                        variant="error"
-                        className="flex items-center gap-2"
-                        onClick={() => setDeleteOpen(true)}
-                      >
-                        <Trash2 className="w-4 h-4" />
-                        Delete
-                      </Button>
-                    </>
-                  )}
-                </div>
               </div>
             </div>
           </PageSection>
@@ -290,7 +295,7 @@ export function BookDetailPage() {
           {book.description && (
             <PageSection>
               <p className="text-xs font-semibold text-text-secondary uppercase tracking-wide mb-3">
-                Notes from the author
+                Notes from the Poster
               </p>
               <p className="text-sm text-text-primary leading-relaxed">{book.description}</p>
             </PageSection>

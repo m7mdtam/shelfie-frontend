@@ -75,8 +75,8 @@ export function Navbar() {
       className={cn(
         'fixed z-50 navbar-blur',
         scrolled
-          ? 'navbar-bg-scrolled shadow-navbar border border-text-border/20 px-4 py-1.5'
-          : 'navbar-bg-full border-b border-text-border/20 px-6 py-2'
+          ? 'navbar-bg-scrolled shadow-navbar border border-text-border/20 px-4 py-3'
+          : 'navbar-bg-full border-b border-text-border/20 px-6 py-4'
       )}
     >
       <div className="flex items-center justify-between gap-4">

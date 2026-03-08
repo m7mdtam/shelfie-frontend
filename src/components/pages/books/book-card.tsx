@@ -1,8 +1,7 @@
 import { Book, getBookOwner } from '@/@types/book'
 import { Card } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { Star, Download, PenLine } from 'lucide-react'
+import { Star } from 'lucide-react'
 import { Link } from '@tanstack/react-router'
 import fallbackImage from '@/assets/images/fallbackImage.jfif'
 
@@ -22,9 +21,9 @@ export function BookCard({ book }: BookCardProps) {
     <Link to="/books/$bookId" params={{ bookId: book.id }} className="block">
       <Card
         variant="default"
-        className="flex flex-row hover:shadow-lg transition-shadow cursor-pointer p-3 gap-3 h-40 sm:h-44"
+        className="flex flex-row hover:shadow-lg transition-shadow cursor-pointer p-3 gap-3 h-56 max-[425px]:p-2 max-[425px]:gap-2 max-[425px]:h-44"
       >
-        <div className="w-20 sm:w-24 self-stretch shrink-0 rounded-md overflow-hidden">
+        <div className="w-36 max-[425px]:w-24 self-stretch shrink-0 rounded-md overflow-hidden">
           <img
             src={book.coverImage?.url ?? fallbackImage}
             alt={book.title}
@@ -34,60 +33,66 @@ export function BookCard({ book }: BookCardProps) {
 
         <div className="flex-1 flex flex-col justify-between min-w-0 overflow-hidden">
           <div>
-            <p className="font-semibold text-sm sm:text-base text-text-primary line-clamp-1">
-              {book.title}
-            </p>
-            <p className="flex items-center gap-1 text-xs sm:text-sm text-text-secondary line-clamp-1 mt-0.5">
-              <PenLine className="w-3 h-3 shrink-0 text-accent-primary" />
-              {book.author}
-            </p>
-            {owner && (
-              <div className="flex items-center gap-1 mt-0.5">
-                <Avatar className="w-4 h-4 shrink-0">
-                  <AvatarImage
-                    src={owner.profileImage?.sizes?.[0]?.url || owner.profileImage?.url}
-                    alt={`${owner.firstName} ${owner.lastName}`}
-                  />
-                  <AvatarFallback className="text-[8px]">
-                    {owner.firstName[0]}{owner.lastName[0]}
-                  </AvatarFallback>
-                </Avatar>
-                <p className="text-xs text-text-secondary line-clamp-1">
-                  {owner.firstName} {owner.lastName}
-                </p>
+            <p className="font-bold text-lg max-[425px]:text-sm text-text-primary line-clamp-1">{book.title}</p>
+            <p className="text-xs max-[425px]:text-[10px] text-text-secondary line-clamp-1">{book.author}</p>
+          </div>
+
+          <div className="flex flex-col gap-1">
+            <div className="flex gap-3 max-[425px]:gap-2">
+              {book.genre && (
+                <div>
+                  <p className="text-[10px] max-[425px]:text-[9px] font-semibold text-text-secondary uppercase tracking-wide">Genre</p>
+                  <p className="text-xs max-[425px]:text-[10px] text-text-primary">{formatLabel(book.genre)}</p>
+                </div>
+              )}
+              {book.isPublic !== undefined && (
+                <div>
+                  <p className="text-[10px] max-[425px]:text-[9px] font-semibold text-text-secondary uppercase tracking-wide">Visibility</p>
+                  <p className="text-xs max-[425px]:text-[10px] text-text-primary">{book.isPublic ? 'Public' : 'Private'}</p>
+                </div>
+              )}
+            </div>
+            {book.isDownloadable && (
+              <div>
+                <p className="text-[10px] max-[425px]:text-[9px] font-semibold text-text-secondary uppercase tracking-wide">Download</p>
+                <p className="text-xs max-[425px]:text-[10px] text-text-primary">Available</p>
               </div>
             )}
           </div>
 
-          <div className="flex flex-wrap gap-1.5">
-            {book.genre && <Badge variant="muted">{formatLabel(book.genre)}</Badge>}
-            {book.isPublic !== undefined && (
-              <Badge variant="muted">{book.isPublic ? 'Public' : 'Private'}</Badge>
-            )}
-            {book.isDownloadable && (
-              <Badge variant="muted" className="flex items-center gap-1">
-                <Download className="w-3 h-3" />
-              </Badge>
-            )}
-          </div>
+          {owner && (
+            <div>
+              <p className="text-[10px] max-[425px]:text-[9px] font-semibold text-text-secondary uppercase tracking-wide">Posted by</p>
+              <div className="flex items-center gap-1 mt-0.5">
+                <Avatar className="w-4 h-4 max-[425px]:w-3.5 max-[425px]:h-3.5 shrink-0">
+                  <AvatarImage
+                    src={owner.profileImage?.sizes?.[0]?.url || owner.profileImage?.url}
+                    alt={`${owner.firstName} ${owner.lastName}`}
+                  />
+                  <AvatarFallback className="text-[7px] max-[425px]:text-[6px]">
+                    {owner.firstName[0]}{owner.lastName[0]}
+                  </AvatarFallback>
+                </Avatar>
+                <p className="text-xs max-[425px]:text-[10px] text-text-primary line-clamp-1">{owner.firstName} {owner.lastName}</p>
+              </div>
+            </div>
+          )}
 
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-1 max-[425px]:gap-0.5">
             {Array.from({ length: 5 }, (_, i) => (
               <Star
                 key={i}
                 className={[
-                  'w-3 h-3 sm:w-3.5 sm:h-3.5',
+                  'w-3.5 h-3.5 max-[425px]:w-2.5 max-[425px]:h-2.5',
                   i < Math.round(book.averageRating ?? 0)
                     ? 'fill-star-filled text-star-filled'
                     : 'text-text-secondary',
                 ].join(' ')}
               />
             ))}
-            <span className="text-xs text-text-secondary ml-0.5">
+            <span className="text-xs max-[425px]:text-[10px] text-text-secondary ml-0.5">
               {(book.averageRating ?? 0).toFixed(1)}
-              <span className="text-text-secondary/60 ml-0.5">
-                ({book.totalRatings ?? 0})
-              </span>
+              <span className="text-text-secondary/60 ml-0.5">({book.totalRatings ?? 0})</span>
             </span>
           </div>
         </div>

@@ -33,12 +33,7 @@ export function CommentsList({ bookId }: CommentsListProps) {
   const hasMorePages = data?.pagination?.pages && currentPage < data.pagination.pages
 
   if (isLoading && currentPage === 1) {
-    return (
-      <div className="flex flex-col items-center gap-3">
-        <Loader className="w-6 h-6 animate-spin text-accent-primary" />
-        <CommentsSkeleton />
-      </div>
-    )
+    return <CommentsSkeleton />
   }
 
   if (error && currentPage === 1) {
@@ -51,7 +46,7 @@ export function CommentsList({ bookId }: CommentsListProps) {
 
   if (!allComments || allComments.length === 0) {
     return (
-      <div className="text-center py-8">
+      <div className="text-center py-8 rounded-lg bg-background-base border border-text-border">
         <p className="text-sm text-text-secondary">No comments yet. Be the first to comment!</p>
       </div>
     )
