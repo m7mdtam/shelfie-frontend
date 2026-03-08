@@ -29,12 +29,21 @@ function RootLayout() {
 
   return (
     <div className="relative min-h-dvh flex flex-col">
-      <div className="fixed inset-0 pointer-events-none z-0">
-        <Aurora colorStops={['#0c4a6e', '#0e7490', '#164e63']} amplitude={1.0} blend={0.5} speed={0.4} />
+      <div className="fixed inset-0 pointer-events-none z-0 opacity-50 dark:opacity-70">
+        <Aurora
+          colorStops={['#0c4a6e', '#0e7490', '#164e63']}
+          amplitude={1.0}
+          blend={0.5}
+          speed={0.4}
+        />
       </div>
       {!shouldHideNavbar && <Navbar />}
       <main
-        className={shouldHideNavbar ? 'relative z-10 flex flex-col min-h-dvh' : 'relative z-10 pt-16 flex flex-col flex-1'}
+        className={
+          shouldHideNavbar
+            ? 'relative z-10 flex flex-col min-h-dvh'
+            : 'relative z-10 pt-16 flex flex-col flex-1'
+        }
       >
         <Outlet />
       </main>
