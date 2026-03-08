@@ -1,5 +1,4 @@
 import { Link } from '@tanstack/react-router'
-import { BookOpen } from 'lucide-react'
 import { useIsMobile } from '@/hooks'
 import {
   PageSection,
@@ -35,13 +34,13 @@ export function SignUpPage() {
           className="h-full w-full"
         />
       </div>
-      <Link to="/" className="relative z-10 flex items-center gap-2 mb-5 group">
-        <BookOpen className="h-6 w-6 text-accent-primary" />
-        <span className="font-bold text-xl text-text-primary">Shelfie</span>
-      </Link>
+
       <div className="relative z-10 w-full max-w-sm">
         <PageSection variant="default" className="w-full gap-4 flex flex-col">
           <PageSectionHeader className="text-center">
+            <Link to="/" className="relative z-10 justify-center flex items-center mb-5">
+              <img src="/logo.svg" alt="Shelfie" className="h-12 w-auto" />
+            </Link>{' '}
             <PageSectionTitle>Create Account</PageSectionTitle>
             <PageSectionDescription>
               Join us and start managing your bookshelf
