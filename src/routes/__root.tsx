@@ -2,7 +2,7 @@ import { createRootRoute, Outlet, useLocation } from '@tanstack/react-router'
 import { useEffect } from 'react'
 import { Navbar } from '@/components/common/navbar'
 import { Toaster } from '@/components/ui/sonner'
-import Aurora from '@/components/Aurora'
+import Aurora from '@/components/aurora'
 
 const routeTitles: Record<string, string> = {
   '/': 'Shelfie - Organize Your Books',
