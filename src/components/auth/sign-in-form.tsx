@@ -8,7 +8,7 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import { useSignInForm } from '@/hooks/auth'
+import { useSignInForm } from '@/hooks/pages/auth'
 import { signInSchema } from '@/schemas'
 import { Loader } from 'lucide-react'
 import { Link } from '@tanstack/react-router'

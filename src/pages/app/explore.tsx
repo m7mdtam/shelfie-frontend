@@ -1,7 +1,7 @@
 import { useBookList } from '@/hooks/pages/books'
 import { BookListDisplay } from '@/components/pages/books/book-list-display'
 import { BookFilters } from '@/components/pages/books/book-filters'
-import { PageSection } from '@/components/page-section'
+import { PageSection } from '@/components/common/page-section'
 
 const GENRES = [
   'fiction',

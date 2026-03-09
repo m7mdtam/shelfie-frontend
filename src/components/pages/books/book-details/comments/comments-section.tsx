@@ -1,10 +1,10 @@
-import { PageSection } from '@/components/page-section'
 import { CommentForm } from './comment-form'
 import { CommentsList } from './comments-list'
-import { RatingsSection } from './ratings-section'
-import { RatingsSkeleton } from './ratings-skeleton'
+import { RatingsSection } from '../ratings/ratings-section'
+import { RatingsSkeleton } from '../ratings/ratings-skeleton'
 import { CommentsSkeleton } from './comments-skeleton'
 import { useAuthContext } from '@/contexts/auth'
+import { PageSection } from '@/components'
 
 interface CommentsSectionProps {
   bookId: string

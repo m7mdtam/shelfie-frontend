@@ -6,8 +6,9 @@ import {
   PageSectionDescription,
   PageSectionHeader,
   PageSectionTitle,
-} from '@/components/page-section'
+} from '@/components/common/page-section'
 import { SignInForm } from '@/components/auth'
+import logo from '@/assets/svg/logo.svg?url'
 
 export function SignInPage() {
   const isMobile = useIsMobile()
@@ -21,7 +22,7 @@ export function SignInPage() {
         <PageSection variant="default" className="w-full gap-4 flex flex-col">
           <PageSectionHeader className="text-center">
             <Link to="/" className="relative z-10 justify-center flex items-center mb-5">
-              <img src="/logo.svg" alt="Shelfie" className="h-12 w-auto" />
+              <img src={logo} alt="Shelfie" className="h-12 w-auto" />
             </Link>
             <PageSectionTitle>Welcome Back</PageSectionTitle>
             <PageSectionDescription>Sign in to your account to continue</PageSectionDescription>

@@ -9,7 +9,7 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import { useResetPasswordForm } from '@/hooks/auth'
+import { useResetPasswordForm } from '@/hooks/pages/auth'
 import { Loader } from 'lucide-react'
 
 export const ResetPasswordForm = () => {

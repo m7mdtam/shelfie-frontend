@@ -1,5 +1,5 @@
 import { Skeleton } from '@/components/ui/skeleton'
-import { PageSection } from '@/components/page-section'
+import { PageSection } from '@/components/common/page-section'
 
 export function ProfileSkeleton() {
   return (

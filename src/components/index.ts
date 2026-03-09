@@ -5,4 +5,4 @@ export {
   PageSectionTitle,
   PageSectionDescription,
   PageSectionContent,
-} from './page-section'
+} from './common/page-section'

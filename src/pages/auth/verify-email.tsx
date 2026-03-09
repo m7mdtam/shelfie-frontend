@@ -7,9 +7,10 @@ import {
   PageSectionDescription,
   PageSectionHeader,
   PageSectionTitle,
-} from '@/components/page-section'
+} from '@/components/common/page-section'
 import { Button } from '@/components/ui/button'
-import { useVerifyEmail } from '@/hooks/auth'
+import { useVerifyEmail } from '@/hooks/pages/auth'
+import logo from '@/assets/svg/logo.svg?url'
 
 export function VerifyEmailPage() {
   const isMobile = useIsMobile()
@@ -27,7 +28,7 @@ export function VerifyEmailPage() {
         <PageSection variant="default" className="w-full gap-4 flex flex-col">
           <PageSectionHeader className="text-center">
             <Link to="/" className="relative z-10 justify-center flex items-center mb-5">
-              <img src="/logo.svg" alt="Shelfie" className="h-12 w-auto" />
+              <img src={logo} alt="Shelfie" className="h-12 w-auto" />
             </Link>{' '}
             <PageSectionTitle>Verify Email</PageSectionTitle>
           </PageSectionHeader>
