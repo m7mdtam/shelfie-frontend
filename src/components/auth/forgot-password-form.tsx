@@ -9,7 +9,7 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import { useForgotPasswordForm } from '@/hooks/auth'
+import { useForgotPasswordForm } from '@/hooks/pages/auth'
 import { Loader } from 'lucide-react'
 
 export const ForgotPasswordForm = () => {

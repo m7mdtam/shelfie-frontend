@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query'
-import { ratingsRequests } from '@/api/ratings'
+import { ratingsRequests } from '@/api/books/ratings'
 import { toast } from 'sonner'
 
 export function useRating(bookId: string) {

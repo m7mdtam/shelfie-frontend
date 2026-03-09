@@ -8,6 +8,7 @@ import {
   PageSectionTitle,
 } from '@/components/common/page-section'
 import { ForgotPasswordForm } from '@/components/auth'
+import logo from '@/assets/svg/logo.svg?url'
 
 export function ForgotPasswordPage() {
   const isMobile = useIsMobile()
@@ -21,7 +22,7 @@ export function ForgotPasswordPage() {
         <PageSection variant="default" className="w-full gap-4 flex flex-col">
           <PageSectionHeader className="text-center">
             <Link to="/" className="relative z-10 justify-center flex items-center mb-5">
-              <img src="/logo.svg" alt="Shelfie" className="h-12 w-auto" />
+              <img src={logo} alt="Shelfie" className="h-12 w-auto" />
             </Link>
             <PageSectionTitle>Forgot Password</PageSectionTitle>
             <PageSectionDescription>
