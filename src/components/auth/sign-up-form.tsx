@@ -8,7 +8,7 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import { useSignUpForm } from '@/hooks/auth'
+import { useSignUpForm } from '@/hooks/pages/auth'
 import { signUpObjectSchema } from '@/schemas'
 import { Loader } from 'lucide-react'
 import { useState } from 'react'

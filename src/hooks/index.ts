@@ -1,2 +1,2 @@
-export * from './auth'
+export * from './pages/auth'
 export { useIsMobile } from './use-is-mobile'

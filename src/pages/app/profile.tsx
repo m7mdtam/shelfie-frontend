@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { useAuthContext } from '@/contexts/auth'
 import { auth } from '@/api/auth/hooks'
 import type { PayloadUser } from '@/@types/auth'
-import { PageSection } from '@/components/page-section'
+import { PageSection } from '@/components/common/page-section'
 import { ProfileAvatarSection } from '@/components/pages/profile/profile-avatar-section'
 import { ProfilePersonalInfoSection } from '@/components/pages/profile/profile-personal-info-section'
 import { ProfileAdditionalInfoSection } from '@/components/pages/profile/profile-additional-info-section'
@@ -17,7 +17,8 @@ export function ProfilePage() {
     if (user && !isLoading) {
       authContext.setUser(user)
     }
-  }, [user, isLoading, authContext])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user, isLoading])
 
   if (isLoading || !user) {
     return <ProfileSkeleton />

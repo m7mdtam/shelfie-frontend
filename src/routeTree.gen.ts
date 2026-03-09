@@ -9,15 +9,12 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as ProfileRouteImport } from './routes/profile'
-import { Route as BooksRouteImport } from './routes/books'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ProfileIndexRouteImport } from './routes/profile/index'
 import { Route as BooksIndexRouteImport } from './routes/books/index'
 import { Route as ProfileUserIdRouteImport } from './routes/profile/$userId'
 import { Route as BooksShelfRouteImport } from './routes/books/shelf'
 import { Route as BooksExploreRouteImport } from './routes/books/explore'
-import { Route as BooksAddRouteImport } from './routes/books/add'
 import { Route as BooksBookIdRouteImport } from './routes/books/$bookId'
 import { Route as authVerifyEmailRouteImport } from './routes/(auth)/verify-email'
 import { Route as authSignUpSuccessRouteImport } from './routes/(auth)/sign-up-success'
@@ -27,55 +24,40 @@ import { Route as authResetPasswordRouteImport } from './routes/(auth)/reset-pas
 import { Route as authForgotPasswordRouteImport } from './routes/(auth)/forgot-password'
 import { Route as BooksBookIdEditRouteImport } from './routes/books/$bookId/edit'
 
-const ProfileRoute = ProfileRouteImport.update({
-  id: '/profile',
-  path: '/profile',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const BooksRoute = BooksRouteImport.update({
-  id: '/books',
-  path: '/books',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProfileIndexRoute = ProfileIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => ProfileRoute,
+  id: '/profile/',
+  path: '/profile/',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const BooksIndexRoute = BooksIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => BooksRoute,
+  id: '/books/',
+  path: '/books/',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const ProfileUserIdRoute = ProfileUserIdRouteImport.update({
-  id: '/$userId',
-  path: '/$userId',
-  getParentRoute: () => ProfileRoute,
+  id: '/profile/$userId',
+  path: '/profile/$userId',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const BooksShelfRoute = BooksShelfRouteImport.update({
-  id: '/shelf',
-  path: '/shelf',
-  getParentRoute: () => BooksRoute,
+  id: '/books/shelf',
+  path: '/books/shelf',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const BooksExploreRoute = BooksExploreRouteImport.update({
-  id: '/explore',
-  path: '/explore',
-  getParentRoute: () => BooksRoute,
-} as any)
-const BooksAddRoute = BooksAddRouteImport.update({
-  id: '/add',
-  path: '/add',
-  getParentRoute: () => BooksRoute,
+  id: '/books/explore',
+  path: '/books/explore',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const BooksBookIdRoute = BooksBookIdRouteImport.update({
-  id: '/$bookId',
-  path: '/$bookId',
-  getParentRoute: () => BooksRoute,
+  id: '/books/$bookId',
+  path: '/books/$bookId',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const authVerifyEmailRoute = authVerifyEmailRouteImport.update({
   id: '/(auth)/verify-email',
@@ -115,8 +97,6 @@ const BooksBookIdEditRoute = BooksBookIdEditRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/books': typeof BooksRouteWithChildren
-  '/profile': typeof ProfileRouteWithChildren
   '/forgot-password': typeof authForgotPasswordRoute
   '/reset-password': typeof authResetPasswordRoute
   '/sign-in': typeof authSignInRoute
@@ -124,7 +104,6 @@ export interface FileRoutesByFullPath {
   '/sign-up-success': typeof authSignUpSuccessRoute
   '/verify-email': typeof authVerifyEmailRoute
   '/books/$bookId': typeof BooksBookIdRouteWithChildren
-  '/books/add': typeof BooksAddRoute
   '/books/explore': typeof BooksExploreRoute
   '/books/shelf': typeof BooksShelfRoute
   '/profile/$userId': typeof ProfileUserIdRoute
@@ -141,7 +120,6 @@ export interface FileRoutesByTo {
   '/sign-up-success': typeof authSignUpSuccessRoute
   '/verify-email': typeof authVerifyEmailRoute
   '/books/$bookId': typeof BooksBookIdRouteWithChildren
-  '/books/add': typeof BooksAddRoute
   '/books/explore': typeof BooksExploreRoute
   '/books/shelf': typeof BooksShelfRoute
   '/profile/$userId': typeof ProfileUserIdRoute
@@ -152,8 +130,6 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/books': typeof BooksRouteWithChildren
-  '/profile': typeof ProfileRouteWithChildren
   '/(auth)/forgot-password': typeof authForgotPasswordRoute
   '/(auth)/reset-password': typeof authResetPasswordRoute
   '/(auth)/sign-in': typeof authSignInRoute
@@ -161,7 +137,6 @@ export interface FileRoutesById {
   '/(auth)/sign-up-success': typeof authSignUpSuccessRoute
   '/(auth)/verify-email': typeof authVerifyEmailRoute
   '/books/$bookId': typeof BooksBookIdRouteWithChildren
-  '/books/add': typeof BooksAddRoute
   '/books/explore': typeof BooksExploreRoute
   '/books/shelf': typeof BooksShelfRoute
   '/profile/$userId': typeof ProfileUserIdRoute
@@ -173,8 +148,6 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/books'
-    | '/profile'
     | '/forgot-password'
     | '/reset-password'
     | '/sign-in'
@@ -182,7 +155,6 @@ export interface FileRouteTypes {
     | '/sign-up-success'
     | '/verify-email'
     | '/books/$bookId'
-    | '/books/add'
     | '/books/explore'
     | '/books/shelf'
     | '/profile/$userId'
@@ -199,7 +171,6 @@ export interface FileRouteTypes {
     | '/sign-up-success'
     | '/verify-email'
     | '/books/$bookId'
-    | '/books/add'
     | '/books/explore'
     | '/books/shelf'
     | '/profile/$userId'
@@ -209,8 +180,6 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
-    | '/books'
-    | '/profile'
     | '/(auth)/forgot-password'
     | '/(auth)/reset-password'
     | '/(auth)/sign-in'
@@ -218,7 +187,6 @@ export interface FileRouteTypes {
     | '/(auth)/sign-up-success'
     | '/(auth)/verify-email'
     | '/books/$bookId'
-    | '/books/add'
     | '/books/explore'
     | '/books/shelf'
     | '/profile/$userId'
@@ -229,32 +197,22 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  BooksRoute: typeof BooksRouteWithChildren
-  ProfileRoute: typeof ProfileRouteWithChildren
   authForgotPasswordRoute: typeof authForgotPasswordRoute
   authResetPasswordRoute: typeof authResetPasswordRoute
   authSignInRoute: typeof authSignInRoute
   authSignUpRoute: typeof authSignUpRoute
   authSignUpSuccessRoute: typeof authSignUpSuccessRoute
   authVerifyEmailRoute: typeof authVerifyEmailRoute
+  BooksBookIdRoute: typeof BooksBookIdRouteWithChildren
+  BooksExploreRoute: typeof BooksExploreRoute
+  BooksShelfRoute: typeof BooksShelfRoute
+  ProfileUserIdRoute: typeof ProfileUserIdRoute
+  BooksIndexRoute: typeof BooksIndexRoute
+  ProfileIndexRoute: typeof ProfileIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/profile': {
-      id: '/profile'
-      path: '/profile'
-      fullPath: '/profile'
-      preLoaderRoute: typeof ProfileRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/books': {
-      id: '/books'
-      path: '/books'
-      fullPath: '/books'
-      preLoaderRoute: typeof BooksRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/': {
       id: '/'
       path: '/'
@@ -264,52 +222,45 @@ declare module '@tanstack/react-router' {
     }
     '/profile/': {
       id: '/profile/'
-      path: '/'
+      path: '/profile'
       fullPath: '/profile/'
       preLoaderRoute: typeof ProfileIndexRouteImport
-      parentRoute: typeof ProfileRoute
+      parentRoute: typeof rootRouteImport
     }
     '/books/': {
       id: '/books/'
-      path: '/'
+      path: '/books'
       fullPath: '/books/'
       preLoaderRoute: typeof BooksIndexRouteImport
-      parentRoute: typeof BooksRoute
+      parentRoute: typeof rootRouteImport
     }
     '/profile/$userId': {
       id: '/profile/$userId'
-      path: '/$userId'
+      path: '/profile/$userId'
       fullPath: '/profile/$userId'
       preLoaderRoute: typeof ProfileUserIdRouteImport
-      parentRoute: typeof ProfileRoute
+      parentRoute: typeof rootRouteImport
     }
     '/books/shelf': {
       id: '/books/shelf'
-      path: '/shelf'
+      path: '/books/shelf'
       fullPath: '/books/shelf'
       preLoaderRoute: typeof BooksShelfRouteImport
-      parentRoute: typeof BooksRoute
+      parentRoute: typeof rootRouteImport
     }
     '/books/explore': {
       id: '/books/explore'
-      path: '/explore'
+      path: '/books/explore'
       fullPath: '/books/explore'
       preLoaderRoute: typeof BooksExploreRouteImport
-      parentRoute: typeof BooksRoute
-    }
-    '/books/add': {
-      id: '/books/add'
-      path: '/add'
-      fullPath: '/books/add'
-      preLoaderRoute: typeof BooksAddRouteImport
-      parentRoute: typeof BooksRoute
+      parentRoute: typeof rootRouteImport
     }
     '/books/$bookId': {
       id: '/books/$bookId'
-      path: '/$bookId'
+      path: '/books/$bookId'
       fullPath: '/books/$bookId'
       preLoaderRoute: typeof BooksBookIdRouteImport
-      parentRoute: typeof BooksRoute
+      parentRoute: typeof rootRouteImport
     }
     '/(auth)/verify-email': {
       id: '/(auth)/verify-email'
@@ -375,47 +326,20 @@ const BooksBookIdRouteWithChildren = BooksBookIdRoute._addFileChildren(
   BooksBookIdRouteChildren,
 )
 
-interface BooksRouteChildren {
-  BooksBookIdRoute: typeof BooksBookIdRouteWithChildren
-  BooksAddRoute: typeof BooksAddRoute
-  BooksExploreRoute: typeof BooksExploreRoute
-  BooksShelfRoute: typeof BooksShelfRoute
-  BooksIndexRoute: typeof BooksIndexRoute
-}
-
-const BooksRouteChildren: BooksRouteChildren = {
-  BooksBookIdRoute: BooksBookIdRouteWithChildren,
-  BooksAddRoute: BooksAddRoute,
-  BooksExploreRoute: BooksExploreRoute,
-  BooksShelfRoute: BooksShelfRoute,
-  BooksIndexRoute: BooksIndexRoute,
-}
-
-const BooksRouteWithChildren = BooksRoute._addFileChildren(BooksRouteChildren)
-
-interface ProfileRouteChildren {
-  ProfileUserIdRoute: typeof ProfileUserIdRoute
-  ProfileIndexRoute: typeof ProfileIndexRoute
-}
-
-const ProfileRouteChildren: ProfileRouteChildren = {
-  ProfileUserIdRoute: ProfileUserIdRoute,
-  ProfileIndexRoute: ProfileIndexRoute,
-}
-
-const ProfileRouteWithChildren =
-  ProfileRoute._addFileChildren(ProfileRouteChildren)
-
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  BooksRoute: BooksRouteWithChildren,
-  ProfileRoute: ProfileRouteWithChildren,
   authForgotPasswordRoute: authForgotPasswordRoute,
   authResetPasswordRoute: authResetPasswordRoute,
   authSignInRoute: authSignInRoute,
   authSignUpRoute: authSignUpRoute,
   authSignUpSuccessRoute: authSignUpSuccessRoute,
   authVerifyEmailRoute: authVerifyEmailRoute,
+  BooksBookIdRoute: BooksBookIdRouteWithChildren,
+  BooksExploreRoute: BooksExploreRoute,
+  BooksShelfRoute: BooksShelfRoute,
+  ProfileUserIdRoute: ProfileUserIdRoute,
+  BooksIndexRoute: BooksIndexRoute,
+  ProfileIndexRoute: ProfileIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
