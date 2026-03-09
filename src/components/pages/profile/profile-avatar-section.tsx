@@ -1,8 +1,10 @@
 import { useRef, useState } from 'react'
+import { motion } from 'motion/react'
 import { Trash, Upload, Loader } from 'lucide-react'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { ANIMATION_DURATION, ANIMATION_STATE, INTERACTION_STATE } from '@/utils/animations'
 import { useDeleteProfileImage, useUploadProfileImage } from '@/hooks/pages/profile'
 import type { PayloadUser } from '@/@types/auth'
 
@@ -47,28 +49,43 @@ export function ProfileAvatarSection({ user, isOwner = true }: ProfileAvatarSect
   }
 
   return (
-    <div className="flex flex-col items-center gap-4">
+    <motion.div
+      className="flex flex-col items-center gap-4"
+      initial={ANIMATION_STATE.scaleUpLarge.hidden}
+      animate={ANIMATION_STATE.scaleUpLarge.visible}
+      transition={{ duration: ANIMATION_DURATION.midFast }}
+    >
       <div
         className={isOwner ? 'relative cursor-pointer' : 'relative'}
         onMouseEnter={() => isOwner && setIsHoveringAvatar(true)}
         onMouseLeave={() => isOwner && setIsHoveringAvatar(false)}
         onClick={handleAvatarClick}
       >
-        <Avatar className="h-32 w-32 ring-2 ring-accent-primary">
-          <AvatarImage src={profileImageUrl} alt={displayName} />
-          <AvatarFallback className="bg-background-tertiary dark:bg-accent-background text-accent-primary text-2xl font-semibold">
-            {initials}
-          </AvatarFallback>
-        </Avatar>
+        <motion.div
+          whileHover={isOwner ? INTERACTION_STATE.hoverScaleMedium : {}}
+          transition={{ duration: ANIMATION_DURATION.veryFast }}
+        >
+          <Avatar className="h-32 w-32 ring-2 ring-accent-primary">
+            <AvatarImage src={profileImageUrl} alt={displayName} />
+            <AvatarFallback className="bg-background-tertiary dark:bg-accent-background text-accent-primary text-2xl font-semibold">
+              {initials}
+            </AvatarFallback>
+          </Avatar>
+        </motion.div>
 
         {isOwner && (isHoveringAvatar || isUploading) && (
-          <div className="absolute inset-0 bg-black/40 rounded-full flex items-center justify-center">
+          <motion.div
+            className="absolute inset-0 bg-black/40 rounded-full flex items-center justify-center"
+            initial={ANIMATION_STATE.fade.hidden}
+            animate={ANIMATION_STATE.fade.visible}
+            exit={{ opacity: 0 }}
+          >
             {isUploading ? (
               <Loader className="w-6 h-6 text-white animate-spin" />
             ) : (
               <Upload className="w-6 h-6 text-white" />
             )}
-          </div>
+          </motion.div>
         )}
       </div>
 
@@ -94,6 +111,6 @@ export function ProfileAvatarSection({ user, isOwner = true }: ProfileAvatarSect
           {isDeleting ? 'Deleting...' : 'Delete Avatar'}
         </Button>
       )}
-    </div>
+    </motion.div>
   )
 }
