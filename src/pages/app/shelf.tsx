@@ -3,9 +3,9 @@ import { useAuthContext } from '@/contexts/auth'
 import { useIsMobile } from '@/hooks/use-is-mobile'
 import { BookFilters } from '@/components/pages/books/book-filters'
 import { BookListDisplay } from '@/components/pages/books/book-list-display'
-import { DeleteBookDialog } from '@/components/pages/books/delete-book-dialog'
+import { DeleteBookDialog } from '@/components/pages/books/book-details/delete-book-dialog'
 import { BookForm } from '@/components/pages/books/book-form'
-import { PageSection } from '@/components/page-section'
+import { PageSection } from '@/components/common/page-section'
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import {
   Dialog,

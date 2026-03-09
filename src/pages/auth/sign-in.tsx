@@ -6,7 +6,7 @@ import {
   PageSectionDescription,
   PageSectionHeader,
   PageSectionTitle,
-} from '@/components/page-section'
+} from '@/components/common/page-section'
 import { SignInForm } from '@/components/auth'
 
 export function SignInPage() {

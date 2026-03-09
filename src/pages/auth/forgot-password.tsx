@@ -6,7 +6,7 @@ import {
   PageSectionDescription,
   PageSectionHeader,
   PageSectionTitle,
-} from '@/components/page-section'
+} from '@/components/common/page-section'
 import { ForgotPasswordForm } from '@/components/auth'
 
 export function ForgotPasswordPage() {

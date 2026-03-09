@@ -19,10 +19,10 @@ import {
   DrawerHeader,
   DrawerTitle,
 } from '@/components/ui/drawer'
-import { DeleteBookDialog } from '@/components/pages/books/delete-book-dialog'
+import { DeleteBookDialog } from '@/components/pages/books/book-details/delete-book-dialog'
 import { BookForm } from '@/components/pages/books/book-form'
-import { PageSection } from '@/components/page-section'
-import { CommentsSection } from '@/components/pages/books/comments-section'
+import { PageSection } from '@/components/common/page-section'
+import { CommentsSection } from '@/components/pages/books/book-details/comments/comments-section'
 import { Star, PencilLine, Trash, ArrowLeft, ExternalLink } from 'lucide-react'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Link } from '@tanstack/react-router'

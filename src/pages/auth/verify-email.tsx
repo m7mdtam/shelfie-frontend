@@ -7,7 +7,7 @@ import {
   PageSectionDescription,
   PageSectionHeader,
   PageSectionTitle,
-} from '@/components/page-section'
+} from '@/components/common/page-section'
 import { Button } from '@/components/ui/button'
 import { useVerifyEmail } from '@/hooks/auth'
 
