@@ -12,7 +12,7 @@ export function NavbarLogo({ scrolled }: NavbarLogoProps) {
   const logoPreset = useNavbarLogoPreset()
   return (
     <motion.div {...logoPreset}>
-      <Link to="/" className="flex items-center no-underline hover:no-underline">
+      <Link to="/" className="flex items-center gap-3 no-underline hover:no-underline">
         <motion.img
           src={logo}
           alt="Shelfie"
@@ -23,6 +23,12 @@ export function NavbarLogo({ scrolled }: NavbarLogoProps) {
           whileHover={hoverScaleLarge}
           transition={SPRING.snappy}
         />
+        <span className={cn(
+          'font-bold text-text-primary transition-all duration-300 font-serif tracking-tight',
+          scrolled ? 'text-lg' : 'text-xl'
+        )}>
+          Shelfie
+        </span>
       </Link>
     </motion.div>
   )
