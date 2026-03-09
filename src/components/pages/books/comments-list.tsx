@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import { motion } from 'motion/react'
+import { ANIMATION_DURATION, ANIMATION_STATE } from '@/utils/animations'
 import { Comment } from '@/@types/comment'
 import { CommentCard } from './comment-card'
 import { CommentsSkeleton } from './comments-skeleton'
@@ -53,9 +55,21 @@ export function CommentsList({ bookId }: CommentsListProps) {
   }
 
   return (
-    <div className="space-y-4">
-      {allComments.map(comment => (
-        <CommentCard key={comment.id} comment={comment} bookId={bookId} />
+    <motion.div
+      className="space-y-4"
+      initial={ANIMATION_STATE.fade.hidden}
+      animate={ANIMATION_STATE.fade.visible}
+      transition={{ duration: ANIMATION_DURATION.fast }}
+    >
+      {allComments.map((comment, index) => (
+        <motion.div
+          key={comment.id}
+          initial={ANIMATION_STATE.slideUpSmall.hidden}
+          animate={ANIMATION_STATE.slideUpSmall.visible}
+          transition={{ duration: ANIMATION_DURATION.fast, delay: index * 0.05 }}
+        >
+          <CommentCard comment={comment} bookId={bookId} />
+        </motion.div>
       ))}
 
       {hasMorePages && (
@@ -65,6 +79,6 @@ export function CommentsList({ bookId }: CommentsListProps) {
           </Button>
         </div>
       )}
-    </div>
+    </motion.div>
   )
 }

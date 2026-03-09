@@ -1,6 +1,8 @@
 import { useAuthContext } from '@/contexts/auth'
 import { useRating } from '@/hooks/pages/books/use-rating'
 import { StarRating } from './star-rating'
+import { motion } from 'motion/react'
+import { ANIMATION_DURATION, ANIMATION_STATE } from '@/utils/animations'
 
 interface RatingsSectionProps {
   bookId: string
@@ -26,7 +28,13 @@ export function RatingsSection({
   }
 
   return (
-    <div className="flex flex-col gap-2 mb-6">
+    <motion.div
+      className="flex flex-col gap-2 mb-6"
+      initial={ANIMATION_STATE.slideUpSmall.hidden}
+      whileInView={ANIMATION_STATE.slideUpSmall.visible}
+      transition={{ duration: ANIMATION_DURATION.midFast }}
+      viewport={{ once: true, amount: 0.5 }}
+    >
       <div className="flex flex-wrap items-center gap-3">
         <StarRating
           value={userRating ?? 0}
@@ -45,6 +53,6 @@ export function RatingsSection({
           {hasRated ? `Your rating: ${userRating}/5 — thanks!` : 'Rate this book'}
         </p>
       )}
-    </div>
+    </motion.div>
   )
 }
