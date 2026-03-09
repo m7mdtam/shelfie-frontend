@@ -2,6 +2,14 @@ import { motion } from 'motion/react'
 import Aurora from '@/components/common/aurora'
 import { useLandingHeroItemPreset } from '@/lib/animations'
 import { HeroBadge } from './hero/hero-badge'
+import ShinyText from '@/components/ShinyText'
+import TextType from '@/components/TextType'
+
+const SUBTITLE_PHRASES = [
+  'Discover, track, and share books with a community of passionate readers.',
+  'No account needed to start exploring.',
+  'Your next great read is one shelf away.',
+]
 
 export function LandingHero() {
   const badgePreset    = useLandingHeroItemPreset(0)
@@ -29,17 +37,31 @@ export function LandingHero() {
           className="text-5xl md:text-6xl lg:text-7xl font-bold text-text-primary leading-[1.08] tracking-tight"
         >
           Your books.{' '}
-          <span className="text-accent-primary">Beautifully</span>{' '}
+          <ShinyText
+            text="Beautifully"
+            color="var(--accent-primary)"
+            shineColor="oklch(85% 0.12 190)"
+            speed={3}
+            spread={130}
+          />{' '}
           organized.
         </motion.h1>
 
-        <motion.p
+        <motion.div
           {...subtitlePreset}
-          className="text-lg md:text-xl text-text-secondary max-w-xl leading-relaxed"
+          className="text-lg md:text-xl text-text-secondary max-w-2xl leading-relaxed"
         >
-          Discover, track, and share books with a community of passionate readers.
-          No account needed to start exploring.
-        </motion.p>
+          <TextType
+            text={SUBTITLE_PHRASES}
+            typingSpeed={35}
+            deletingSpeed={18}
+            pauseDuration={3000}
+            loop
+            showCursor
+            cursorCharacter="|"
+            cursorClassName="text-accent-primary"
+          />
+        </motion.div>
       </div>
     </section>
   )

@@ -3,6 +3,7 @@ import { motion } from 'motion/react'
 import { ArrowRight, Compass } from 'lucide-react'
 import { useLandingScrollPreset } from '@/lib/animations'
 import { Button } from '@/components/ui/button'
+import ShinyText from '@/components/ShinyText'
 
 export function LandingCta() {
   const ctaPreset = useLandingScrollPreset()
@@ -16,8 +17,15 @@ export function LandingCta() {
         <div className="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-accent-primary/40 to-transparent" />
 
         <div className="flex flex-col items-center gap-4">
-          <h2 className="text-3xl md:text-4xl font-bold text-text-primary">
-            Ready to join <span className="text-accent-primary">Shelfie</span>?
+          <h2 className="text-3xl md:text-4xl font-bold">
+            <ShinyText
+              text="Ready to join Shelfie?"
+              color="var(--text-primary)"
+              shineColor="oklch(85% 0.12 190)"
+              speed={5}
+              spread={130}
+              delay={0.3}
+            />
           </h2>
           <p className="text-text-secondary text-base md:text-lg max-w-md leading-relaxed">
             Join Shelfie for free. Track what you read, discover what\'s next, and share with the
