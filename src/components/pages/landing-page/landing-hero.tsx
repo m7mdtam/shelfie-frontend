@@ -49,7 +49,7 @@ export function LandingHero() {
 
         <motion.div
           {...subtitlePreset}
-          className="text-lg md:text-xl text-text-secondary max-w-2xl leading-relaxed"
+          className="text-lg md:text-xl text-text-secondary max-w-2xl leading-relaxed min-h-18 md:min-h-8 flex items-start justify-center"
         >
           <TextType
             text={SUBTITLE_PHRASES}
