@@ -57,9 +57,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     if (asChild) {
       return (
         <Slot className={cn(buttonVariants({ variant, size, className }))} ref={ref} {...props}>
-          {prefixIcon}
           {children}
-          {suffixIcon}
         </Slot>
       )
     }
