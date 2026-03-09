@@ -3,6 +3,7 @@ import { motion } from 'motion/react'
 import { BookOpen, Compass, Star, Lock } from 'lucide-react'
 import { useLandingScrollPreset } from '@/lib/animations'
 import { FeatureCard } from './features/feature-card'
+import ShinyText from '@/components/ShinyText'
 
 interface Feature {
   icon: ReactNode
@@ -49,7 +50,14 @@ export function LandingFeatures() {
           className="text-center mb-14"
         >
           <h2 className="text-3xl md:text-4xl font-bold text-text-primary mb-4">
-            Everything for your reading life
+            <ShinyText
+              text="Everything for your reading life"
+              color="var(--text-primary)"
+              shineColor="oklch(85% 0.12 190)"
+              speed={5}
+              spread={130}
+              delay={0.3}
+            />
           </h2>
           <p className="text-text-secondary text-base md:text-lg max-w-lg mx-auto">
             Start exploring for free. Create an account when you\'re ready to contribute.

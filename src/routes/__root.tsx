@@ -3,6 +3,7 @@ import { useEffect } from 'react'
 import { Navbar } from '@/components/common/navbar'
 import { Toaster } from '@/components/ui/sonner'
 import Aurora from '@/components/common/aurora'
+import { NotFoundPage } from '@/components/pages/not-found/not-found-page'
 
 const routeTitles: Record<string, string> = {
   '/': 'Shelfie - Organize Your Books',
@@ -53,4 +54,5 @@ function RootLayout() {
 
 export const Route = createRootRoute({
   component: RootLayout,
+  notFoundComponent: NotFoundPage,
 })
