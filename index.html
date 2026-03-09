@@ -17,6 +17,9 @@
               ? 'dark'
               : 'light'
         document.documentElement.classList.add(theme)
+        document.documentElement.style.colorScheme = theme
+        document.documentElement.style.backgroundColor =
+          theme === 'dark' ? 'oklch(16% 0.02 240)' : 'oklch(98% 0.01 200)'
         document.documentElement.classList.add('no-transitions')
         window.addEventListener('load', function () {
           requestAnimationFrame(function () {
