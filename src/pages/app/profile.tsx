@@ -17,7 +17,7 @@ export function ProfilePage() {
     if (user && !isLoading) {
       authContext.setUser(user)
     }
-  }, [user, isLoading, authContext])
+  }, [user, isLoading])
 
   if (isLoading || !user) {
     return <ProfileSkeleton />

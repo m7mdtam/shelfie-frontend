@@ -135,7 +135,7 @@ export function BookDetailPage() {
   const handleDelete = async () => {
     try {
       await deleteBook.mutateAsync(params.bookId)
-      navigate({ to: '/books' })
+      navigate({ to: '/books/shelf' })
     } catch {
       // Handle error silently
     }

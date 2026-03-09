@@ -30,34 +30,34 @@ const IndexRoute = IndexRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProfileIndexRoute = ProfileIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => ProfileRoute,
+  id: '/profile/',
+  path: '/profile/',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const BooksIndexRoute = BooksIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => BooksRoute,
+  id: '/books/',
+  path: '/books/',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const ProfileUserIdRoute = ProfileUserIdRouteImport.update({
-  id: '/$userId',
-  path: '/$userId',
-  getParentRoute: () => ProfileRoute,
+  id: '/profile/$userId',
+  path: '/profile/$userId',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const BooksShelfRoute = BooksShelfRouteImport.update({
-  id: '/shelf',
-  path: '/shelf',
-  getParentRoute: () => BooksRoute,
+  id: '/books/shelf',
+  path: '/books/shelf',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const BooksExploreRoute = BooksExploreRouteImport.update({
-  id: '/explore',
-  path: '/explore',
-  getParentRoute: () => BooksRoute,
+  id: '/books/explore',
+  path: '/books/explore',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const BooksBookIdRoute = BooksBookIdRouteImport.update({
-  id: '/$bookId',
-  path: '/$bookId',
-  getParentRoute: () => BooksRoute,
+  id: '/books/$bookId',
+  path: '/books/$bookId',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const authVerifyEmailRoute = authVerifyEmailRouteImport.update({
   id: '/(auth)/verify-email',
@@ -203,6 +203,12 @@ export interface RootRouteChildren {
   authSignUpRoute: typeof authSignUpRoute
   authSignUpSuccessRoute: typeof authSignUpSuccessRoute
   authVerifyEmailRoute: typeof authVerifyEmailRoute
+  BooksBookIdRoute: typeof BooksBookIdRouteWithChildren
+  BooksExploreRoute: typeof BooksExploreRoute
+  BooksShelfRoute: typeof BooksShelfRoute
+  ProfileUserIdRoute: typeof ProfileUserIdRoute
+  BooksIndexRoute: typeof BooksIndexRoute
+  ProfileIndexRoute: typeof ProfileIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -216,45 +222,45 @@ declare module '@tanstack/react-router' {
     }
     '/profile/': {
       id: '/profile/'
-      path: '/'
+      path: '/profile'
       fullPath: '/profile/'
       preLoaderRoute: typeof ProfileIndexRouteImport
-      parentRoute: typeof ProfileRoute
+      parentRoute: typeof rootRouteImport
     }
     '/books/': {
       id: '/books/'
-      path: '/'
+      path: '/books'
       fullPath: '/books/'
       preLoaderRoute: typeof BooksIndexRouteImport
-      parentRoute: typeof BooksRoute
+      parentRoute: typeof rootRouteImport
     }
     '/profile/$userId': {
       id: '/profile/$userId'
-      path: '/$userId'
+      path: '/profile/$userId'
       fullPath: '/profile/$userId'
       preLoaderRoute: typeof ProfileUserIdRouteImport
-      parentRoute: typeof ProfileRoute
+      parentRoute: typeof rootRouteImport
     }
     '/books/shelf': {
       id: '/books/shelf'
-      path: '/shelf'
+      path: '/books/shelf'
       fullPath: '/books/shelf'
       preLoaderRoute: typeof BooksShelfRouteImport
-      parentRoute: typeof BooksRoute
+      parentRoute: typeof rootRouteImport
     }
     '/books/explore': {
       id: '/books/explore'
-      path: '/explore'
+      path: '/books/explore'
       fullPath: '/books/explore'
       preLoaderRoute: typeof BooksExploreRouteImport
-      parentRoute: typeof BooksRoute
+      parentRoute: typeof rootRouteImport
     }
     '/books/$bookId': {
       id: '/books/$bookId'
-      path: '/$bookId'
+      path: '/books/$bookId'
       fullPath: '/books/$bookId'
       preLoaderRoute: typeof BooksBookIdRouteImport
-      parentRoute: typeof BooksRoute
+      parentRoute: typeof rootRouteImport
     }
     '/(auth)/verify-email': {
       id: '/(auth)/verify-email'
@@ -308,6 +314,18 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface BooksBookIdRouteChildren {
+  BooksBookIdEditRoute: typeof BooksBookIdEditRoute
+}
+
+const BooksBookIdRouteChildren: BooksBookIdRouteChildren = {
+  BooksBookIdEditRoute: BooksBookIdEditRoute,
+}
+
+const BooksBookIdRouteWithChildren = BooksBookIdRoute._addFileChildren(
+  BooksBookIdRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   authForgotPasswordRoute: authForgotPasswordRoute,
@@ -316,6 +334,12 @@ const rootRouteChildren: RootRouteChildren = {
   authSignUpRoute: authSignUpRoute,
   authSignUpSuccessRoute: authSignUpSuccessRoute,
   authVerifyEmailRoute: authVerifyEmailRoute,
+  BooksBookIdRoute: BooksBookIdRouteWithChildren,
+  BooksExploreRoute: BooksExploreRoute,
+  BooksShelfRoute: BooksShelfRoute,
+  ProfileUserIdRoute: ProfileUserIdRoute,
+  BooksIndexRoute: BooksIndexRoute,
+  ProfileIndexRoute: ProfileIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

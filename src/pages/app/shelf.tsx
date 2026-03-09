@@ -1,12 +1,10 @@
 import { useBookList, useBookForm } from '@/hooks/pages/books'
-import { useAuthContext } from '@/contexts/auth'
 import { useIsMobile } from '@/hooks/use-is-mobile'
 import { BookFilters } from '@/components/pages/books/book-filters'
 import { BookListDisplay } from '@/components/pages/books/book-list-display'
 import { DeleteBookDialog } from '@/components/pages/books/book-details/delete-book-dialog'
 import { BookForm } from '@/components/pages/books/book-form'
 import { PageSection } from '@/components/common/page-section'
-import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import {
   Dialog,
   DialogBody,
@@ -41,25 +39,9 @@ const GENRES = [
 ]
 
 export function ShelfPage() {
-  const auth = useAuthContext()
   const bookList = useBookList({ limit: 10, scope: 'mine' })
   const bookForm = useBookForm()
   const isMobile = useIsMobile()
-
-  if (!auth.isAuthenticated || !auth.decodedToken?.id) {
-    return (
-      <div className="flex-1 p-4 md:p-6">
-        <div className="max-w-7xl mx-auto">
-          <Card variant="default" className="text-center">
-            <CardHeader>
-              <CardTitle>Sign in Required</CardTitle>
-              <CardDescription>You need to be signed in to view your shelf</CardDescription>
-            </CardHeader>
-          </Card>
-        </div>
-      </div>
-    )
-  }
 
   const formTitle = bookForm.mode === 'create' ? 'Add Book' : 'Edit Book'
   const formDescription =
