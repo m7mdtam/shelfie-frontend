@@ -17,6 +17,7 @@ export function ProfilePage() {
     if (user && !isLoading) {
       authContext.setUser(user)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, isLoading])
 
   if (isLoading || !user) {
