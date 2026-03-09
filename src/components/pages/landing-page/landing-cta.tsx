@@ -17,7 +17,7 @@ export function LandingCta() {
 
         <div className="flex flex-col items-center gap-4">
           <h2 className="text-3xl md:text-4xl font-bold text-text-primary">
-            Ready to build your shelf?
+            Ready to join <span className="text-accent-primary">Shelfie</span>?
           </h2>
           <p className="text-text-secondary text-base md:text-lg max-w-md leading-relaxed">
             Join Shelfie for free. Track what you read, discover what\'s next, and share with the
