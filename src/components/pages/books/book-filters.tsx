@@ -9,7 +9,7 @@ import {
 } from '@/components/ui/select'
 import { Search } from 'lucide-react'
 import { motion } from 'motion/react'
-import { ANIMATION_DURATION } from '@/utils/animations'
+import { useBookFiltersPreset } from '@/lib/animations'
 
 const formatLabel = (value: string) =>
   value
@@ -36,13 +36,10 @@ export function BookFilters({
   onDownloadableChange,
   genres,
 }: BookFiltersProps) {
+  const filtersPreset = useBookFiltersPreset()
+
   return (
-    <motion.div
-      className="flex flex-col md:flex-row md:items-end gap-3 mb-6"
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: ANIMATION_DURATION.midFast }}
-    >
+    <motion.div className="flex flex-col md:flex-row md:items-end gap-3 mb-6" {...filtersPreset}>
       <div className="flex-1">
         <Label className="text-text-secondary mb-2">Search</Label>
         <div className="relative">

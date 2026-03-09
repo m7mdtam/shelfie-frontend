@@ -6,13 +6,22 @@ import { useVerificationPolling, useEmailVerificationEnabled } from '@/hooks/aut
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { CheckCircle2, Loader, MailCheck } from 'lucide-react'
 import { ROUTES } from '@/utils/api/routes'
-import { ANIMATION_DURATION, ANIMATION_STATE, EASING } from '@/utils/animations'
+import {
+  useSignUpSuccessPreset,
+  useSignUpIconPreset,
+  slideUpSmall,
+  fade,
+  SPRING,
+  TWEEN_OPACITY,
+} from '@/lib/animations'
 
 export function SignUpSuccessPage() {
   const isMobile = useIsMobile()
   const navigate = useNavigate()
   const emailVerificationEnabled = useEmailVerificationEnabled()
   const { isVerified } = useVerificationPolling()
+  const successPreset = useSignUpSuccessPreset()
+  const iconPreset = useSignUpIconPreset()
 
   useEffect(() => {
     if (!emailVerificationEnabled) {
@@ -30,25 +39,11 @@ export function SignUpSuccessPage() {
       data-mobile={isMobile}
     >
       <div className="w-full max-w-md">
-        <motion.div
-          initial={ANIMATION_STATE.slideUpMedium.hidden}
-          animate={ANIMATION_STATE.slideUpMedium.visible}
-          transition={{ duration: ANIMATION_DURATION.slow, ease: EASING.easeOut as any }}
-        >
+        <motion.div {...successPreset}>
           <Card variant="elevated" className="w-full">
             <CardHeader className="text-center pt-8">
               <div className="flex justify-center mb-6">
-                <motion.div
-                  initial={ANIMATION_STATE.spin.hidden}
-                  animate={ANIMATION_STATE.spin.visible}
-                  transition={{
-                    delay: 0.3,
-                    duration: 0.9,
-                    type: 'spring',
-                    stiffness: 80,
-                    damping: 12,
-                  }}
-                >
+                <motion.div {...iconPreset}>
                   {isVerified ? (
                     <CheckCircle2 className="w-16 h-16 text-state-success" />
                   ) : (
@@ -57,16 +52,18 @@ export function SignUpSuccessPage() {
                 </motion.div>
               </div>
               <motion.div
-                initial={ANIMATION_STATE.slideUpSmall.hidden}
-                animate={ANIMATION_STATE.slideUpSmall.visible}
-                transition={{ delay: 0.6, duration: ANIMATION_DURATION.midSlow }}
+                variants={slideUpSmall}
+                initial="hidden"
+                animate="visible"
+                transition={{ ...SPRING.gentle, delay: 0.6 }}
               >
                 <CardTitle>{isVerified ? 'Email Verified!' : 'Check your email'}</CardTitle>
               </motion.div>
               <motion.div
-                initial={ANIMATION_STATE.slideUpSmall.hidden}
-                animate={ANIMATION_STATE.slideUpSmall.visible}
-                transition={{ delay: 0.8, duration: ANIMATION_DURATION.midSlow }}
+                variants={slideUpSmall}
+                initial="hidden"
+                animate="visible"
+                transition={{ ...SPRING.gentle, delay: 0.8 }}
               >
                 <CardDescription>
                   {isVerified
@@ -76,9 +73,10 @@ export function SignUpSuccessPage() {
               </motion.div>
               {!isVerified && (
                 <motion.div
-                  initial={ANIMATION_STATE.fade.hidden}
-                  animate={ANIMATION_STATE.fade.visible}
-                  transition={{ delay: 1.1, duration: ANIMATION_DURATION.normal }}
+                  variants={fade}
+                  initial="hidden"
+                  animate="visible"
+                  transition={{ ...TWEEN_OPACITY, delay: 1.1 }}
                   className="flex items-center justify-center gap-2 mt-4 text-text-secondary text-sm"
                 >
                   <Loader className="w-4 h-4 animate-spin" />

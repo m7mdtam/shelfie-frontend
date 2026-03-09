@@ -3,6 +3,7 @@ import { Menu, X } from 'lucide-react'
 import { motion } from 'motion/react'
 import { useLocation, useNavigate } from '@tanstack/react-router'
 import { cn } from '@/lib/utils'
+import { useNavbarPreset } from '@/lib/animations'
 import { useIsMobile } from '@/hooks/use-is-mobile'
 import { useAuthContext } from '@/contexts/auth'
 import { Button } from '@/components/ui/button'
@@ -16,17 +17,11 @@ const PROTECTED_PATHS = ['/books/shelf']
 
 const SCROLL_THRESHOLD = 60
 
-const NAV_TRANSITION = {
-  type: 'spring' as const,
-  stiffness: 100,
-  damping: 22,
-  mass: 1.4,
-}
-
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const isMobile = useIsMobile()
+  const navbarPreset = useNavbarPreset(scrolled, isMobile)
   const { isAuthenticated, decodedToken, user, logout } = useAuthContext()
   const navigate = useNavigate()
   const location = useLocation()
@@ -53,25 +48,7 @@ export function Navbar() {
 
   return (
     <motion.header
-      initial={false}
-      animate={
-        scrolled
-          ? {
-              top: 16,
-              left: '50%',
-              x: '-50%',
-              width: isMobile ? '92%' : '55%',
-              borderRadius: 20,
-            }
-          : {
-              top: 0,
-              left: 0,
-              x: '0%',
-              width: '100%',
-              borderRadius: 0,
-            }
-      }
-      transition={NAV_TRANSITION}
+      {...navbarPreset}
       className={cn(
         'fixed z-50 navbar-blur',
         scrolled

@@ -1,29 +1,29 @@
 import * as React from 'react'
 import { motion } from 'motion/react'
 import { cn } from '@/lib/utils'
-import { ANIMATION_DURATION, ANIMATION_STATE } from '@/utils/animations'
+import { usePageSectionPreset } from '@/lib/animations'
 
 const PageSection = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement> & {
     variant?: 'default' | 'compact'
   }
->(({ className, variant = 'default', ...props }, ref) => (
-  <motion.div
-    ref={ref}
-    className={cn(
-      'rounded-md bg-background-surface text-text-primary md:rounded-lg',
-      variant === 'default' && 'p-4 md:p-6',
-      variant === 'compact' && 'p-3 md:p-4',
-      className
-    )}
-    initial={ANIMATION_STATE.slideUp.hidden}
-    whileInView={ANIMATION_STATE.slideUp.visible}
-    transition={{ duration: ANIMATION_DURATION.normal }}
-    viewport={{ once: true, amount: 0.1 }}
-    {...(props as any)}
-  />
-))
+>(({ className, variant = 'default', ...props }, ref) => {
+  const sectionPreset = usePageSectionPreset()
+  return (
+    <motion.div
+      ref={ref}
+      {...sectionPreset}
+      className={cn(
+        'rounded-md bg-background-surface text-text-primary md:rounded-lg',
+        variant === 'default' && 'p-4 md:p-6',
+        variant === 'compact' && 'p-3 md:p-4',
+        className
+      )}
+      {...(props as any)}
+    />
+  )
+})
 PageSection.displayName = 'PageSection'
 
 const PageSectionHeader = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(

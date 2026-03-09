@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { motion } from 'motion/react'
 import { useIsMobile } from '@/hooks/use-is-mobile'
-import { ANIMATION_DURATION, ANIMATION_STATE } from '@/utils/animations'
+import { useProfileSectionPreset } from '@/lib/animations'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
@@ -55,14 +55,11 @@ export function ProfilePersonalInfoSection({
     })
   }
 
+  const profileSectionPreset = useProfileSectionPreset()
+
   if (!isEditing) {
     return (
-      <motion.div
-        className="space-y-4"
-        initial={ANIMATION_STATE.slideLeftSmall.hidden}
-        animate={ANIMATION_STATE.slideLeftSmall.visible}
-        transition={{ duration: ANIMATION_DURATION.midFast }}
-      >
+      <motion.div className="space-y-4" {...profileSectionPreset}>
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-semibold text-text-primary">Personal Information</h2>
           {isOwner && (
