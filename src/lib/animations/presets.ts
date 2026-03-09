@@ -419,6 +419,57 @@ export function useRatingsSectionPreset(): MotionProps {
   }
 }
 
+export function useLandingHeroItemPreset(delay: number): MotionProps {
+  const { prefersReducedMotion, safeVariants } = useReducedMotion()
+  if (prefersReducedMotion) {
+    return { variants: safeVariants, initial: 'hidden', animate: 'visible' }
+  }
+  return {
+    variants:   slideUpMedium,
+    initial:    'hidden',
+    animate:    'visible',
+    transition: { ...SPRING.gentle, delay } as Transition,
+  }
+}
+
+export function useLandingFeaturePreset(delay: number = 0): MotionProps {
+  const { prefersReducedMotion, safeVariants } = useReducedMotion()
+  if (prefersReducedMotion) {
+    return {
+      variants:    safeVariants,
+      initial:     'hidden',
+      whileInView: 'visible',
+      viewport:    { ...viewport.once, ...threshold.normal },
+    }
+  }
+  return {
+    variants:    slideUpInView,
+    initial:     'hidden',
+    whileInView: 'visible',
+    transition:  { ...SPRING.gentle, delay } as Transition,
+    viewport:    { ...viewport.once, ...threshold.normal },
+  }
+}
+
+export function useLandingScrollPreset(): MotionProps {
+  const { prefersReducedMotion, safeVariants } = useReducedMotion()
+  if (prefersReducedMotion) {
+    return {
+      variants:    safeVariants,
+      initial:     'hidden',
+      whileInView: 'visible',
+      viewport:    { ...viewport.once, ...threshold.normal },
+    }
+  }
+  return {
+    variants:    slideUpInView,
+    initial:     'hidden',
+    whileInView: 'visible',
+    transition:  SPRING.gentle,
+    viewport:    { ...viewport.once, ...threshold.normal },
+  }
+}
+
 export function useCommentsListPreset(): MotionProps {
   const { prefersReducedMotion, safeVariants } = useReducedMotion()
   if (prefersReducedMotion) {
