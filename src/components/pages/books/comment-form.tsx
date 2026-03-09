@@ -34,8 +34,8 @@ export function CommentForm({ bookId, onSuccess }: CommentFormProps) {
         textareaRef.current.style.height = 'auto'
       }
       onSuccess?.()
-    } catch (error) {
-      console.error('Failed to create comment:', error)
+    } catch {
+      // Handle error silently
     }
   }
 
