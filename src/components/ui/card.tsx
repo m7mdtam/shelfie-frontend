@@ -2,35 +2,30 @@ import * as React from 'react'
 import { motion } from 'motion/react'
 
 import { cn } from '@/lib/utils'
-import { ANIMATION_DURATION, ANIMATION_STATE, EASING, INTERACTION_STATE } from '@/utils/animations'
+import { useCardPreset } from '@/lib/animations'
 
 const Card = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement> & {
     variant?: 'default' | 'elevated' | 'outlined'
   }
->(({ className, variant = 'default', ...props }, ref) => (
-  <motion.div
-    ref={ref}
-    initial={ANIMATION_STATE.combined.hidden}
-    whileInView={ANIMATION_STATE.combined.visible}
-    whileHover={INTERACTION_STATE.hoverSlideUp}
-    transition={{
-      duration: ANIMATION_DURATION.normal,
-      ease: EASING.easeOut,
-    }}
-    viewport={{ once: true, amount: 0.2 }}
-    layout
-    className={cn(
-      'rounded-md bg-background-base text-text-primary md:rounded-lg',
-      variant === 'default' && 'shadow-sm md:shadow',
-      variant === 'elevated' && 'shadow-md md:shadow-lg',
-      variant === 'outlined' && 'shadow-none',
-      className
-    )}
-    {...(props as any)}
-  />
-))
+>(({ className, variant = 'default', ...props }, ref) => {
+  const cardPreset = useCardPreset()
+  return (
+    <motion.div
+      ref={ref}
+      {...cardPreset}
+      className={cn(
+        'rounded-md bg-background-base text-text-primary md:rounded-lg',
+        variant === 'default' && 'shadow-sm md:shadow',
+        variant === 'elevated' && 'shadow-md md:shadow-lg',
+        variant === 'outlined' && 'shadow-none',
+        className
+      )}
+      {...(props as any)}
+    />
+  )
+})
 Card.displayName = 'Card'
 
 const CardHeader = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(

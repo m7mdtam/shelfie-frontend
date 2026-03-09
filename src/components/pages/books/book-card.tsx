@@ -4,7 +4,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { motion } from 'motion/react'
 import { Star } from 'lucide-react'
 import { Link } from '@tanstack/react-router'
-import { ANIMATION_DURATION, ANIMATION_STATE, EASING, INTERACTION_STATE } from '@/utils/animations'
+import { useBookCardPreset } from '@/lib/animations'
 import fallbackImage from '@/assets/images/fallbackImage.jfif'
 
 const formatLabel = (value: string) =>
@@ -19,17 +19,10 @@ interface BookCardProps {
 
 export function BookCard({ book }: BookCardProps) {
   const owner = getBookOwner(book.owner)
+  const bookCardPreset = useBookCardPreset()
   return (
     <Link to="/books/$bookId" params={{ bookId: book.id }} className="block">
-      <motion.div
-        initial={ANIMATION_STATE.slideUp.hidden}
-        animate={ANIMATION_STATE.slideUp.visible}
-        transition={{
-          duration: ANIMATION_DURATION.normal,
-          ease: EASING.easeOut as any,
-        }}
-        whileHover={INTERACTION_STATE.hoverSlideUp}
-      >
+      <motion.div {...bookCardPreset}>
         <Card
           variant="default"
           className="flex flex-row hover:shadow-lg transition-shadow cursor-pointer p-3 gap-3 h-56 max-[425px]:p-2 max-[425px]:gap-2 max-[425px]:h-44"

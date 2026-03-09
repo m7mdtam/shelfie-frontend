@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 import { motion } from 'motion/react'
 import { Plus, Loader } from 'lucide-react'
 import { Book } from '@/@types/book'
-import { ANIMATION_STATE, ANIMATION_DURATION, EASING } from '@/utils/animations'
+import { useBookListPreset } from '@/lib/animations'
 
 interface BookListDisplayProps {
   isLoading: boolean
@@ -34,6 +34,8 @@ export function BookListDisplay({
   hasNextPage = false,
   onLoadMore,
 }: BookListDisplayProps) {
+  const bookListPreset = useBookListPreset()
+
   if (isLoading && books.length === 0) {
     return (
       <div className="mt-4 sm:mt-6 rounded-lg min-[375px]:p-2 sm:p-4">
@@ -89,10 +91,7 @@ export function BookListDisplay({
       </p>
       <motion.div
         className="grid gap-3 grid-cols-1 sm:grid-cols-[repeat(auto-fill,minmax(300px,1fr))]"
-        initial={ANIMATION_STATE.fade.hidden}
-        whileInView={ANIMATION_STATE.fade.visible}
-        transition={{ duration: ANIMATION_DURATION.normal, ease: EASING.easeOut as any }}
-        viewport={{ once: true, amount: 0.1 }}
+        {...bookListPreset}
       >
         {books.map(book => (
           <BookCard key={book.id} book={book} />

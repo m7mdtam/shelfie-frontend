@@ -1,8 +1,17 @@
 import { useState } from 'react'
 import { motion } from 'motion/react'
-import { ANIMATION_DURATION, ANIMATION_STATE } from '@/utils/animations'
+import { useCommentsListPreset, useCommentItemPreset } from '@/lib/animations'
 import { Comment } from '@/@types/comment'
 import { CommentCard } from './comment-card'
+
+function AnimatedCommentItem({ comment, bookId, index }: { comment: Comment; bookId: string; index: number }) {
+  const itemPreset = useCommentItemPreset(index)
+  return (
+    <motion.div {...itemPreset}>
+      <CommentCard comment={comment} bookId={bookId} />
+    </motion.div>
+  )
+}
 import { CommentsSkeleton } from './comments-skeleton'
 import { useComments } from '@/hooks/pages/books/use-comments'
 import { Button } from '@/components/ui/button'
@@ -17,6 +26,7 @@ export function CommentsList({ bookId }: CommentsListProps) {
   const [currentPage, setCurrentPage] = useState(1)
   const [allComments, setAllComments] = useState<Comment[]>([])
   const { data, isLoading, error } = useComments(bookId, currentPage)
+  const commentsListPreset = useCommentsListPreset()
 
   React.useEffect(() => {
     if (data?.data) {
@@ -55,21 +65,9 @@ export function CommentsList({ bookId }: CommentsListProps) {
   }
 
   return (
-    <motion.div
-      className="space-y-4"
-      initial={ANIMATION_STATE.fade.hidden}
-      animate={ANIMATION_STATE.fade.visible}
-      transition={{ duration: ANIMATION_DURATION.fast }}
-    >
+    <motion.div className="space-y-4" {...commentsListPreset}>
       {allComments.map((comment, index) => (
-        <motion.div
-          key={comment.id}
-          initial={ANIMATION_STATE.slideUpSmall.hidden}
-          animate={ANIMATION_STATE.slideUpSmall.visible}
-          transition={{ duration: ANIMATION_DURATION.fast, delay: index * 0.05 }}
-        >
-          <CommentCard comment={comment} bookId={bookId} />
-        </motion.div>
+        <AnimatedCommentItem key={comment.id} comment={comment} bookId={bookId} index={index} />
       ))}
 
       {hasMorePages && (

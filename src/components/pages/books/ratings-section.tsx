@@ -2,7 +2,7 @@ import { useAuthContext } from '@/contexts/auth'
 import { useRating } from '@/hooks/pages/books/use-rating'
 import { StarRating } from './star-rating'
 import { motion } from 'motion/react'
-import { ANIMATION_DURATION, ANIMATION_STATE } from '@/utils/animations'
+import { useRatingsSectionPreset } from '@/lib/animations'
 
 interface RatingsSectionProps {
   bookId: string
@@ -27,14 +27,10 @@ export function RatingsSection({
     submitRating(rating)
   }
 
+  const ratingsSectionPreset = useRatingsSectionPreset()
+
   return (
-    <motion.div
-      className="flex flex-col gap-2 mb-6"
-      initial={ANIMATION_STATE.slideUpSmall.hidden}
-      whileInView={ANIMATION_STATE.slideUpSmall.visible}
-      transition={{ duration: ANIMATION_DURATION.midFast }}
-      viewport={{ once: true, amount: 0.5 }}
-    >
+    <motion.div className="flex flex-col gap-2 mb-6" {...ratingsSectionPreset}>
       <div className="flex flex-wrap items-center gap-3">
         <StarRating
           value={userRating ?? 0}

@@ -3,7 +3,7 @@ import { motion } from 'motion/react'
 import { BookUser, Compass } from 'lucide-react'
 import { toast } from 'sonner'
 import { cn } from '@/lib/utils'
-import { ANIMATION_DURATION, ANIMATION_STATE, INTERACTION_STATE } from '@/utils/animations'
+import { useNavLinkPreset } from '@/lib/animations'
 import { useAuthContext } from '@/contexts/auth'
 
 interface NavbarLinksProps {
@@ -36,27 +36,18 @@ export function NavbarLinks({ variant = 'desktop', onClose }: NavbarLinksProps) 
     onClose?.()
   }
 
+  const shelfLinkPreset = useNavLinkPreset(0.1)
+  const exploreLinkPreset = useNavLinkPreset(0.2)
+
   return (
     <>
-      <motion.div
-        initial={ANIMATION_STATE.slideLeftSmall.hidden}
-        animate={ANIMATION_STATE.slideLeftSmall.visible}
-        transition={{ duration: ANIMATION_DURATION.fast, delay: 0.1 }}
-        whileHover={INTERACTION_STATE.hoverSlide}
-        whileTap={INTERACTION_STATE.tapScale}
-      >
+      <motion.div {...shelfLinkPreset}>
         <Link to="/books/shelf" className={linkClass} onClick={handleShelfClick}>
           <BookUser className="h-5 w-5 shrink-0" />
           <span>Shelf</span>
         </Link>
       </motion.div>
-      <motion.div
-        initial={ANIMATION_STATE.slideLeftSmall.hidden}
-        animate={ANIMATION_STATE.slideLeftSmall.visible}
-        transition={{ duration: ANIMATION_DURATION.fast, delay: 0.2 }}
-        whileHover={INTERACTION_STATE.hoverSlide}
-        whileTap={INTERACTION_STATE.tapScale}
-      >
+      <motion.div {...exploreLinkPreset}>
         <Link to="/books/explore" className={linkClass} onClick={onClose}>
           <Compass className="h-5 w-5 shrink-0" />
           <span>Explore</span>
