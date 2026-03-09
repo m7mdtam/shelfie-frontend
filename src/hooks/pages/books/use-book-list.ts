@@ -22,7 +22,7 @@ export function useBookList(props: UseBookListProps = {}) {
       limit,
       ...(search && { 'where[title][like]': search }),
       ...(genre && { 'where[genre][equals]': genre }),
-      ...(downloadable !== '' && { 'where[isDownloadable][equals]': downloadable === 'true' }),
+      ...(downloadable !== '' && { 'where[isDownloadable][equals]': downloadable }),
     }),
     [limit, search, genre, downloadable]
   )

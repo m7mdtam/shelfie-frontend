@@ -36,15 +36,8 @@ export const refreshTokenFn = async (): Promise<RefreshTokenResponse> => {
 }
 
 export const getMeFn = async (): Promise<GetMeResponse> => {
-  try {
-    console.log('📡 Fetching /api/users/me...')
-    const response = await axiosInstance.get('/api/users/me')
-    console.log('✅ /api/users/me response:', response.data)
-    return response.data
-  } catch (error: any) {
-    console.error('❌ /api/users/me error:', error?.response?.data || error.message)
-    throw error
-  }
+  const response = await axiosInstance.get('/api/users/me')
+  return response.data
 }
 
 export const forgotPasswordFn = async (

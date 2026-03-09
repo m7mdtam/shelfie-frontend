@@ -34,41 +34,22 @@ export const usersRequests = {
    * ✅ Shows loading state during upload
    */
   uploadProfileImage: async (file: File): Promise<PayloadUser> => {
-    try {
-      console.log('📤 Uploading profile image to /api/media...')
+    // Step 1: Upload file to /api/media
+    const media = await uploadMedia(file, 'Profile Image')
 
-      // Step 1: Upload file to /api/media
-      const media = await uploadMedia(file, 'Profile Image')
-      console.log('✅ Media uploaded:', media)
+    // Step 2: Update user profile with media object (not just ID)
+    const response = await axiosInstance.patch('/api/users/me', {
+      profileImage: media,
+    })
 
-      console.log('📝 Updating user profile with media object...')
-
-      // Step 2: Update user profile with media object (not just ID)
-      const response = await axiosInstance.patch('/api/users/me', {
-        profileImage: media,
-      })
-      console.log('✅ Profile updated with image:', response.data.profileImage)
-
-      return response.data
-    } catch (error) {
-      console.error('❌ Profile image upload failed:', error)
-      throw error
-    }
+    return response.data
   },
 
   deleteProfileImage: async (): Promise<PayloadUser> => {
-    try {
-      console.log('🗑️ Deleting profile image...')
+    const response = await axiosInstance.patch('/api/users/me', {
+      profileImage: null,
+    })
 
-      const response = await axiosInstance.patch('/api/users/me', {
-        profileImage: null,
-      })
-      console.log('✅ Profile image deleted')
-
-      return response.data
-    } catch (error) {
-      console.error('❌ Profile image delete failed:', error)
-      throw error
-    }
+    return response.data
   },
 }

@@ -71,8 +71,8 @@ export function CommentCard({ comment, bookId }: CommentCardProps) {
         payload: { text: editText.trim() },
       })
       setIsEditing(false)
-    } catch (error) {
-      console.error('Failed to update comment:', error)
+    } catch {
+      // Handle error silently
     }
   }
 
@@ -100,20 +100,14 @@ export function CommentCard({ comment, bookId }: CommentCardProps) {
           isOwner ? (
             <Link to="/profile" className="shrink-0">
               <Avatar className="w-10 h-10 hover:ring-2 hover:ring-accent-primary transition-all">
-                <AvatarImage
-                  src={profileImageUrl}
-                  alt={userName}
-                />
+                <AvatarImage src={profileImageUrl} alt={userName} />
                 <AvatarFallback>{userInitials}</AvatarFallback>
               </Avatar>
             </Link>
           ) : (
             <Link to="/profile/$userId" params={{ userId: comment.user.id }} className="shrink-0">
               <Avatar className="w-10 h-10 hover:ring-2 hover:ring-accent-primary transition-all">
-                <AvatarImage
-                  src={profileImageUrl}
-                  alt={userName}
-                />
+                <AvatarImage src={profileImageUrl} alt={userName} />
                 <AvatarFallback>{userInitials}</AvatarFallback>
               </Avatar>
             </Link>

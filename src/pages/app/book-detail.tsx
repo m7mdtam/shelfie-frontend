@@ -136,8 +136,8 @@ export function BookDetailPage() {
     try {
       await deleteBook.mutateAsync(params.bookId)
       navigate({ to: '/books' })
-    } catch (err) {
-      console.error('Delete failed:', err)
+    } catch {
+      // Handle error silently
     }
   }
 
@@ -145,8 +145,8 @@ export function BookDetailPage() {
     try {
       await updateBook.mutateAsync(data)
       setEditOpen(false)
-    } catch (err) {
-      console.error('Update failed:', err)
+    } catch {
+      // Handle error silently
     }
   }
 
@@ -194,7 +194,9 @@ export function BookDetailPage() {
                       {book.title}
                     </h1>
                     <div className="mt-1">
-                      <p className="text-[11px] font-semibold text-text-secondary uppercase tracking-wide">Author</p>
+                      <p className="text-[11px] font-semibold text-text-secondary uppercase tracking-wide">
+                        Author
+                      </p>
                       <p className="text-sm sm:text-base text-text-primary">{book.author}</p>
                     </div>
                   </div>
@@ -219,21 +221,29 @@ export function BookDetailPage() {
                 <div className="flex gap-4">
                   {book.genre && (
                     <div>
-                      <p className="text-[11px] font-semibold text-text-secondary uppercase tracking-wide">Genre</p>
+                      <p className="text-[11px] font-semibold text-text-secondary uppercase tracking-wide">
+                        Genre
+                      </p>
                       <p className="text-sm text-text-primary">{formatLabel(book.genre)}</p>
                     </div>
                   )}
                   {book.isPublic !== undefined && (
                     <div>
-                      <p className="text-[11px] font-semibold text-text-secondary uppercase tracking-wide">Visibility</p>
-                      <p className="text-sm text-text-primary">{book.isPublic ? 'Public' : 'Private'}</p>
+                      <p className="text-[11px] font-semibold text-text-secondary uppercase tracking-wide">
+                        Visibility
+                      </p>
+                      <p className="text-sm text-text-primary">
+                        {book.isPublic ? 'Public' : 'Private'}
+                      </p>
                     </div>
                   )}
                 </div>
 
                 {bookOwner && (
                   <div>
-                    <p className="text-[11px] font-semibold text-text-secondary uppercase tracking-wide mb-0.5">Posted by</p>
+                    <p className="text-[11px] font-semibold text-text-secondary uppercase tracking-wide mb-0.5">
+                      Posted by
+                    </p>
                     <Link
                       to="/profile/$userId"
                       params={{ userId: bookOwner.id }}
@@ -241,11 +251,14 @@ export function BookDetailPage() {
                     >
                       <Avatar className="w-5 h-5 shrink-0">
                         <AvatarImage
-                          src={bookOwner.profileImage?.sizes?.[0]?.url || bookOwner.profileImage?.url}
+                          src={
+                            bookOwner.profileImage?.sizes?.[0]?.url || bookOwner.profileImage?.url
+                          }
                           alt={`${bookOwner.firstName} ${bookOwner.lastName}`}
                         />
                         <AvatarFallback className="text-[9px]">
-                          {bookOwner.firstName[0]}{bookOwner.lastName[0]}
+                          {bookOwner.firstName[0]}
+                          {bookOwner.lastName[0]}
                         </AvatarFallback>
                       </Avatar>
                       {bookOwner.firstName} {bookOwner.lastName}
