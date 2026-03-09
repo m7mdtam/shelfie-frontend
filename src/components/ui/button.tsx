@@ -1,8 +1,10 @@
-import * as React from 'react'
+import React from 'react'
 import { Slot } from '@radix-ui/react-slot'
 import { cva, type VariantProps } from 'class-variance-authority'
+import { motion } from 'motion/react'
 
 import { cn } from '@/lib/utils'
+import { ANIMATION_DURATION, EASING, INTERACTION_STATE } from '@/utils/animations'
 
 const buttonVariants = cva(
   'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0',
@@ -14,7 +16,8 @@ const buttonVariants = cva(
         outline:
           'border border-[var(--text-border)] bg-[var(--background-surface)] shadow-sm hover:bg-[var(--accent-background)] hover:text-[var(--text-primary)]',
         secondary: 'bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80',
-        ghost: 'hover:bg-background-tertiary dark:hover:bg-accent-background hover:text-text-primary data-[state=open]:bg-background-tertiary dark:data-[state=open]:bg-accent-background',
+        ghost:
+          'hover:bg-background-tertiary dark:hover:bg-accent-background hover:text-text-primary data-[state=open]:bg-background-tertiary dark:data-[state=open]:bg-accent-background',
         link: 'text-primary underline-offset-4 hover:underline',
         success: 'bg-[var(--btn-success)] text-white shadow hover:bg-[var(--btn-success-hover)]',
         error: 'bg-[var(--btn-error)] text-white shadow hover:bg-[var(--btn-error-hover)]',
@@ -51,13 +54,32 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     { className, variant, size, asChild = false, prefixIcon, suffixIcon, children, ...props },
     ref
   ) => {
-    const Comp = asChild ? Slot : 'button'
+    if (asChild) {
+      return (
+        <Slot className={cn(buttonVariants({ variant, size, className }))} ref={ref} {...props}>
+          {prefixIcon}
+          {children}
+          {suffixIcon}
+        </Slot>
+      )
+    }
+
     return (
-      <Comp className={cn(buttonVariants({ variant, size, className }))} ref={ref} {...props}>
+      <motion.button
+        className={cn(buttonVariants({ variant, size, className }))}
+        ref={ref}
+        whileHover={INTERACTION_STATE.hoverScale}
+        whileTap={INTERACTION_STATE.tapScaleSmall}
+        transition={{
+          duration: ANIMATION_DURATION.fast,
+          ease: EASING.easeOut,
+        }}
+        {...(props as any)}
+      >
         {prefixIcon}
         {children}
         {suffixIcon}
-      </Comp>
+      </motion.button>
     )
   }
 )

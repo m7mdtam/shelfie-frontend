@@ -1,5 +1,7 @@
 import { useState } from 'react'
+import { motion } from 'motion/react'
 import { useIsMobile } from '@/hooks/use-is-mobile'
+import { ANIMATION_DURATION, ANIMATION_STATE } from '@/utils/animations'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
@@ -29,7 +31,10 @@ interface ProfilePersonalInfoSectionProps {
   isOwner?: boolean
 }
 
-export function ProfilePersonalInfoSection({ user, isOwner = true }: ProfilePersonalInfoSectionProps) {
+export function ProfilePersonalInfoSection({
+  user,
+  isOwner = true,
+}: ProfilePersonalInfoSectionProps) {
   const [isEditing, setIsEditing] = useState(false)
   const isMobile = useIsMobile()
   const { mutate: updateProfile, isPending: isSaving } = useUpdateProfile()
@@ -52,11 +57,21 @@ export function ProfilePersonalInfoSection({ user, isOwner = true }: ProfilePers
 
   if (!isEditing) {
     return (
-      <div className="space-y-4">
+      <motion.div
+        className="space-y-4"
+        initial={ANIMATION_STATE.slideLeftSmall.hidden}
+        animate={ANIMATION_STATE.slideLeftSmall.visible}
+        transition={{ duration: ANIMATION_DURATION.midFast }}
+      >
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-semibold text-text-primary">Personal Information</h2>
           {isOwner && (
-            <Button onClick={() => setIsEditing(true)} variant="default" size="sm" className="flex items-center gap-2">
+            <Button
+              onClick={() => setIsEditing(true)}
+              variant="default"
+              size="sm"
+              className="flex items-center gap-2"
+            >
               <PencilLine className="w-4 h-4" />
               {!isMobile && 'Edit'}
             </Button>
@@ -95,7 +110,7 @@ export function ProfilePersonalInfoSection({ user, isOwner = true }: ProfilePers
             </p>
           </div>
         </div>
-      </div>
+      </motion.div>
     )
   }
 
@@ -115,7 +130,11 @@ export function ProfilePersonalInfoSection({ user, isOwner = true }: ProfilePers
                 <FormItem>
                   <FormLabel>First Name</FormLabel>
                   <FormControl>
-                    <InputWithIcon prefixIcon={<User />} placeholder="Enter your first name" {...field} />
+                    <InputWithIcon
+                      prefixIcon={<User />}
+                      placeholder="Enter your first name"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -129,7 +148,11 @@ export function ProfilePersonalInfoSection({ user, isOwner = true }: ProfilePers
                 <FormItem>
                   <FormLabel>Last Name</FormLabel>
                   <FormControl>
-                    <InputWithIcon prefixIcon={<User />} placeholder="Enter your last name" {...field} />
+                    <InputWithIcon
+                      prefixIcon={<User />}
+                      placeholder="Enter your last name"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -145,7 +168,9 @@ export function ProfilePersonalInfoSection({ user, isOwner = true }: ProfilePers
               <Mail className="h-4 w-4 shrink-0 text-accent-primary" />
               {user?.email}
             </p>
-            <p className="text-xs text-state-error mt-1 italic font-bold">Email cannot be changed</p>
+            <p className="text-xs text-state-error mt-1 italic font-bold">
+              Email cannot be changed
+            </p>
           </div>
 
           <div className="flex gap-2 pt-4">

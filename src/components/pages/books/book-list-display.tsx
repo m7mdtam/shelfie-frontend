@@ -2,8 +2,10 @@ import { BookCard } from './book-card'
 import { BookCardSkeleton } from './book-card-skeleton'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
+import { motion } from 'motion/react'
 import { Plus, Loader } from 'lucide-react'
 import { Book } from '@/@types/book'
+import { ANIMATION_STATE, ANIMATION_DURATION, EASING } from '@/utils/animations'
 
 interface BookListDisplayProps {
   isLoading: boolean
@@ -85,11 +87,17 @@ export function BookListDisplay({
       <p className="text-sm text-text-secondary mb-4">
         Showing {books.length} of {totalCount} books
       </p>
-      <div className="grid gap-3 grid-cols-1 sm:grid-cols-[repeat(auto-fill,minmax(300px,1fr))]">
+      <motion.div
+        className="grid gap-3 grid-cols-1 sm:grid-cols-[repeat(auto-fill,minmax(300px,1fr))]"
+        initial={ANIMATION_STATE.fade.hidden}
+        whileInView={ANIMATION_STATE.fade.visible}
+        transition={{ duration: ANIMATION_DURATION.normal, ease: EASING.easeOut as any }}
+        viewport={{ once: true, amount: 0.1 }}
+      >
         {books.map(book => (
           <BookCard key={book.id} book={book} />
         ))}
-      </div>
+      </motion.div>
       {hasNextPage && (
         <div className="flex justify-center mt-6">
           <Button
