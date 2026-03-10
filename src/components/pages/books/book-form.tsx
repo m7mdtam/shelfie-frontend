@@ -22,7 +22,7 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form'
-import { ImagePlus, X } from 'lucide-react'
+import { ImagePlus, PencilLine, Trash } from 'lucide-react'
 
 const formatLabel = (value: string) =>
   value
@@ -110,21 +110,12 @@ export function BookForm({ mode, initialData, onSubmit, isLoading, genres }: Boo
             onChange={handleFileChange}
           />
           {coverPreview ? (
-            <div className="relative w-full h-40 rounded-md overflow-hidden group">
+            <div className="w-full h-40 rounded-md overflow-hidden">
               <img
                 src={coverPreview}
                 alt="Cover preview"
                 className="w-full h-full object-contain"
               />
-              <Button
-                type="button"
-                variant="ghost"
-                size="icon"
-                onClick={removeCover}
-                className="absolute top-2 right-2 bg-background-base/80 rounded-full w-7 h-7 opacity-0 group-hover:opacity-100 transition-opacity"
-              >
-                <X className="w-4 h-4 text-text-primary" />
-              </Button>
             </div>
           ) : (
             <Button
@@ -138,15 +129,24 @@ export function BookForm({ mode, initialData, onSubmit, isLoading, genres }: Boo
             </Button>
           )}
           {coverPreview && (
-            <Button
-              type="button"
-              variant="link"
-              size="sm"
-              onClick={() => fileInputRef.current?.click()}
-              className="text-xs text-accent-primary p-0 h-auto justify-start"
-            >
-              Change image
-            </Button>
+            <div className="flex gap-2">
+              <Button
+                type="button"
+                variant="outline"
+                size="icon"
+                onClick={() => fileInputRef.current?.click()}
+              >
+                <PencilLine className="w-4 h-4" />
+              </Button>
+              <Button
+                type="button"
+                variant="destructive"
+                size="icon"
+                onClick={removeCover}
+              >
+                <Trash className="w-4 h-4" />
+              </Button>
+            </div>
           )}
         </div>
 
@@ -157,7 +157,7 @@ export function BookForm({ mode, initialData, onSubmit, isLoading, genres }: Boo
             <FormItem>
               <FormLabel>Title</FormLabel>
               <FormControl>
-                <Input placeholder="Book title" {...field} />
+                <Input placeholder="Book title" {...field} readOnly={mode === 'edit'} className={mode === 'edit' ? 'opacity-60 cursor-not-allowed' : ''} />
               </FormControl>
               <FormMessage />
             </FormItem>
