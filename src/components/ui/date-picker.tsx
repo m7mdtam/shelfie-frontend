@@ -77,7 +77,12 @@ export function DatePicker({
           {validDate ? format(validDate, 'MMM dd, yyyy') : placeholder}
         </button>
       </PopoverTrigger>
-      <PopoverContent className="w-72 p-0 border-text-border" align="start">
+      <PopoverContent
+        className="w-[min(18rem,calc(100vw-2rem))] p-0 border-text-border overflow-y-auto"
+        align="start"
+        collisionPadding={16}
+        style={{ maxHeight: 'var(--radix-popover-content-available-height)' }}
+      >
         <div className="flex gap-2 p-3 pb-0">
           <Select
             value={String(viewMonth.getMonth())}

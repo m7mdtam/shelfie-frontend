@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'motion/react'
-import { useIsMobile } from '@/hooks/use-is-mobile'
 import { useProfileSectionPreset } from '@/lib/animations'
 import { format, isValid, parse } from 'date-fns'
 import { useForm } from 'react-hook-form'
@@ -45,9 +44,9 @@ function parseBirthDate(raw: string | undefined): Date | undefined {
   return isValid(d) ? d : undefined
 }
 
-function SexIcon({ sex }: { sex?: string }) {
-  if (sex === 'male') return <Mars className="h-4 w-4 shrink-0 text-accent-primary" />
-  if (sex === 'female') return <Venus className="h-4 w-4 shrink-0 text-accent-primary" />
+function GenderIcon({ gender }: { gender?: string }) {
+  if (gender === 'male') return <Mars className="h-4 w-4 shrink-0 text-accent-primary" />
+  if (gender === 'female') return <Venus className="h-4 w-4 shrink-0 text-accent-primary" />
   return null
 }
 
@@ -56,7 +55,6 @@ export function ProfileAdditionalInfoSection({
   isOwner = true,
 }: ProfileAdditionalInfoSectionProps): React.ReactElement {
   const [isEditing, setIsEditing] = useState(false)
-  const isMobile = useIsMobile()
   const { mutate: updateProfile, isPending: isSaving } = useUpdateProfile()
 
   const form = useForm<AdditionalInfoFormData>({
@@ -95,12 +93,10 @@ export function ProfileAdditionalInfoSection({
           {isOwner && (
             <Button
               onClick={() => setIsEditing(true)}
-              variant="default"
-              size="sm"
-              className="flex items-center gap-2"
+              variant="outline"
+              size="icon"
             >
               <PencilLine className="w-4 h-4" />
-              {!isMobile && 'Edit'}
             </Button>
           )}
         </div>
@@ -109,11 +105,11 @@ export function ProfileAdditionalInfoSection({
           <div className="grid grid-cols-2 gap-4">
             <div>
               <p className="text-xs font-semibold text-text-secondary uppercase tracking-wide mb-1">
-                Sex
+                Gender
               </p>
               {user?.sex ? (
                 <p className="flex items-center gap-2 text-sm text-text-primary capitalize">
-                  <SexIcon sex={user.sex} />
+                  <GenderIcon gender={user.sex} />
                   {user.sex}
                 </p>
               ) : (
@@ -152,11 +148,11 @@ export function ProfileAdditionalInfoSection({
             name="sex"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Sex (Optional)</FormLabel>
+                <FormLabel>Gender (Optional)</FormLabel>
                 <Select onValueChange={field.onChange} value={field.value}>
                   <FormControl>
                     <SelectTrigger>
-                      <SelectValue placeholder="Select your sex" />
+                      <SelectValue placeholder="Select your gender" />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
