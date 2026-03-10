@@ -13,10 +13,8 @@ interface RatingsSectionProps {
 
 export function RatingsSection({
   bookId,
-  averageRating,
   userRating,
-  totalRatings,
-}: RatingsSectionProps) {
+}: Pick<RatingsSectionProps, 'bookId' | 'userRating'>) {
   const auth = useAuthContext()
   const isAuthenticated = !!auth.decodedToken
   const { mutate: submitRating, isPending } = useRating(bookId)
@@ -37,16 +35,11 @@ export function RatingsSection({
           onChange={isAuthenticated && !hasRated ? handleRate : undefined}
           disabled={isPending || hasRated}
         />
-        {(totalRatings ?? 0) > 0 && (
-          <span className="text-sm text-text-secondary">
-            {(averageRating ?? 0).toFixed(1)} ({totalRatings}{' '}
-            {totalRatings === 1 ? 'rating' : 'ratings'})
-          </span>
-        )}
       </div>
+
       {isAuthenticated && (
         <p className="text-xs text-text-secondary">
-          {hasRated ? `Your rating: ${userRating}/5 — thanks!` : 'Rate this book'}
+          {hasRated ? `Your rate is ${userRating} out of 5` : 'Rate this book'}
         </p>
       )}
     </motion.div>

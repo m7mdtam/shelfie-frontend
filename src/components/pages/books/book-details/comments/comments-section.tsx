@@ -8,17 +8,13 @@ import { PageSection } from '@/components'
 
 interface CommentsSectionProps {
   bookId: string
-  averageRating: number
   userRating: number | null
-  totalRatings: number
   isLoading?: boolean
 }
 
 export function CommentsSection({
   bookId,
-  averageRating,
   userRating,
-  totalRatings,
   isLoading = false,
 }: CommentsSectionProps) {
   const auth = useAuthContext()
@@ -53,9 +49,7 @@ export function CommentsSection({
       </p>
       <RatingsSection
         bookId={bookId}
-        averageRating={averageRating}
         userRating={userRating}
-        totalRatings={totalRatings}
       />
 
       <p className="text-xs font-semibold text-text-secondary uppercase tracking-wide mb-4">

@@ -2,7 +2,7 @@ import { Book, getBookOwner } from '@/@types/book'
 import { Card } from '@/components/ui/card'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { motion } from 'motion/react'
-import { Star } from 'lucide-react'
+import { StarDisplay } from './book-details/ratings/star-display'
 import { Link } from '@tanstack/react-router'
 import { useBookCardPreset } from '@/lib/animations'
 import fallbackImage from '@/assets/images/fallbackImage.jfif'
@@ -102,17 +102,10 @@ export function BookCard({ book }: BookCardProps) {
             )}
 
             <div className="flex items-center gap-1 max-[425px]:gap-0.5">
-              {Array.from({ length: 5 }, (_, i) => (
-                <Star
-                  key={i}
-                  className={[
-                    'w-3.5 h-3.5 max-[425px]:w-2.5 max-[425px]:h-2.5',
-                    i < Math.round(book.averageRating ?? 0)
-                      ? 'fill-star-filled text-star-filled'
-                      : 'text-text-secondary',
-                  ].join(' ')}
-                />
-              ))}
+              <StarDisplay
+                rating={book.averageRating ?? 0}
+                className="w-3.5 h-3.5 max-[425px]:w-2.5 max-[425px]:h-2.5"
+              />
               <span className="text-xs max-[425px]:text-[10px] text-text-secondary ml-0.5">
                 {(book.averageRating ?? 0).toFixed(1)}
                 <span className="text-text-secondary/60 ml-0.5">({book.totalRatings ?? 0})</span>
