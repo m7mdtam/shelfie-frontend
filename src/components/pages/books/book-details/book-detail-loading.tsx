@@ -34,9 +34,7 @@ export function BookDetailLoading() {
 
         <CommentsSection
           bookId=""
-          averageRating={0}
           userRating={null}
-          totalRatings={0}
           isLoading={true}
         />
       </div>

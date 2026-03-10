@@ -1,6 +1,10 @@
-import { PencilLine, Trash } from 'lucide-react'
-import { Book } from '@/@types/book'
+import { PencilLine, Trash, ExternalLink } from 'lucide-react'
+import { Book, getBookOwner } from '@/@types/book'
 import { PageSection } from '@/components/common/page-section'
+import { StarDisplay } from './ratings/star-display'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { Button } from '@/components/ui/button'
+import { Link } from '@tanstack/react-router'
 import fallbackImage from '@/assets/images/fallbackImage.jfif'
 
 const formatLabel = (value: string) =>
@@ -17,6 +21,8 @@ interface BookDetailCoverProps {
 }
 
 export function BookDetailCover({ book, isOwner, onEdit, onDelete }: BookDetailCoverProps) {
+  const bookOwner = getBookOwner(book.owner)
+
   return (
     <PageSection>
       <div className="flex flex-col sm:flex-row gap-5">
@@ -79,6 +85,55 @@ export function BookDetailCover({ book, isOwner, onEdit, onDelete }: BookDetailC
               </div>
             )}
           </div>
+
+          {bookOwner && (
+            <div>
+              <p className="text-[11px] font-semibold text-text-secondary uppercase tracking-wide mb-0.5">
+                Posted by
+              </p>
+              <Link
+                to="/profile/$userId"
+                params={{ userId: bookOwner.id }}
+                className="flex items-center gap-1.5 text-sm text-text-primary hover:text-accent-primary transition-colors w-fit"
+              >
+                <Avatar className="w-5 h-5 shrink-0">
+                  <AvatarImage
+                    src={bookOwner.profileImage?.sizes?.[0]?.url || bookOwner.profileImage?.url}
+                    alt={`${bookOwner.firstName} ${bookOwner.lastName}`}
+                  />
+                  <AvatarFallback className="text-[9px]">
+                    {bookOwner.firstName[0]}
+                    {bookOwner.lastName[0]}
+                  </AvatarFallback>
+                </Avatar>
+                {bookOwner.firstName} {bookOwner.lastName}
+              </Link>
+            </div>
+          )}
+
+          {book.isDownloadable && book.downloadLink && (
+            <Button
+              variant="outline"
+              className="w-fit flex items-center gap-2"
+              onClick={() => window.open(book.downloadLink, '_blank')}
+            >
+              <ExternalLink className="w-4 h-4" />
+              Download
+            </Button>
+          )}
+
+          {(book.totalRatings ?? 0) > 0 && (
+            <div className="flex items-center gap-1.5">
+              <StarDisplay rating={book.averageRating ?? 0} className="w-4 h-4" />
+              <span className="text-sm font-medium text-text-primary ml-0.5">
+                {(book.averageRating ?? 0).toFixed(1)}
+              </span>
+              <span className="text-sm text-text-secondary">
+                ({book.totalRatings ?? 0}{' '}
+                {(book.totalRatings ?? 0) === 1 ? 'rating' : 'ratings'})
+              </span>
+            </div>
+          )}
         </div>
       </div>
     </PageSection>

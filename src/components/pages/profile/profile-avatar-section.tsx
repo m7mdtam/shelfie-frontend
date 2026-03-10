@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react'
 import { motion } from 'motion/react'
-import { Trash, Upload, Loader } from 'lucide-react'
+import { Trash, PencilLine, Upload, Loader } from 'lucide-react'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -78,6 +78,8 @@ export function ProfileAvatarSection({ user, isOwner = true }: ProfileAvatarSect
           >
             {isUploading ? (
               <Loader className="w-6 h-6 text-white animate-spin" />
+            ) : hasProfileImage ? (
+              <PencilLine className="w-6 h-6 text-white" />
             ) : (
               <Upload className="w-6 h-6 text-white" />
             )}
@@ -96,16 +98,35 @@ export function ProfileAvatarSection({ user, isOwner = true }: ProfileAvatarSect
         />
       )}
 
-      {isOwner && hasProfileImage && (
-        <Button
-          onClick={handleDeleteAvatar}
-          variant="destructive"
-          className="gap-2 text-white"
-          disabled={isDeleting}
-        >
-          <Trash className="w-4 h-4" />
-          {isDeleting ? 'Deleting...' : 'Delete Avatar'}
-        </Button>
+      {isOwner && (
+        <div className="flex gap-2">
+          <Button
+            onClick={() => fileInputRef.current?.click()}
+            variant="outline"
+            size="icon"
+            disabled={isUploading}
+          >
+            {hasProfileImage ? (
+              <PencilLine className="w-4 h-4" />
+            ) : (
+              <Upload className="w-4 h-4" />
+            )}
+          </Button>
+          {hasProfileImage && (
+            <Button
+              onClick={handleDeleteAvatar}
+              variant="destructive"
+              size="icon"
+              disabled={isDeleting}
+            >
+              {isDeleting ? (
+                <Loader className="w-4 h-4 animate-spin" />
+              ) : (
+                <Trash className="w-4 h-4" />
+              )}
+            </Button>
+          )}
+        </div>
       )}
     </motion.div>
   )

@@ -5,7 +5,7 @@ import type { PayloadUser } from '@/@types/auth'
 export interface UpdateProfileRequest {
   firstName?: string
   lastName?: string
-  sex?: string
+  gender?: string
   birthDate?: string
   profileImageId?: string
 }

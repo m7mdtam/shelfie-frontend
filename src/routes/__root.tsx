@@ -4,6 +4,11 @@ import { Navbar } from '@/components/common/navbar'
 import { Toaster } from '@/components/ui/sonner'
 import Aurora from '@/components/common/aurora'
 import { NotFoundPage } from '@/components/pages/not-found/not-found-page'
+import { queryClient } from '@/config/query-client'
+import { authKeys } from '@/api/auth/keys'
+import { getMeFn } from '@/api/auth/requests'
+import { getToken } from '@/lib/cookies'
+import { isTokenExpired } from '@/lib/jwt'
 
 const routeTitles: Record<string, string> = {
   '/': 'Shelfie - Organize Your Books',
@@ -55,4 +60,13 @@ function RootLayout() {
 export const Route = createRootRoute({
   component: RootLayout,
   notFoundComponent: NotFoundPage,
+  loader: async () => {
+    const token = getToken()
+    if (token && !isTokenExpired(token)) {
+      await queryClient.prefetchQuery({
+        queryKey: authKeys.getMe(),
+        queryFn: getMeFn,
+      })
+    }
+  },
 })

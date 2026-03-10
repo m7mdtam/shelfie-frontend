@@ -8,7 +8,7 @@ const Input = React.forwardRef<HTMLInputElement, React.ComponentProps<'input'>>(
       <input
         type={type}
         className={cn(
-          'flex h-9 w-full rounded-md bg-background-base px-3 py-1.5 text-sm text-text-primary placeholder:text-text-secondary transition-all duration-200 file:border-0 file:bg-transparent file:text-xs file:font-medium file:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary disabled:cursor-not-allowed disabled:opacity-50 md:h-10 md:text-base',
+          'flex h-9 w-full rounded-md bg-background-base px-3 py-1.5 text-base text-text-primary placeholder:text-text-secondary transition-all duration-200 file:border-0 file:bg-transparent file:text-xs file:font-medium file:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary disabled:cursor-not-allowed disabled:opacity-50 md:h-10 md:text-sm',
           className
         )}
         ref={ref}
@@ -36,7 +36,7 @@ const InputWithIcon = React.forwardRef<HTMLInputElement, InputWithIconProps>(
         <input
           type={type}
           className={cn(
-            'flex h-9 w-full rounded-md bg-background-base px-3 py-1.5 text-sm text-text-primary placeholder:text-text-secondary transition-all duration-200 file:border-0 file:bg-transparent file:text-xs file:font-medium file:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary disabled:cursor-not-allowed disabled:opacity-50 md:h-10 md:text-base',
+            'flex h-9 w-full rounded-md bg-background-base px-3 py-1.5 text-base text-text-primary placeholder:text-text-secondary transition-all duration-200 file:border-0 file:bg-transparent file:text-xs file:font-medium file:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary disabled:cursor-not-allowed disabled:opacity-50 md:h-10 md:text-sm',
             prefixIcon && 'pl-8 md:pl-9',
             suffixIcon && 'pr-8 md:pr-9',
             className
